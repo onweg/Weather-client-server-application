@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Icon=ru.auroraos.WeatherApplication
+Exec=/usr/bin/ru.auroraos.WeatherApplication
+Name=Template
+Name[ru]=Шаблон
+
+[X-Application]
+Permissions=
+OrganizationName=ru.auroraos
+ApplicationName=WeatherApplication
+ExecDBus=/usr/bin/ru.auroraos.WeatherApplication
