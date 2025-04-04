@@ -1,1 +1,17 @@
-# Weather-client-server-application
+Пример3
+
+Пользователь открыл приложение → выбрал город → ClientController вызвал WeatherManager::getWeather("Москва"):
+
+WeatherManager проверил WeatherCache.
+
+Если кэш свежий → вернул погоду сразу.
+
+Если кэш устарел:
+
+Пошёл в БД → проверил там.
+
+Если и там нет → вызвал WeatherApiClient.
+
+Получил ответ, обновил кэш + БД.
+
+Отдал результат обратно в UI.

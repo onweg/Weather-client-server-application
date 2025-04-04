@@ -43,9 +43,17 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
+    src/clientcontroller.cpp \
+    src/databasemanager.cpp \
     src/main.cpp \
+    src/weatherapiclient.cpp \
+    src/weathercache.cpp
 
 HEADERS += \
+    src/clientcontroller.h \
+    src/databasemanager.h \
+    src/weatherapiclient.h \
+    src/weathercache.h
 
 DISTFILES += \
     rpm/ru.auroraos.WeatherApplication.spec \
@@ -57,7 +65,6 @@ DISTFILES += \
     qml/WeatherApplication.qml \
     qml/cover/DefaultCoverPage.qml \
     qml/pages/AboutPage.qml \
-    qml/pages/MainPage.qml \
 
 AURORAAPP_ICONS = 86x86 108x108 128x128 172x172
 
