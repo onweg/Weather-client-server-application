@@ -37,6 +37,7 @@
 
 #include <auroraapp.h>
 #include <QtQuick>
+#include "weatherapiclient.h"
 
 int main(int argc, char *argv[])
 {
@@ -44,9 +45,16 @@ int main(int argc, char *argv[])
     application->setOrganizationName(QStringLiteral("ru.auroraos"));
     application->setApplicationName(QStringLiteral("WeatherApplication"));
 
+
+
     QScopedPointer<QQuickView> view(Aurora::Application::createView());
+
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));
     view->show();
+    WeatherApiClient wac;
+//    QJsonObject jsonObj = wac.getWeatherJsonData();
+//    QJsonDocument jsonDoc(jsonObj);
+//    qDebug() << jsonDoc.toJson(QJsonDocument::Indented);
 
     return application->exec();
 }

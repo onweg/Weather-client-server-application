@@ -35,6 +35,8 @@
 ##
 ################################################################################
 
+QT += network
+
 TARGET = ru.auroraos.WeatherApplication
 
 CONFIG += \
@@ -47,13 +49,15 @@ SOURCES += \
     src/databasemanager.cpp \
     src/main.cpp \
     src/weatherapiclient.cpp \
-    src/weathercache.cpp
+    src/weathercache.cpp \
+    src/weathermanager.cpp
 
 HEADERS += \
     src/clientcontroller.h \
     src/databasemanager.h \
     src/weatherapiclient.h \
-    src/weathercache.h
+    src/weathercache.h \
+    src/weathermanager.h
 
 DISTFILES += \
     rpm/ru.auroraos.WeatherApplication.spec \
@@ -64,7 +68,6 @@ DISTFILES += \
     README.md \
     qml/WeatherApplication.qml \
     qml/cover/DefaultCoverPage.qml \
-    qml/pages/AboutPage.qml \
 
 AURORAAPP_ICONS = 86x86 108x108 128x128 172x172
 

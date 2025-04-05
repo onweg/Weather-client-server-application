@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.15.2, 2025-04-05T11:14:41. -->
+<!-- Written by QtCreator 4.15.2, 2025-04-05T11:02:00. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -403,7 +403,7 @@
     </valuelist>
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="bool" key="MerRunConfiguration.DebugBypassOpenSslArmCapEnabled">true</value>
-    <value type="QString" key="MerRunConfiguration.QmlLiveBenchWorkspace">/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication</value>
+    <value type="QString" key="MerRunConfiguration.QmlLiveBenchWorkspace">/home/arkadiy/Weather-client-server-application/WeatherApplication</value>
     <value type="bool" key="MerRunConfiguration.QmlLiveEnabled">false</value>
     <value type="int" key="MerRunConfiguration.QmlLiveIpcPort">-1</value>
     <value type="int" key="MerRunConfiguration.QmlLiveOptions">3</value>
@@ -411,9 +411,9 @@
     <value type="bool" key="MerRunConfiguration.SandboxEnabled">false</value>
     <value type="int" key="PE.EnvironmentAspect.Base">1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">ru.auroraos.WeatherApplication (on %{Device:Name})2</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">QmakeProjectManager.MerRunConfiguration:/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication/ru.auroraos.WeatherApplication.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication/ru.auroraos.WeatherApplication.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">ru.auroraos.WeatherApplication (on %{Device:Name})</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">QmakeProjectManager.MerRunConfiguration:/home/arkadiy/Weather-client-server-application/WeatherApplication/ru.auroraos.WeatherApplication.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/arkadiy/Weather-client-server-application/WeatherApplication/ru.auroraos.WeatherApplication.pro</value>
     <value type="int" key="RemoteLinux.EnvironmentAspect.Version">1</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
