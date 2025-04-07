@@ -22,23 +22,21 @@ class WeatherApiClient : public QObject
     Q_OBJECT
 public:
     explicit WeatherApiClient(QObject *parent = nullptr, QString zipCode_ = "101000", QString countryCode_ = "RU");
-    QJsonObject getWeatherJsonData();
+
+public slots:
+    void slotCountryChange(const QString &zipCode, const QString &countryCode);
 
 private slots:
     void onWeatherDataReceived();
 
 private:
-    QString zipCode, countryCode;
-    const QString apiKey = "3467533238ac4236821131358250504";
+    const QString apiKey = "42742ea2be4d089818ddf4c59fd721be";
     QNetworkAccessManager *manager;
     QNetworkReply *reply;
-    QJsonObject weatherJsonData;
 
-
-    void checkInternetConnection();
-;
 signals:
-
+    void jsonDataReceivedFromAPI(const QJsonObject &jsonObj);
 };
 
 #endif // WEATHERAPICLIENT_H
+

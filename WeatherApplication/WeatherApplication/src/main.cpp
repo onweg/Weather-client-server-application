@@ -37,6 +37,9 @@
 
 #include <auroraapp.h>
 #include <QtQuick>
+#include <QObject>
+#include "weathermanager.h"
+#include "clientcontroller.h"
 #include "weatherapiclient.h"
 
 int main(int argc, char *argv[])
@@ -48,13 +51,19 @@ int main(int argc, char *argv[])
 
 
     QScopedPointer<QQuickView> view(Aurora::Application::createView());
+    WeatherManager manager;
+    WeatherApiClient apiManager;
+    ClientController controller;
+    QObject::connect(&controller, &ClientController::countryChange, &manager, &WeatherManager::slotCountryChange);
+    QObject::connect(&manager, &WeatherManager::countryChange, &apiManager, &WeatherApiClient::slotCountryChange);
+    QObject::connect(&apiManager, &WeatherApiClient::jsonDataReceivedFromAPI, &manager, &WeatherManager::slotRecivedJsonData);
+    QObject::connect(&manager, &WeatherManager::sendJsonDataFromAPI, &controller, &ClientController::slotRecivedJsonData);
 
+    view->rootContext()->setContextProperty("controller", &controller);
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));
     view->show();
-    WeatherApiClient wac;
-//    QJsonObject jsonObj = wac.getWeatherJsonData();
-//    QJsonDocument jsonDoc(jsonObj);
-//    qDebug() << jsonDoc.toJson(QJsonDocument::Indented);
+
+
 
     return application->exec();
 }

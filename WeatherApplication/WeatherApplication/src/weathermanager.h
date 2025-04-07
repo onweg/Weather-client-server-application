@@ -2,7 +2,8 @@
 #define WEATHERMANAGER_H
 
 #include <QObject>
-#include "weatherapiclient.h"
+#include <QJsonObject>
+#include <QDebug>
 
 class WeatherManager : public QObject
 {
@@ -11,9 +12,16 @@ public:
     explicit WeatherManager(QObject *parent = nullptr);
 
 private:
-    WeatherApiClient wac;
+
+public slots:
+    void slotCountryChange(const QString &zipCode, const QString &countryCode);
+    void slotRecivedJsonData(const QJsonObject &jsonObj);
+
+private slots:
 
 signals:
+    void countryChange(const QString &zipCode, const QString &countryCode);
+    void sendJsonDataFromAPI(const QJsonObject &jsonObj);
 
 };
 

@@ -42,8 +42,14 @@ Page {
     objectName: "mainPage"
     allowedOrientations: Orientation.All
 
-    Text {
-        text: "Weather"
-        anchors.centerIn: parent
+    SelectData {
+        anchors.top: parent.top
+        anchors.topMargin: 250
+        anchors.horizontalCenter: parent.horizontalCenter
     }
+//    MainIfo {
+
+//    }
+
+
 }

@@ -60,6 +60,8 @@ HEADERS += \
     src/weathermanager.h
 
 DISTFILES += \
+    qml/pages/SelectCountry.qml \
+    qml/pages/SelectData.qml \
     rpm/ru.auroraos.WeatherApplication.spec \
     AUTHORS.md \
     CODE_OF_CONDUCT.md \

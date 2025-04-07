@@ -7,7 +7,7 @@ Name=Template
 Name[ru]=Шаблон
 
 [X-Application]
-Permissions=
+Permissions=Internet
 OrganizationName=ru.auroraos
 ApplicationName=WeatherApplication
 ExecDBus=/usr/bin/ru.auroraos.WeatherApplication
