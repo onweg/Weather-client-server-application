@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_ClientController_t {
-    QByteArrayData data[9];
-    char stringdata0[100];
+    QByteArrayData data[8];
+    char stringdata0[81];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,19 +30,18 @@ struct qt_meta_stringdata_ClientController_t {
 static const qt_meta_stringdata_ClientController_t qt_meta_stringdata_ClientController = {
     {
 QT_MOC_LITERAL(0, 0, 16), // "ClientController"
-QT_MOC_LITERAL(1, 17, 13), // "countryChange"
-QT_MOC_LITERAL(2, 31, 0), // ""
-QT_MOC_LITERAL(3, 32, 7), // "zipCode"
-QT_MOC_LITERAL(4, 40, 11), // "countryCode"
-QT_MOC_LITERAL(5, 52, 19), // "slotRecivedJsonData"
-QT_MOC_LITERAL(6, 72, 7), // "jsonObj"
-QT_MOC_LITERAL(7, 80, 14), // "getDataFromQML"
-QT_MOC_LITERAL(8, 95, 4) // "data"
+QT_MOC_LITERAL(1, 17, 10), // "cityChange"
+QT_MOC_LITERAL(2, 28, 0), // ""
+QT_MOC_LITERAL(3, 29, 4), // "city"
+QT_MOC_LITERAL(4, 34, 15), // "slotWeatherData"
+QT_MOC_LITERAL(5, 50, 7), // "jsonObj"
+QT_MOC_LITERAL(6, 58, 17), // "getDataSearchCity"
+QT_MOC_LITERAL(7, 76, 4) // "data"
 
     },
-    "ClientController\0countryChange\0\0zipCode\0"
-    "countryCode\0slotRecivedJsonData\0jsonObj\0"
-    "getDataFromQML\0data"
+    "ClientController\0cityChange\0\0city\0"
+    "slotWeatherData\0jsonObj\0getDataSearchCity\0"
+    "data"
 };
 #undef QT_MOC_LITERAL
 
@@ -60,22 +59,22 @@ static const uint qt_meta_data_ClientController[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    2,   29,    2, 0x06 /* Public */,
+       1,    1,   29,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       5,    1,   34,    2, 0x0a /* Public */,
+       4,    1,   32,    2, 0x0a /* Public */,
 
  // methods: name, argc, parameters, tag, flags
-       7,    1,   37,    2, 0x02 /* Public */,
+       6,    1,   35,    2, 0x02 /* Public */,
 
  // signals: parameters
-    QMetaType::Void, QMetaType::QString, QMetaType::QString,    3,    4,
+    QMetaType::Void, QMetaType::QString,    3,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QJsonObject,    6,
+    QMetaType::Void, QMetaType::QJsonObject,    5,
 
  // methods: parameters
-    QMetaType::Void, QMetaType::QString,    8,
+    QMetaType::Void, QMetaType::QString,    7,
 
        0        // eod
 };
@@ -86,17 +85,17 @@ void ClientController::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         ClientController *_t = static_cast<ClientController *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->countryChange((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 1: _t->slotRecivedJsonData((*reinterpret_cast< const QJsonObject(*)>(_a[1]))); break;
-        case 2: _t->getDataFromQML((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 0: _t->cityChange((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 1: _t->slotWeatherData((*reinterpret_cast< const QJsonObject(*)>(_a[1]))); break;
+        case 2: _t->getDataSearchCity((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (ClientController::*_t)(const QString & , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&ClientController::countryChange)) {
+            typedef void (ClientController::*_t)(const QString & );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&ClientController::cityChange)) {
                 *result = 0;
                 return;
             }
@@ -141,9 +140,9 @@ int ClientController::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void ClientController::countryChange(const QString & _t1, const QString & _t2)
+void ClientController::cityChange(const QString & _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_END_MOC_NAMESPACE

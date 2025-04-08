@@ -5,19 +5,19 @@ WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
 
 }
 
-void WeatherManager::slotCountryChange(const QString &zipCode, const QString &countryCode)
+void WeatherManager::slotCityChange(const QString &city)
 {
     // перед тем как отправлять надо проверять в ке
-    emit countryChange(zipCode, countryCode);
+    emit findCityData(city);
 }
 
-void WeatherManager::slotRecivedJsonData(const QJsonObject &jsonObj)
+void WeatherManager::slotRecivedWeatherData(const QJsonObject &jsonObj)
 {
 
 
-    // получил json данные
     // занести в кеш
+    // занести в бд
     // отправить контроллеру
-    emit sendJsonDataFromAPI(jsonObj);
+    emit weatherData(jsonObj);
 
 }

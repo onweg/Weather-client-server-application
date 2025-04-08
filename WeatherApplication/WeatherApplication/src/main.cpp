@@ -54,15 +54,16 @@ int main(int argc, char *argv[])
     WeatherManager manager;
     WeatherApiClient apiManager;
     ClientController controller;
-    QObject::connect(&controller, &ClientController::countryChange, &manager, &WeatherManager::slotCountryChange);
-    QObject::connect(&manager, &WeatherManager::countryChange, &apiManager, &WeatherApiClient::slotCountryChange);
-    QObject::connect(&apiManager, &WeatherApiClient::jsonDataReceivedFromAPI, &manager, &WeatherManager::slotRecivedJsonData);
-    QObject::connect(&manager, &WeatherManager::sendJsonDataFromAPI, &controller, &ClientController::slotRecivedJsonData);
+    QObject::connect(&controller, &ClientController::cityChange, &manager, &WeatherManager::slotCityChange);
+    QObject::connect(&manager, &WeatherManager::findCityData, &apiManager, &WeatherApiClient::slotFindCityData);
+    QObject::connect(&apiManager, &WeatherApiClient::recivedWeatherData, &manager, &WeatherManager::slotRecivedWeatherData);
+    QObject::connect(&manager, &WeatherManager::weatherData, &controller, &ClientController::slotWeatherData);
 
     view->rootContext()->setContextProperty("controller", &controller);
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));
     view->show();
 
+    // сделать другую логику разделения полученной строки на RU и 101000
 
 
     return application->exec();

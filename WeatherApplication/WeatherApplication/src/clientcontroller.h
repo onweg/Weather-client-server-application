@@ -14,16 +14,16 @@ class ClientController : public QObject
     Q_OBJECT
 public:
     explicit ClientController(QObject *parent = nullptr);
-    Q_INVOKABLE void getDataFromQML(const QString &data);
+    Q_INVOKABLE void getDataSearchCity(const QString &data);
 
 public slots:
-    void slotRecivedJsonData(const QJsonObject &jsonObj);
+    void slotWeatherData(const QJsonObject &jsonObj);
 
 private:
     QString zipCode, countryCode;
 
 signals:
-    void countryChange(const QString &zipCode, const QString &countryCode);
+    void cityChange(const QString &city);
 };
 
 #endif // CLIENTCONTROLLER_H

@@ -14,14 +14,14 @@ public:
 private:
 
 public slots:
-    void slotCountryChange(const QString &zipCode, const QString &countryCode);
-    void slotRecivedJsonData(const QJsonObject &jsonObj);
+    void slotCityChange(const QString &city);
+    void slotRecivedWeatherData(const QJsonObject &jsonObj);
 
 private slots:
 
 signals:
-    void countryChange(const QString &zipCode, const QString &countryCode);
-    void sendJsonDataFromAPI(const QJsonObject &jsonObj);
+    void findCityData(const QString &city);
+    void weatherData(const QJsonObject &jsonObj);
 
 };
 
