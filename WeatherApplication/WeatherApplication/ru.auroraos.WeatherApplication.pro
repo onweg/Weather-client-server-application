@@ -35,7 +35,7 @@
 ##
 ################################################################################
 
-QT += network
+QT += network core
 
 TARGET = ru.auroraos.WeatherApplication
 
@@ -60,9 +60,11 @@ HEADERS += \
     src/weathermanager.h
 
 DISTFILES += \
-    qml/pages/SearchCity.qml \
-    qml/pages/SelectCountry.qml \
-    qml/pages/SelectData.qml \
+    qml/pages/DateAndButtons.qml \
+    qml/pages/InputCity.qml \
+    qml/pages/SearchPanel.qml \
+    qml/pages/WeatherData.qml \
+    qml/pages/WeatherInformation.qml \
     rpm/ru.auroraos.WeatherApplication.spec \
     AUTHORS.md \
     CODE_OF_CONDUCT.md \

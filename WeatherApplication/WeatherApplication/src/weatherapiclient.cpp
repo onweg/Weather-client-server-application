@@ -67,6 +67,7 @@ void WeatherApiClient::onSlotFindCityData()
 
 void WeatherApiClient::onSlotFindWeatherData()
 {
+
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     if (!reply) {
         qDebug() << "Invalid reply";

@@ -42,14 +42,16 @@ Page {
     objectName: "mainPage"
     allowedOrientations: Orientation.All
 
-    SelectData {
+    SearchPanel {
         anchors.top: parent.top
         anchors.topMargin: 250
         anchors.horizontalCenter: parent.horizontalCenter
     }
-//    MainIfo {
-
-//    }
+    WeatherInformation {
+        width: 600
+        height: 600
+        anchors.centerIn: parent
+    }
 
 
 }

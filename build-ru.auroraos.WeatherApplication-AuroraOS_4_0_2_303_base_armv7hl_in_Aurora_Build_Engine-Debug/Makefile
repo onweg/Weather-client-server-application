@@ -69,9 +69,11 @@ OBJECTS       = clientcontroller.o \
 		moc_weatherapiclient.o \
 		moc_weathercache.o \
 		moc_weathermanager.o
-DIST          = ../WeatherApplication/WeatherApplication/qml/pages/SearchCity.qml \
-		../WeatherApplication/WeatherApplication/qml/pages/SelectCountry.qml \
-		../WeatherApplication/WeatherApplication/qml/pages/SelectData.qml \
+DIST          = ../WeatherApplication/WeatherApplication/qml/pages/DateAndButtons.qml \
+		../WeatherApplication/WeatherApplication/qml/pages/InputCity.qml \
+		../WeatherApplication/WeatherApplication/qml/pages/SearchPanel.qml \
+		../WeatherApplication/WeatherApplication/qml/pages/WeatherData.qml \
+		../WeatherApplication/WeatherApplication/qml/pages/WeatherInformation.qml \
 		../WeatherApplication/WeatherApplication/rpm/ru.auroraos.WeatherApplication.spec \
 		../WeatherApplication/WeatherApplication/AUTHORS.md \
 		../WeatherApplication/WeatherApplication/CODE_OF_CONDUCT.md \
