@@ -54,10 +54,12 @@ int main(int argc, char *argv[])
     WeatherManager manager;
     WeatherApiClient apiManager;
     ClientController controller;
-    QObject::connect(&controller, &ClientController::cityChange, &manager, &WeatherManager::slotCityChange);
+    QObject::connect(&controller, &ClientController::searchCity, &manager, &WeatherManager::slotSearchCity);
+    // п
     QObject::connect(&manager, &WeatherManager::findCityData, &apiManager, &WeatherApiClient::slotFindCityData);
     QObject::connect(&apiManager, &WeatherApiClient::recivedWeatherData, &manager, &WeatherManager::slotRecivedWeatherData);
     QObject::connect(&manager, &WeatherManager::weatherData, &controller, &ClientController::slotWeatherData);
+    //QObject::connect(&controller, &ClientController::searchCityForSpecificDay, &manager, &WeatherManager::);
 
     view->rootContext()->setContextProperty("controller", &controller);
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));

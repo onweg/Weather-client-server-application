@@ -1,85 +1,116 @@
 import QtQuick 2.0
 
 Item {
-
-    Connections {
-        target: controller
-        onDataUpdated: {
-            weather_description.text = controller.getDescription();
-            weather_feels_like.text = controller.getFeelsLike();
-            weather_humidity.text = controller.getHumidity();
-            weather_pressure.text = controller.getPressure();
-            weather_temp.text = controller.getTemp();
-            weather_temp_max.text = controller.getTempMax();
-            weather_temp_min.text = controller.getTempMin();
-            weather_wind_speed.text = controller.getWindSpeed();
-        }
-    }
-
+    property alias weather_description: weather_description
+    property alias weather_temp: weather_temp
+    property alias weather_feels_like: weather_feels_like
+    property alias weather_temp_max: weather_temp_max
+    property alias weather_temp_min: weather_temp_min
+    property alias weather_wind_speed: weather_wind_speed
+    property alias weather_humidity: weather_humidity
+    property alias weather_pressure: weather_pressure
     Row {
         spacing: 20
         Column {
             spacing: 30
             Text {
-                text: "description"
+                text: "описание"
             }
             Text {
-                text: "temp"
+                text: "температура"
             }
             Text {
-                text: "feels_like"
+                text: "чувствуется как"
             }
             Text {
-                text: "temp_max"
+                text: "макс температура"
             }
             Text {
-                text: "temp_min"
+                text: "мин температура"
             }
             Text {
-                text: "wind_speed"
+                text: "скорость ветра"
             }
             Text {
-                text: "humidity"
+                text: "влажность"
             }
             Text {
-                text: "pressure"
+                text: "давление"
             }
         }
         Column {
             spacing: 30
             Text {
                 id: weather_description
-                text: "небольшой снег"
+                text: "..."
             }
-            Text {
-                id: weather_temp
-                text: "7 °C"
+            Row {
+                Text {
+                    id: weather_temp
+                    text: "0.0"
+                }
+                Text {
+                    text: " °C"
+                }
             }
-            Text {
-                id: weather_feels_like
-                text: "7.7 °C"
+            Row {
+                Text {
+                    id: weather_feels_like
+                    text: "0.0"
+                }
+                Text {
+                    text: " °C"
+                }
             }
-            Text {
-                id: weather_temp_max
-                text: "8 °C"
+
+            Row {
+                Text {
+                    id: weather_temp_max
+                    text: "0.0"
+                }
+                Text {
+                    text: " °C"
+                }
             }
-            Text {
-                id: weather_temp_min
-                text: "5.2 °C"
+
+            Row {
+                Text {
+                    id: weather_temp_min
+                    text: "0.0"
+                }
+                Text {
+                    text: " °C"
+                }
             }
-            Text {
-                id: weather_wind_speed
-                text: "20 м/c"
+
+            Row {
+                Text {
+                    id: weather_wind_speed
+                    text: "0.0"
+                }
+                Text {
+                    text: " м/с"
+                }
             }
-            Text {
-                id: weather_humidity
-                text: "70"
+            Row {
+                Text {
+                    id: weather_humidity
+                    text: "0"
+                }
+                Text {
+                    text: " г/м^3"
+                }
             }
-            Text {
-                id: weather_pressure
-                text: "1"
+
+            Row {
+                Text {
+                    id: weather_pressure
+                    text: "0"
+                }
+                Text {
+                    text: " Па"
+                }
             }
         }
     }
-
 }

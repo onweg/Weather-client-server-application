@@ -6,7 +6,7 @@ Item {
     Row {
         spacing: 50
         Button {
-            text: "<- prev day"
+            text: "<- предыдущий день"
         }
         Text {
             id: date
@@ -14,7 +14,7 @@ Item {
             font.pixelSize: 40
         }
         Button {
-            text: "next day ->"
+            text: "следующий день ->"
         }
     }
 }
