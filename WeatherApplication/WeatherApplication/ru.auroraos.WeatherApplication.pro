@@ -47,6 +47,7 @@ PKGCONFIG += \
 SOURCES += \
     src/clientcontroller.cpp \
     src/databasemanager.cpp \
+    src/dataeditor.cpp \
     src/main.cpp \
     src/weatherapiclient.cpp \
     src/weathercache.cpp \
@@ -55,6 +56,7 @@ SOURCES += \
 HEADERS += \
     src/clientcontroller.h \
     src/databasemanager.h \
+    src/dataeditor.h \
     src/weatherapiclient.h \
     src/weathercache.h \
     src/weathermanager.h

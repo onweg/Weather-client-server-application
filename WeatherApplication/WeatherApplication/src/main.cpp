@@ -54,17 +54,27 @@ int main(int argc, char *argv[])
     WeatherManager manager;
     WeatherApiClient apiManager;
     ClientController controller;
-    QObject::connect(&controller, &ClientController::cityChange, &manager, &WeatherManager::slotCityChange);
-    QObject::connect(&manager, &WeatherManager::findCityData, &apiManager, &WeatherApiClient::slotFindCityData);
+    QObject::connect(&controller, &ClientController::findCity, &manager, &WeatherManager::slotFindCity);
+    // connect между клинет и манагер          ( должен давать запросы на поиск данных просто города и данных города на определенный день)
+    // connect между манагер и кеш             ( сначала смотрим в кеш )
+    // connect между кеш манагер               ( если в кеш было, то манагер отправляет clientcontroller )
+    QObject::connect(&manager, &WeatherManager::findCity, &apiManager, &WeatherApiClient::slotFindCity); // первый раз с поиском города я должен вернуть
     QObject::connect(&apiManager, &WeatherApiClient::recivedWeatherData, &manager, &WeatherManager::slotRecivedWeatherData);
+    // connect между manager и бд              ( хранит запросы в виде,
+    // connect между манагер и кеш             ( должен сохранить новые данные из api что получили )
     QObject::connect(&manager, &WeatherManager::weatherData, &controller, &ClientController::slotWeatherData);
+    //QObject::connect(&controller, &ClientController::searchCityForSpecificDay, &manager, &WeatherManager::);
 
     view->rootContext()->setContextProperty("controller", &controller);
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));
     view->show();
 
-    // сделать другую обработку что города нет, потому что если города нет а пользователь захоочет нажать след день, то может быьт облава
-
 
     return application->exec();
 }
+
+
+// хотим найти город
+// ищем город в кеш (cc wm)
+// если в кеш нет идем искать в API
+// получили данные о городе идем записывать в кеш, в бд,

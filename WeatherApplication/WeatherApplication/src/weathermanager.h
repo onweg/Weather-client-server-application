@@ -14,13 +14,13 @@ public:
 private:
 
 public slots:
-    void slotCityChange(const QString &city);
+    void slotFindCity(const QString &city);
     void slotRecivedWeatherData(const QJsonObject &jsonObj);
 
 private slots:
 
 signals:
-    void findCityData(const QString &city);
+    void findCity(const QString &city);
     void weatherData(const QJsonObject &jsonObj);
 
 };

@@ -5,10 +5,9 @@ WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
 
 }
 
-void WeatherManager::slotCityChange(const QString &city)
+void WeatherManager::slotFindCity(const QString &city)
 {
-    // перед тем как отправлять надо проверять в ке
-    emit findCityData(city);
+    emit findCity(city);
 }
 
 void WeatherManager::slotRecivedWeatherData(const QJsonObject &jsonObj)

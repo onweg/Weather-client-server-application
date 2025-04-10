@@ -13,15 +13,15 @@
 #include <QDate>
 #include <QDateTime>
 
+// обработка кнопки поиска города и отправить менеджеру запрос о том, что бы он нашел данный город и принять только нужные данные о погоде на текущий день (нельзя хранить мусор)
+// обработать кнопки следующего дня и предыдущего отправить менеджеру запрос о новых данных с другой датой и получить только нужные дангные без мусора
+
 class ClientController : public QObject
 {
     Q_OBJECT
 public:
     explicit ClientController(QObject *parent = nullptr);
     Q_INVOKABLE void getDataSearchCity(const QString &data);
-
-public slots:
-    void slotWeatherData(const QJsonObject &jsonObj);
     Q_INVOKABLE QString getCity();
     Q_INVOKABLE QString getDate();
     Q_INVOKABLE QString getDescription();
@@ -33,8 +33,15 @@ public slots:
     Q_INVOKABLE QString getHumidity();
     Q_INVOKABLE QString getPressure();
 
+public slots:
+    void slotWeatherData(const QJsonObject &jsonObj);
+    void clickNextDayButton();
+    void clickPrevDayButton();
+
 private:
     struct WeatherData{
+        double lat;
+        double lon;
         QString city;
         QDate date;
         QString description;
@@ -47,10 +54,9 @@ private:
         int pressure;
     };
     WeatherData weatherData;
-    void setData(const QJsonObject &jsonObj);
-    void setData(const QString &city, const QDate &date);
+    void setData(const QJsonObject &jsonObj); // переделать так как json будет зранить только нужные проверенные данные
 signals:
-    void cityChange(const QString &city);
+    void findCity(const QString &city);
     void dataUpdated();
 };
 

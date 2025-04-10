@@ -5,15 +5,24 @@ ClientController::ClientController(QObject *parent) : QObject(parent)
 
 }
 
-void ClientController::getDataSearchCity(const QString &data)
+void ClientController::getDataSearchCity(const QString &city)
 {
-    qDebug() << "Полученная строка: " << data;
-    emit cityChange(data);
+    emit findCity(city);
 }
 
 void ClientController::slotWeatherData(const QJsonObject &jsonObj)
 {
     setData(jsonObj);
+}
+
+void ClientController::clickNextDayButton()
+{
+    // findWeather(weatherData.lat, weatherData.lon, weatherData.date /* + 1 */);
+}
+
+void ClientController::clickPrevDayButton()
+{
+    // findWeather(weatherData.lat, weatherData.lon, weatherData.date /* - 1 */);
 }
 
 QString ClientController::getCity()
@@ -67,6 +76,10 @@ QString ClientController::getPressure()
 }
 
 void ClientController::setData(const QJsonObject &jsonObj) {
+
+}
+
+/*
     weatherData = WeatherData();
     if (jsonObj.contains("error")) {
         weatherData.city = jsonObj["error"].toString();
@@ -111,12 +124,5 @@ void ClientController::setData(const QJsonObject &jsonObj) {
         }
     }
     emit dataUpdated();
-}
-
-void ClientController::setData(const QString &city, const QDate &date)
-{
-    // тут уже используется для нажаьтия кнопок след дня или предыдущего дня
-    // отправиться в WeatherManager запросить у кеша данные на определенный город и определенную дату
-    return;
-}
+ */
 

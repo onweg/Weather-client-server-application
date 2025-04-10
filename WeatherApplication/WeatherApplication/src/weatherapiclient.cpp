@@ -5,17 +5,17 @@ WeatherApiClient::WeatherApiClient(QObject *parent, QString zipCode_, QString co
     manager = new QNetworkAccessManager(this);
 }
 
-void WeatherApiClient::slotFindCityData(const QString &city)
+void WeatherApiClient::slotFindCity(const QString &city)
 {
     QString url = QString("https://api.openweathermap.org/geo/1.0/direct?q=%1&appid=%2").arg(city).arg(apiKey);
     qDebug() << url;
     QNetworkRequest request((QUrl(url)));
     replyCity = manager->get(request);
-    connect(replyCity, &QNetworkReply::finished, this, &WeatherApiClient::onSlotFindCityData);
+    connect(replyCity, &QNetworkReply::finished, this, &WeatherApiClient::onSlotFindCity);
     return;
 }
 
-void WeatherApiClient::onSlotFindCityData()
+void WeatherApiClient::onSlotFindCity()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     if (!reply) {
