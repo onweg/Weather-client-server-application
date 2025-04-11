@@ -12,7 +12,8 @@ class DatabaseManager : public QObject
 public:
     explicit DatabaseManager(QObject *parent = nullptr);
 
-signals:
+public slots:
+    void slotSubmitCompletedWeatherDataSearchRequest(const QString &user, const QDateTime &timestamp, const QString &city, const QDate &date, const QJsonObject &jsonObj);
 
 };
 

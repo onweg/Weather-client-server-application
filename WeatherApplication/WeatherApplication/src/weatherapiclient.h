@@ -18,6 +18,8 @@
 #include <QJsonParseError>
 #include <QJsonArray>
 
+#include "dataeditor.h"
+
 class WeatherApiClient : public QObject
 {
     Q_OBJECT
@@ -25,7 +27,7 @@ public:
     explicit WeatherApiClient(QObject *parent = nullptr, QString zipCode_ = "101000", QString countryCode_ = "RU");
 
 public slots:
-    void slotFindCity(const QString &city);
+    void slotFindWeatherDataInAPI(const QString &city);
 
 private slots:
     void onSlotFindCity();
@@ -37,10 +39,13 @@ private:
     QNetworkReply *replyCity;
     QNetworkReply *replyWeather;
 
+    DataEditor dataEditor;
+
     void findWeatherData(const QString &lat, const QString &lon);
 
 signals:
-    void recivedWeatherData(const QJsonObject &jsonObj);
+    void sendRecivedWeatherDataFromAPI(const QJsonObject &jsonObj);
+    void dataEdit(QJsonObject);
 };
 
 #endif // WEATHERAPICLIENT_H

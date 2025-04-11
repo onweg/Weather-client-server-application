@@ -5,25 +5,28 @@ ClientController::ClientController(QObject *parent) : QObject(parent)
 
 }
 
-void ClientController::getDataSearchCity(const QString &city)
+void ClientController::clickSearchCityButton(const QString &city)
 {
-    emit findCity(city);
+    emit findWeatherData(city);
 }
 
-void ClientController::slotWeatherData(const QJsonObject &jsonObj)
+void ClientController::clickNextDayButton(const QString &city, const QString &date)
+{
+    // обработать дану (потому что прислал в виде строки)
+    // findWeatherData(city, date + 1);
+}
+
+void ClientController::clickPrevDayButton(const QString &city, const QString &date)
+{
+    // обработать дану (потому что прислал в виде строки)
+    // findWeatherData(city, date - 1);
+}
+
+void ClientController::slotWeatherDataArrived(const QJsonObject &jsonObj)
 {
     setData(jsonObj);
 }
 
-void ClientController::clickNextDayButton()
-{
-    // findWeather(weatherData.lat, weatherData.lon, weatherData.date /* + 1 */);
-}
-
-void ClientController::clickPrevDayButton()
-{
-    // findWeather(weatherData.lat, weatherData.lon, weatherData.date /* - 1 */);
-}
 
 QString ClientController::getCity()
 {

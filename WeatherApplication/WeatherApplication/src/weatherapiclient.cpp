@@ -5,7 +5,7 @@ WeatherApiClient::WeatherApiClient(QObject *parent, QString zipCode_, QString co
     manager = new QNetworkAccessManager(this);
 }
 
-void WeatherApiClient::slotFindCity(const QString &city)
+void WeatherApiClient::slotFindWeatherDataInAPI(const QString &city)
 {
     QString url = QString("https://api.openweathermap.org/geo/1.0/direct?q=%1&appid=%2").arg(city).arg(apiKey);
     qDebug() << url;
@@ -29,15 +29,15 @@ void WeatherApiClient::onSlotFindCity()
         if (error.error != QJsonParseError::NoError) {
             qDebug() << "Ошибка парсинга Json при поиске города: " << error.errorString();
             QJsonObject jsonError;
-            jsonError["error"] = "Ошибка парсинга Json при поиске города: " +  error.errorString();
-            emit recivedWeatherData({jsonError});
+            jsonError["error"] = "Город не найден";
+            emit sendRecivedWeatherDataFromAPI({jsonError});
             return;
         }
         if (!jsonDocument.isArray()) {
             qDebug() << "Json не является массивом";
             QJsonObject jsonError;
-            jsonError["error"] = "Json не является массивом";
-            emit recivedWeatherData({jsonError});
+            jsonError["error"] = "Город не найден";
+            emit sendRecivedWeatherDataFromAPI({jsonError});
             return;
         }
         QJsonArray jsonArray = jsonDocument.array();
@@ -45,20 +45,18 @@ void WeatherApiClient::onSlotFindCity()
             qDebug() << "Город не найден";
             QJsonObject jsonError;
             jsonError["error"] = "Город не найден";
-            emit recivedWeatherData({jsonError});
+            emit sendRecivedWeatherDataFromAPI({jsonError});
             return;
         }
         QJsonObject cityData = jsonArray[0].toObject();
         QString lat = QString::number(cityData["lat"].toDouble());
         QString lon = QString::number(cityData["lon"].toDouble());
-
-        qDebug() << "Lat:" << lat << "Lon:" << lon;
         findWeatherData(lat, lon);
     } else {
         qDebug() << "Error: " << reply->errorString();
         QJsonObject jsonError;
         jsonError["error"] = "Error: " + reply->errorString();
-        emit recivedWeatherData({jsonError});
+        emit sendRecivedWeatherDataFromAPI({jsonError});
         return;
     }
     reply->deleteLater();
@@ -81,32 +79,31 @@ void WeatherApiClient::onSlotFindWeatherData()
         if (error.error != QJsonParseError::NoError) {
             qDebug() << "Ошибка парсинга Json при поиске погоды: " << error.errorString();
             QJsonObject jsonError;
-            jsonError["error"] = "Ошибка парсинга Json при поиске погоды: "  +  error.errorString();
-            emit recivedWeatherData({jsonError});
+            jsonError["error"] = "Погода не найдена";
+            emit sendRecivedWeatherDataFromAPI({jsonError});
             return;
         }
         if (!jsonDocument.isObject()) {
             qDebug() << "Json не является объектом";
             QJsonObject jsonError;
-            jsonError["error"] = "Json не является массивом";
-            emit recivedWeatherData({jsonError});
+            jsonError["error"] = "Погода не найдена";
+            emit sendRecivedWeatherDataFromAPI({jsonError});
             return;
         }
-        // qDebug() << jsonDocument.toJson(QJsonDocument::Indented);
         weatherJsonData = jsonDocument.object();
         if (weatherJsonData.isEmpty()) {
             qDebug() << "Погода не найден";
             QJsonObject jsonError;
-            jsonError["error"] = "Погода не найден";
-            emit recivedWeatherData({jsonError});
+            jsonError["error"] = "Погода не найдена";
+            emit sendRecivedWeatherDataFromAPI({jsonError});
             return;
         }
-        emit recivedWeatherData(weatherJsonData);
+        emit sendRecivedWeatherDataFromAPI(dataEditor.getCorrectData(weatherJsonData));
     } else {
         qDebug() << "Error: " << reply->errorString();
         QJsonObject jsonError;
         jsonError["error"] = "Error: " + reply->errorString();
-        emit recivedWeatherData({jsonError});
+        emit sendRecivedWeatherDataFromAPI({jsonError});
         return;
     }
     reply->deleteLater();

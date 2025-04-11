@@ -21,7 +21,9 @@ class ClientController : public QObject
     Q_OBJECT
 public:
     explicit ClientController(QObject *parent = nullptr);
-    Q_INVOKABLE void getDataSearchCity(const QString &data);
+    Q_INVOKABLE void clickSearchCityButton(const QString &data);
+    Q_INVOKABLE void clickNextDayButton(const QString &city, const QString &date);
+    Q_INVOKABLE void clickPrevDayButton(const QString &city, const QString &date);
     Q_INVOKABLE QString getCity();
     Q_INVOKABLE QString getDate();
     Q_INVOKABLE QString getDescription();
@@ -34,9 +36,8 @@ public:
     Q_INVOKABLE QString getPressure();
 
 public slots:
-    void slotWeatherData(const QJsonObject &jsonObj);
-    void clickNextDayButton();
-    void clickPrevDayButton();
+    void slotWeatherDataArrived(const QJsonObject &jsonObj);
+
 
 private:
     struct WeatherData{
@@ -54,9 +55,9 @@ private:
         int pressure;
     };
     WeatherData weatherData;
-    void setData(const QJsonObject &jsonObj); // переделать так как json будет зранить только нужные проверенные данные
+    void setData(const QJsonObject &jsonObj); // переделать так как json будет хранить только нужные проверенные данные
 signals:
-    void findCity(const QString &city);
+    void findWeatherData(const QString &city, const QDate &date = QDate::currentDate());
     void dataUpdated();
 };
 

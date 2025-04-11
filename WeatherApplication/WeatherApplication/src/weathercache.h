@@ -24,7 +24,6 @@ class WeatherCache : public QObject
     Q_OBJECT
 public:
     explicit WeatherCache(QObject *parent = nullptr);
-    bool hasValidData();
     static const int CACHE_EXPIRATION_TIME = 3600;
 
     bool hasValidData(const QString &city);
@@ -33,18 +32,18 @@ public:
     void removeData(const QString &city);
 
 private:
-    struct WeatherData{
-        QString city;
-        QDate date;
-        QString description;
-        double temp;
-        double feels_like;
-        double temp_max;
-        double temp_min;
-        double wind_speed;
-        int humidity;
-        int pressure;
-    };
+//    struct WeatherData{
+//        QString city;
+//        QDate date;
+//        QString description;
+//        double temp;
+//        double feels_like;
+//        double temp_max;
+//        double temp_min;
+//        double wind_speed;
+//        int humidity;
+//        int pressure;
+//    };
     struct CacheEntry{
         QJsonObject data;
         QDateTime timestamp;
@@ -52,10 +51,12 @@ private:
     QMap<QString, CacheEntry> cache;
 
 public slots:
-
+    void slotFindWeatherDataInCache(const QString &city, const QDate &date);
+    void slotAddNewWeatherDataInCache(const QString &city, const QJsonObject &data);
 
 signals:
-
+    void sendWeatherDataFromCache(const QJsonObject &data);
+    void dataInCacheUpdtaed();
 };
 
 #endif // WEATHERCACHE_H
