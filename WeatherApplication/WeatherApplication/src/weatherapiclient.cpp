@@ -5,14 +5,14 @@ WeatherApiClient::WeatherApiClient(QObject *parent, QString zipCode_, QString co
     manager = new QNetworkAccessManager(this);
 }
 
-void WeatherApiClient::slotFindWeatherDataInAPI(const QString &city)
+void WeatherApiClient::findWeatherDataInAPI(const QString &city)
 {
     QString url = QString("https://api.openweathermap.org/geo/1.0/direct?q=%1&appid=%2").arg(city).arg(apiKey);
     qDebug() << url;
     QNetworkRequest request((QUrl(url)));
     replyCity = manager->get(request);
     connect(replyCity, &QNetworkReply::finished, this, &WeatherApiClient::onSlotFindCity);
-    return;
+    return ;
 }
 
 void WeatherApiClient::onSlotFindCity()
@@ -28,24 +28,18 @@ void WeatherApiClient::onSlotFindCity()
         QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData, &error);
         if (error.error != QJsonParseError::NoError) {
             qDebug() << "Ошибка парсинга Json при поиске города: " << error.errorString();
-            QJsonObject jsonError;
-            jsonError["error"] = "Город не найден";
-            emit sendRecivedWeatherDataFromAPI({jsonError});
+            emit sendRecivedWeatherDataFromAPI({});
             return;
         }
         if (!jsonDocument.isArray()) {
             qDebug() << "Json не является массивом";
-            QJsonObject jsonError;
-            jsonError["error"] = "Город не найден";
-            emit sendRecivedWeatherDataFromAPI({jsonError});
+            emit sendRecivedWeatherDataFromAPI({});
             return;
         }
         QJsonArray jsonArray = jsonDocument.array();
         if (jsonArray.isEmpty()) {
             qDebug() << "Город не найден";
-            QJsonObject jsonError;
-            jsonError["error"] = "Город не найден";
-            emit sendRecivedWeatherDataFromAPI({jsonError});
+            emit sendRecivedWeatherDataFromAPI({});
             return;
         }
         QJsonObject cityData = jsonArray[0].toObject();
@@ -54,9 +48,7 @@ void WeatherApiClient::onSlotFindCity()
         findWeatherData(lat, lon);
     } else {
         qDebug() << "Error: " << reply->errorString();
-        QJsonObject jsonError;
-        jsonError["error"] = "Error: " + reply->errorString();
-        emit sendRecivedWeatherDataFromAPI({jsonError});
+        emit sendRecivedWeatherDataFromAPI({});
         return;
     }
     reply->deleteLater();
@@ -78,32 +70,24 @@ void WeatherApiClient::onSlotFindWeatherData()
         QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData, &error);
         if (error.error != QJsonParseError::NoError) {
             qDebug() << "Ошибка парсинга Json при поиске погоды: " << error.errorString();
-            QJsonObject jsonError;
-            jsonError["error"] = "Погода не найдена";
-            emit sendRecivedWeatherDataFromAPI({jsonError});
+            emit sendRecivedWeatherDataFromAPI({});
             return;
         }
         if (!jsonDocument.isObject()) {
             qDebug() << "Json не является объектом";
-            QJsonObject jsonError;
-            jsonError["error"] = "Погода не найдена";
-            emit sendRecivedWeatherDataFromAPI({jsonError});
+            emit sendRecivedWeatherDataFromAPI({});
             return;
         }
         weatherJsonData = jsonDocument.object();
         if (weatherJsonData.isEmpty()) {
             qDebug() << "Погода не найден";
-            QJsonObject jsonError;
-            jsonError["error"] = "Погода не найдена";
-            emit sendRecivedWeatherDataFromAPI({jsonError});
+            emit sendRecivedWeatherDataFromAPI({});
             return;
         }
-        emit sendRecivedWeatherDataFromAPI(dataEditor.getCorrectData(weatherJsonData));
+        emit sendRecivedWeatherDataFromAPI(weatherJsonData);
     } else {
         qDebug() << "Error: " << reply->errorString();
-        QJsonObject jsonError;
-        jsonError["error"] = "Error: " + reply->errorString();
-        emit sendRecivedWeatherDataFromAPI({jsonError});
+        emit sendRecivedWeatherDataFromAPI({});
         return;
     }
     reply->deleteLater();

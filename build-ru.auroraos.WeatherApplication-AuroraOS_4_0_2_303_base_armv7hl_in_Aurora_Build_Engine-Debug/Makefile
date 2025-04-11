@@ -50,22 +50,26 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../WeatherApplication/WeatherApplication/src/clientcontroller.cpp \
 		../WeatherApplication/WeatherApplication/src/databasemanager.cpp \
+		../WeatherApplication/WeatherApplication/src/dataeditor.cpp \
 		../WeatherApplication/WeatherApplication/src/main.cpp \
 		../WeatherApplication/WeatherApplication/src/weatherapiclient.cpp \
 		../WeatherApplication/WeatherApplication/src/weathercache.cpp \
 		../WeatherApplication/WeatherApplication/src/weathermanager.cpp moc_clientcontroller.cpp \
 		moc_databasemanager.cpp \
+		moc_dataeditor.cpp \
 		moc_weatherapiclient.cpp \
 		moc_weathercache.cpp \
 		moc_weathermanager.cpp
 OBJECTS       = clientcontroller.o \
 		databasemanager.o \
+		dataeditor.o \
 		main.o \
 		weatherapiclient.o \
 		weathercache.o \
 		weathermanager.o \
 		moc_clientcontroller.o \
 		moc_databasemanager.o \
+		moc_dataeditor.o \
 		moc_weatherapiclient.o \
 		moc_weathercache.o \
 		moc_weathermanager.o
@@ -183,10 +187,12 @@ DIST          = ../WeatherApplication/WeatherApplication/qml/pages/DateAndButton
 		/usr/share/qt5/mkspecs/features/lex.prf \
 		../WeatherApplication/WeatherApplication/WeatherApplication/ru.auroraos.WeatherApplication.pro ../WeatherApplication/WeatherApplication/src/clientcontroller.h \
 		../WeatherApplication/WeatherApplication/src/databasemanager.h \
+		../WeatherApplication/WeatherApplication/src/dataeditor.h \
 		../WeatherApplication/WeatherApplication/src/weatherapiclient.h \
 		../WeatherApplication/WeatherApplication/src/weathercache.h \
 		../WeatherApplication/WeatherApplication/src/weathermanager.h ../WeatherApplication/WeatherApplication/src/clientcontroller.cpp \
 		../WeatherApplication/WeatherApplication/src/databasemanager.cpp \
+		../WeatherApplication/WeatherApplication/src/dataeditor.cpp \
 		../WeatherApplication/WeatherApplication/src/main.cpp \
 		../WeatherApplication/WeatherApplication/src/weatherapiclient.cpp \
 		../WeatherApplication/WeatherApplication/src/weathercache.cpp \
@@ -427,8 +433,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../WeatherApplication/WeatherApplication/src/clientcontroller.h ../WeatherApplication/WeatherApplication/src/databasemanager.h ../WeatherApplication/WeatherApplication/src/weatherapiclient.h ../WeatherApplication/WeatherApplication/src/weathercache.h ../WeatherApplication/WeatherApplication/src/weathermanager.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../WeatherApplication/WeatherApplication/src/clientcontroller.cpp ../WeatherApplication/WeatherApplication/src/databasemanager.cpp ../WeatherApplication/WeatherApplication/src/main.cpp ../WeatherApplication/WeatherApplication/src/weatherapiclient.cpp ../WeatherApplication/WeatherApplication/src/weathercache.cpp ../WeatherApplication/WeatherApplication/src/weathermanager.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../WeatherApplication/WeatherApplication/src/clientcontroller.h ../WeatherApplication/WeatherApplication/src/databasemanager.h ../WeatherApplication/WeatherApplication/src/dataeditor.h ../WeatherApplication/WeatherApplication/src/weatherapiclient.h ../WeatherApplication/WeatherApplication/src/weathercache.h ../WeatherApplication/WeatherApplication/src/weathermanager.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../WeatherApplication/WeatherApplication/src/clientcontroller.cpp ../WeatherApplication/WeatherApplication/src/databasemanager.cpp ../WeatherApplication/WeatherApplication/src/dataeditor.cpp ../WeatherApplication/WeatherApplication/src/main.cpp ../WeatherApplication/WeatherApplication/src/weatherapiclient.cpp ../WeatherApplication/WeatherApplication/src/weathercache.cpp ../WeatherApplication/WeatherApplication/src/weathermanager.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents translations/ru.auroraos.WeatherApplication.ts translations/ru.auroraos.WeatherApplication-ru.ts $(DISTDIR)/
 
 
@@ -454,22 +460,30 @@ benchmark: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_clientcontroller.cpp moc_databasemanager.cpp moc_weatherapiclient.cpp moc_weathercache.cpp moc_weathermanager.cpp
+compiler_moc_header_make_all: moc_clientcontroller.cpp moc_databasemanager.cpp moc_dataeditor.cpp moc_weatherapiclient.cpp moc_weathercache.cpp moc_weathermanager.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_clientcontroller.cpp moc_databasemanager.cpp moc_weatherapiclient.cpp moc_weathercache.cpp moc_weathermanager.cpp
+	-$(DEL_FILE) moc_clientcontroller.cpp moc_databasemanager.cpp moc_dataeditor.cpp moc_weatherapiclient.cpp moc_weathercache.cpp moc_weathermanager.cpp
 moc_clientcontroller.cpp: ../WeatherApplication/WeatherApplication/src/clientcontroller.h
 	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication -I/usr/include/auroraapp -I/usr/include/mdeclarativecache5 -I/usr/include/qt5 -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include ../WeatherApplication/WeatherApplication/src/clientcontroller.h -o moc_clientcontroller.cpp
 
 moc_databasemanager.cpp: ../WeatherApplication/WeatherApplication/src/databasemanager.h
 	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication -I/usr/include/auroraapp -I/usr/include/mdeclarativecache5 -I/usr/include/qt5 -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include ../WeatherApplication/WeatherApplication/src/databasemanager.h -o moc_databasemanager.cpp
 
-moc_weatherapiclient.cpp: ../WeatherApplication/WeatherApplication/src/weatherapiclient.h
+moc_dataeditor.cpp: ../WeatherApplication/WeatherApplication/src/dataeditor.h
+	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication -I/usr/include/auroraapp -I/usr/include/mdeclarativecache5 -I/usr/include/qt5 -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include ../WeatherApplication/WeatherApplication/src/dataeditor.h -o moc_dataeditor.cpp
+
+moc_weatherapiclient.cpp: ../WeatherApplication/WeatherApplication/src/dataeditor.h \
+		../WeatherApplication/WeatherApplication/src/weatherapiclient.h
 	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication -I/usr/include/auroraapp -I/usr/include/mdeclarativecache5 -I/usr/include/qt5 -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include ../WeatherApplication/WeatherApplication/src/weatherapiclient.h -o moc_weatherapiclient.cpp
 
 moc_weathercache.cpp: ../WeatherApplication/WeatherApplication/src/weathercache.h
 	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication -I/usr/include/auroraapp -I/usr/include/mdeclarativecache5 -I/usr/include/qt5 -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include ../WeatherApplication/WeatherApplication/src/weathercache.h -o moc_weathercache.cpp
 
-moc_weathermanager.cpp: ../WeatherApplication/WeatherApplication/src/weathermanager.h
+moc_weathermanager.cpp: ../WeatherApplication/WeatherApplication/src/weatherapiclient.h \
+		../WeatherApplication/WeatherApplication/src/dataeditor.h \
+		../WeatherApplication/WeatherApplication/src/weathercache.h \
+		../WeatherApplication/WeatherApplication/src/clientcontroller.h \
+		../WeatherApplication/WeatherApplication/src/weathermanager.h
 	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication -I/usr/include/auroraapp -I/usr/include/mdeclarativecache5 -I/usr/include/qt5 -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include ../WeatherApplication/WeatherApplication/src/weathermanager.h -o moc_weathermanager.cpp
 
 compiler_moc_source_make_all:
@@ -490,18 +504,29 @@ clientcontroller.o: ../WeatherApplication/WeatherApplication/src/clientcontrolle
 databasemanager.o: ../WeatherApplication/WeatherApplication/src/databasemanager.cpp ../WeatherApplication/WeatherApplication/src/databasemanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o databasemanager.o ../WeatherApplication/WeatherApplication/src/databasemanager.cpp
 
+dataeditor.o: ../WeatherApplication/WeatherApplication/src/dataeditor.cpp ../WeatherApplication/WeatherApplication/src/dataeditor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dataeditor.o ../WeatherApplication/WeatherApplication/src/dataeditor.cpp
+
 main.o: ../WeatherApplication/WeatherApplication/src/main.cpp ../WeatherApplication/WeatherApplication/src/weathermanager.h \
+		../WeatherApplication/WeatherApplication/src/weatherapiclient.h \
+		../WeatherApplication/WeatherApplication/src/dataeditor.h \
+		../WeatherApplication/WeatherApplication/src/weathercache.h \
 		../WeatherApplication/WeatherApplication/src/clientcontroller.h \
-		../WeatherApplication/WeatherApplication/src/weatherapiclient.h
+		../WeatherApplication/WeatherApplication/src/databasemanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../WeatherApplication/WeatherApplication/src/main.cpp
 
-weatherapiclient.o: ../WeatherApplication/WeatherApplication/src/weatherapiclient.cpp ../WeatherApplication/WeatherApplication/src/weatherapiclient.h
+weatherapiclient.o: ../WeatherApplication/WeatherApplication/src/weatherapiclient.cpp ../WeatherApplication/WeatherApplication/src/weatherapiclient.h \
+		../WeatherApplication/WeatherApplication/src/dataeditor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o weatherapiclient.o ../WeatherApplication/WeatherApplication/src/weatherapiclient.cpp
 
 weathercache.o: ../WeatherApplication/WeatherApplication/src/weathercache.cpp ../WeatherApplication/WeatherApplication/src/weathercache.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o weathercache.o ../WeatherApplication/WeatherApplication/src/weathercache.cpp
 
-weathermanager.o: ../WeatherApplication/WeatherApplication/src/weathermanager.cpp ../WeatherApplication/WeatherApplication/src/weathermanager.h
+weathermanager.o: ../WeatherApplication/WeatherApplication/src/weathermanager.cpp ../WeatherApplication/WeatherApplication/src/weathermanager.h \
+		../WeatherApplication/WeatherApplication/src/weatherapiclient.h \
+		../WeatherApplication/WeatherApplication/src/dataeditor.h \
+		../WeatherApplication/WeatherApplication/src/weathercache.h \
+		../WeatherApplication/WeatherApplication/src/clientcontroller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o weathermanager.o ../WeatherApplication/WeatherApplication/src/weathermanager.cpp
 
 moc_clientcontroller.o: moc_clientcontroller.cpp 
@@ -509,6 +534,9 @@ moc_clientcontroller.o: moc_clientcontroller.cpp
 
 moc_databasemanager.o: moc_databasemanager.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_databasemanager.o moc_databasemanager.cpp
+
+moc_dataeditor.o: moc_dataeditor.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dataeditor.o moc_dataeditor.cpp
 
 moc_weatherapiclient.o: moc_weatherapiclient.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_weatherapiclient.o moc_weatherapiclient.cpp

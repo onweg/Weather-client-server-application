@@ -9,4 +9,12 @@
         <translation>Шаблон</translation>
     </message>
 </context>
+<context>
+    <name>WeatherInformation</name>
+    <message>
+        <location filename="../qml/pages/WeatherInformation.qml" line="7"/>
+        <source>Информация о погоде в городе: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

@@ -15,7 +15,7 @@ Item {
         anchors.left: search_city.right
         anchors.verticalCenter: search_city.verticalCenter
         onClicked: {
-            controller.getDataSearchCity(search_city.city);
+            controller.clickSearchCityButton(search_city.city);
         }
     }
 }

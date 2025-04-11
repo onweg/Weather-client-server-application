@@ -6,6 +6,10 @@
 #include <QJsonObject>
 #include <QDebug>
 #include <QDateTime>
+#include "weatherapiclient.h"
+#include "weathercache.h"
+#include "clientcontroller.h"
+#include "dataeditor.h"
 
 class WeatherManager : public QObject
 {
@@ -17,20 +21,19 @@ private:
     QString desiredCity;
     QDate desiredDate;
 
+    WeatherApiClient api;
+    WeatherCache cache;
+    DataEditor dataEditor;
+
 public slots:
-    void slotFindWeatherData(const QString &city, const QDate &date);
-    void slotRecivedWeatherDataFromCache(const QJsonObject &jsonObj);
-    void slotRecivedWeatherDataFromAPI(const QJsonObject &jsonObj);
-    void slotDataInCacheUpdated();
+    void slotFindWeatherData(const QString &city, const QDate &date); //
+    void slotRecivedWeatherDataFromAPI(const QJsonObject &jsonObj); //
 
 private slots:
 
 signals:
-    void findWeatherDataInCache(const QString &city, const QDate &date);
-    void sendWeatherDataToController(const QJsonObject &jsonObj);
-    void submitCompletedWeatherDataSearchRequest(const QString &user, const QDateTime &timestamp, const QString &city, const QDate &date, const QJsonObject &jsonObj);
-    void findWeatherDataInAPI(const QString &city);
-    void addNewWeatherDataInCache(const QString &city, const QJsonObject &jsonObj);
+    void sendWeatherDataToController(const QJsonObject &jsonObj); //
+    void submitCompletedWeatherDataSearchRequest(const QString &user, const QDateTime &timestamp, const QString &city, const QDate &date, const QJsonObject &jsonObj); //
 
 };
 

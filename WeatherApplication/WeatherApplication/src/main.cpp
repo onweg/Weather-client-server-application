@@ -40,8 +40,6 @@
 #include <QObject>
 #include "weathermanager.h"
 #include "clientcontroller.h"
-#include "weatherapiclient.h"
-#include "weathercache.h"
 #include "databasemanager.h"
 
 int main(int argc, char *argv[])
@@ -50,27 +48,16 @@ int main(int argc, char *argv[])
     application->setOrganizationName(QStringLiteral("ru.auroraos"));
     application->setApplicationName(QStringLiteral("WeatherApplication"));
 
-
-
     QScopedPointer<QQuickView> view(Aurora::Application::createView());
+
     WeatherManager manager;
-    WeatherApiClient api;
     ClientController controller;
-    WeatherCache cache;
     DatabaseManager db;
-    QObject::connect(&controller, &ClientController::findWeatherData, &manager, &WeatherManager::slotFindWeatherData); // получили данные в каком городе в какой день искать погоду
-    QObject::connect(&manager, &WeatherManager::findWeatherDataInCache, &cache, &WeatherCache::slotFindWeatherDataInCache); // ( сначала смотрим в кеш данные о горожде в определенный день)
-    QObject::connect(&cache, &WeatherCache::sendWeatherDataFromCache, &manager, &WeatherManager::slotRecivedWeatherDataFromCache); // ( взвращает в манагер сформированный json )
-    QObject::connect(&manager, &WeatherManager::sendWeatherDataToController, &controller, &ClientController::slotWeatherDataArrived); // если все хорошо то connect между манагер и контроллер (отправляет получившийся готовый json )
-    QObject::connect(&manager, &WeatherManager::submitCompletedWeatherDataSearchRequest, &db, &DatabaseManager::slotSubmitCompletedWeatherDataSearchRequest);  //          ( сохраняем запрос который нам послали в бд )
-    QObject::connect(&manager, &WeatherManager::findWeatherDataInAPI, &api, &WeatherApiClient::slotFindWeatherDataInAPI);     // если нет данных то идем искать все данные о городе через апи
-    QObject::connect(&api, &WeatherApiClient::sendRecivedWeatherDataFromAPI, &manager, &WeatherManager::slotRecivedWeatherDataFromAPI); // возвращаем сформированный json по поиску данных о погоде в города
-    QObject::connect(&manager, &WeatherManager::addNewWeatherDataInCache, &cache, &WeatherCache::slotAddNewWeatherDataInCache); // должен сохранить новые данные из api что получили )
-    QObject::connect(&cache, &WeatherCache::dataInCacheUpdtaed, &manager, &WeatherManager::slotDataInCacheUpdated); // обновили данные в кеш
-    /* connect между манагер и кеш             ( сначала смотрим в кеш данные о горожде в определенный день) */
-    /* connect между кеш манагер               ( взвращает в манагер сформированный json ) */
-    /* connect между манагер и контроллер      ( отправляем сформированный json даже если ошибка ) */
-    /* connect между manager и бд              ( сохраняем запрос который нам послали в бд ) */
+
+    QObject::connect(&controller, &ClientController::findWeatherData, &manager, &WeatherManager::slotFindWeatherData);
+    QObject::connect(&manager, &WeatherManager::sendWeatherDataToController, &controller, &ClientController::slotWeatherDataArrived);
+    QObject::connect(&manager, &WeatherManager::submitCompletedWeatherDataSearchRequest, &db, &DatabaseManager::slotSubmitCompletedWeatherDataSearchRequest);
+
 
     view->rootContext()->setContextProperty("controller", &controller);
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));
@@ -80,8 +67,11 @@ int main(int argc, char *argv[])
     return application->exec();
 }
 
+// проработать что город не найден
 
 // хотим найти город
 // ищем город в кеш (cc wm)
 // если в кеш нет идем искать в API
 // получили данные о городе идем записывать в кеш, в бд,
+
+

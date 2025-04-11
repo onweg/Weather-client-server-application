@@ -10,20 +10,22 @@ void ClientController::clickSearchCityButton(const QString &city)
     emit findWeatherData(city);
 }
 
-void ClientController::clickNextDayButton(const QString &city, const QString &date)
+void ClientController::clickNextDayButton()
 {
-    // обработать дану (потому что прислал в виде строки)
-    // findWeatherData(city, date + 1);
+    setNextDay();
+    qDebug() << weatherData.city << " " << weatherData.date.toString("yyyy-MM-dd");
+    emit findWeatherData(weatherData.city, weatherData.date);
 }
 
-void ClientController::clickPrevDayButton(const QString &city, const QString &date)
+void ClientController::clickPrevDayButton()
 {
-    // обработать дану (потому что прислал в виде строки)
-    // findWeatherData(city, date - 1);
+    setPrevDay();
+    emit findWeatherData(weatherData.city, weatherData.date);
 }
 
 void ClientController::slotWeatherDataArrived(const QJsonObject &jsonObj)
 {
+    qDebug() << "Получил";
     setData(jsonObj);
 }
 
@@ -35,7 +37,7 @@ QString ClientController::getCity()
 
 QString ClientController::getDate()
 {
-    return weatherData.date.toString();
+    return weatherData.date.toString("yyyy-MM-dd");
 }
 
 QString ClientController::getDescription()
@@ -79,53 +81,36 @@ QString ClientController::getPressure()
 }
 
 void ClientController::setData(const QJsonObject &jsonObj) {
-
+    weatherData.city = jsonObj["city"].toString();
+    weatherData.date = QDate::fromString(jsonObj["date"].toString(), "yyyy-MM-dd");
+    weatherData.description = jsonObj["description"].toString();
+    weatherData.temp = jsonObj["temp"].toDouble();
+    weatherData.feels_like = jsonObj["feels_like"].toDouble();
+    weatherData.temp_max = jsonObj["temp_max"].toDouble();
+    weatherData.temp_min = jsonObj["temp_min"].toDouble();
+    weatherData.wind_speed = jsonObj["wind_speed"].toDouble();
+    weatherData.humidity = jsonObj["humidity"].toInt();
+    weatherData.pressure = jsonObj["pressure"].toInt();
+    emit dataUpdated();
 }
 
-/*
-    weatherData = WeatherData();
-    if (jsonObj.contains("error")) {
-        weatherData.city = jsonObj["error"].toString();
-        weatherData.description = "...";
-        emit dataUpdated();
-        return ;
+void ClientController::setNextDay()
+{
+    if (!weatherData.date.isValid()) {
+        weatherData.date = QDate();
     }
-    if (jsonObj.contains("city") && jsonObj["city"].isObject()) {
-        QJsonObject cityObject = jsonObj["city"].toObject();
-        weatherData.city = cityObject["name"].toString();
+    weatherData.date = weatherData.date.addDays(1);
+    return;
+}
+
+void ClientController::setPrevDay()
+{
+    if (!weatherData.date.isValid()) {
+        weatherData.date = QDate();
     }
-    if (jsonObj.contains("list") && jsonObj["list"].isArray()) {
-        QJsonArray listArray = jsonObj["list"].toArray();
-        if (!listArray.isEmpty()) {
-            QJsonObject firstDay = listArray[0].toObject();
-            if (firstDay.contains("dt")) {
-                qint64 timestamp = firstDay["dt"].toInt();
-                QDateTime dateTime;
-                dateTime.setTime_t(static_cast<uint>(timestamp));
-                weatherData.date = dateTime.date();
-            }
-            if (firstDay.contains("main") && firstDay["main"].isObject()) {
-                QJsonObject mainObject = firstDay["main"].toObject();
-                weatherData.temp = mainObject["temp"].toDouble();
-                weatherData.feels_like = mainObject["feels_like"].toDouble();
-                weatherData.temp_max = mainObject["temp_max"].toDouble();
-                weatherData.temp_min = mainObject["temp_min"].toDouble();
-                weatherData.humidity = mainObject["humidity"].toInt();
-                weatherData.pressure = mainObject["pressure"].toInt();
-            }
-            if (firstDay.contains("weather") && firstDay["weather"].isArray()) {
-                QJsonArray weatherArray = firstDay["weather"].toArray();
-                if (!weatherArray.isEmpty()) {
-                    QJsonObject weatherObject = weatherArray[0].toObject();
-                    weatherData.description = weatherObject["description"].toString();
-                }
-            }
-            if (firstDay.contains("wind") && firstDay["wind"].isObject()) {
-                QJsonObject windObject = firstDay["wind"].toObject();
-                weatherData.wind_speed = windObject["speed"].toDouble(); // Скорость ветра
-            }
-        }
-    }
-    emit dataUpdated();
- */
+    weatherData.date = weatherData.date.addDays(-1);
+    return;
+}
+
+
 

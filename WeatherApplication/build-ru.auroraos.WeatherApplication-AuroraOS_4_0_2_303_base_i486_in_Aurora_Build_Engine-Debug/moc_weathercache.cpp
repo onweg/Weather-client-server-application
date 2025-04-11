@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_WeatherCache_t {
-    QByteArrayData data[1];
-    char stringdata0[13];
+    QByteArrayData data[6];
+    char stringdata0[65];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -29,10 +29,16 @@ struct qt_meta_stringdata_WeatherCache_t {
     )
 static const qt_meta_stringdata_WeatherCache_t qt_meta_stringdata_WeatherCache = {
     {
-QT_MOC_LITERAL(0, 0, 12) // "WeatherCache"
+QT_MOC_LITERAL(0, 0, 12), // "WeatherCache"
+QT_MOC_LITERAL(1, 13, 11), // "CacheStatus"
+QT_MOC_LITERAL(2, 25, 5), // "Valid"
+QT_MOC_LITERAL(3, 31, 12), // "CityNotFound"
+QT_MOC_LITERAL(4, 44, 12), // "DateNotFound"
+QT_MOC_LITERAL(5, 57, 7) // "Expired"
 
     },
-    "WeatherCache"
+    "WeatherCache\0CacheStatus\0Valid\0"
+    "CityNotFound\0DateNotFound\0Expired"
 };
 #undef QT_MOC_LITERAL
 
@@ -44,10 +50,19 @@ static const uint qt_meta_data_WeatherCache[] = {
        0,    0, // classinfo
        0,    0, // methods
        0,    0, // properties
-       0,    0, // enums/sets
+       1,   14, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
+
+ // enums: name, flags, count, data
+       1, 0x0,    4,   18,
+
+ // enum data: key, value
+       2, uint(WeatherCache::Valid),
+       3, uint(WeatherCache::CityNotFound),
+       4, uint(WeatherCache::DateNotFound),
+       5, uint(WeatherCache::Expired),
 
        0        // eod
 };

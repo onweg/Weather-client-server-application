@@ -18,45 +18,36 @@
 #include <QDateTime>
 #include <QMap>
 #include <QString>
+#include <QDebug>
 
 class WeatherCache : public QObject
 {
     Q_OBJECT
 public:
     explicit WeatherCache(QObject *parent = nullptr);
-    static const int CACHE_EXPIRATION_TIME = 3600;
 
-    bool hasValidData(const QString &city);
+    enum CacheStatus {
+        Valid,
+        CityNotFound,
+        DateNotFound,
+        Expired
+    };
+    Q_ENUM(CacheStatus)
+
+    static const int CACHE_EXPIRATION_TIME = 3600;
+    CacheStatus hasValidData(const QString &city, const QDate &date = QDate::currentDate()); // 0 - успех 1 - нет города 2 - есть город, но нет даты 3 - данные устарели
     QJsonObject getData(const QString &city, const QDate &date = QDate::currentDate());
     void addData(const QString &city, const QJsonObject &data);
     void removeData(const QString &city);
+    void clearExpired();
 
 private:
-//    struct WeatherData{
-//        QString city;
-//        QDate date;
-//        QString description;
-//        double temp;
-//        double feels_like;
-//        double temp_max;
-//        double temp_min;
-//        double wind_speed;
-//        int humidity;
-//        int pressure;
-//    };
+
     struct CacheEntry{
         QJsonObject data;
         QDateTime timestamp;
     };
     QMap<QString, CacheEntry> cache;
-
-public slots:
-    void slotFindWeatherDataInCache(const QString &city, const QDate &date);
-    void slotAddNewWeatherDataInCache(const QString &city, const QJsonObject &data);
-
-signals:
-    void sendWeatherDataFromCache(const QJsonObject &data);
-    void dataInCacheUpdtaed();
 };
 
 #endif // WEATHERCACHE_H

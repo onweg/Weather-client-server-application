@@ -5,79 +5,48 @@ WeatherCache::WeatherCache(QObject *parent) : QObject(parent)
 
 }
 
-bool WeatherCache::hasValidData(const QString &city)
+WeatherCache::CacheStatus WeatherCache::hasValidData(const QString &city, const QDate &date)
 {
     if (!cache.contains(city)) {
-        return false;
+        return CityNotFound;
     }
-    return cache[city].timestamp.secsTo(QDateTime::currentDateTime()) < CACHE_EXPIRATION_TIME;
+    if  (cache[city].timestamp.secsTo(QDateTime::currentDateTime()) > CACHE_EXPIRATION_TIME ) {
+         removeData(city);
+         return Expired;
+    }
+    if (!cache[city].data.contains(date.toString("yyyy-MM-dd"))) {
+        return DateNotFound;
+    }
+    return Valid;
 }
 
 QJsonObject WeatherCache::getData(const QString &city, const QDate &date)
 {
-
+    QJsonObject result = {};
+    if (hasValidData(city, date) == Valid) {
+        result = cache[city].data[date.toString("yyyy-MM-dd")].toObject();
+    }
+    qDebug() << city << " " << date.toString("yyyy-MM-dd");
+    return result;
 }
 
-void WeatherCache::addData(const QString &city, const QJsonObject &jsonObj)
-{
-    if (hasValidData(city)) {
-        return;
-    }
-    removeData(city);
-    QJsonObject data;
-
-//    WeatherData weatherData = WeatherData();
-//    if (jsonObj.contains("error")) {
-//        weatherData.city = jsonObj["error"].toString();
-//        weatherData.description = "...";
-//        return ;
-//    }
-//    if (jsonObj.contains("city") && jsonObj["city"].isObject()) {
-//        QJsonObject cityObject = jsonObj["city"].toObject();
-//        weatherData.city = cityObject["name"].toString();
-//    }
-//    if (jsonObj.contains("list") && jsonObj["list"].isArray()) {
-//        QJsonArray listArray = jsonObj["list"].toArray();
-//        if (!listArray.isEmpty()) {
-//            QJsonObject firstDay = listArray[0].toObject();
-//            if (firstDay.contains("dt")) {
-//                qint64 timestamp = firstDay["dt"].toInt();
-//                QDateTime dateTime;
-//                dateTime.setTime_t(static_cast<uint>(timestamp));
-//                weatherData.date = dateTime.date();
-//            }
-//            if (firstDay.contains("main") && firstDay["main"].isObject()) {
-//                QJsonObject mainObject = firstDay["main"].toObject();
-//                weatherData.temp = mainObject["temp"].toDouble();
-//                weatherData.feels_like = mainObject["feels_like"].toDouble();
-//                weatherData.temp_max = mainObject["temp_max"].toDouble();
-//                weatherData.temp_min = mainObject["temp_min"].toDouble();
-//                weatherData.humidity = mainObject["humidity"].toInt();
-//                weatherData.pressure = mainObject["pressure"].toInt();
-//            }
-//            if (firstDay.contains("weather") && firstDay["weather"].isArray()) {
-//                QJsonArray weatherArray = firstDay["weather"].toArray();
-//                if (!weatherArray.isEmpty()) {
-//                    QJsonObject weatherObject = weatherArray[0].toObject();
-//                    weatherData.description = weatherObject["description"].toString();
-//                }
-//            }
-//            if (firstDay.contains("wind") && firstDay["wind"].isObject()) {
-//                QJsonObject windObject = firstDay["wind"].toObject();
-//                weatherData.wind_speed = windObject["speed"].toDouble(); // Скорость ветра
-//            }
-//        }
-//    }
-
-    emit dataInCacheUpdtaed();
+void WeatherCache::addData(const QString &city, const QJsonObject &data) {
+    cache[city] = {data, QDateTime::currentDateTime()};
 }
 
 void WeatherCache::removeData(const QString &city)
 {
-    // если такого города не нашллось, то ничего удалятьи не надо
+    cache.remove(city);
 }
 
-void WeatherCache::slotFindWeatherDataInCache(const QString &city, const QDate &date)
+void WeatherCache::clearExpired()
 {
-    // найти данные о погоде в определенном городе в определенную дату
+    auto it = cache.begin();
+    while (it != cache.end()) {
+        if (it->timestamp.secsTo(QDateTime::currentDateTime()) > CACHE_EXPIRATION_TIME) {
+            it = cache.erase(it);
+        } else {
+            ++it;
+        }
+    }
 }
