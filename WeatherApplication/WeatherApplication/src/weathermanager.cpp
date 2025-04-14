@@ -4,7 +4,29 @@ WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
 {
     networkManager = new QNetworkAccessManager(this);
     QObject::connect(networkManager, &QNetworkAccessManager::finished, this, &WeatherManager::onReplyFinished);
-    QObject::connect(&api, &WeatherApiClient::sendRecivedWeatherDataFromAPI, this, &WeatherManager::slotRecivedWeatherDataFromAPI); // возвращаем сформированный json по поиску данных о погоде в города
+    QObject::connect(&api, &WeatherApiClient::sendRecivedWeatherDataFromAPI, this, &WeatherManager::slotRecivedWeatherDataFromAPI);
+
+    cacheCleaner = new CacheCleaner();
+    cleanerThread = new QThread(this);
+
+    QObject::connect(cleanerThread, &QThread::started, cacheCleaner, &CacheCleaner::start);
+    QObject::connect(cacheCleaner, &CacheCleaner::timeout, &cache, &WeatherCache::clearExpired);
+    QObject::connect(cleanerThread, &QThread::finished, cleanerThread, &QThread::deleteLater);
+
+    cacheCleaner->moveToThread(cleanerThread);
+    cleanerThread->start();
+
+}
+
+WeatherManager::~WeatherManager()
+{
+    if (cleanerThread) {
+        cleanerThread->quit();
+        cleanerThread->wait();
+        delete cleanerThread;
+    }
+    delete cacheCleaner;
+    cacheCleaner = nullptr;
 }
 
 void WeatherManager::slotFindWeatherData(const QString &city, const QDate &date)

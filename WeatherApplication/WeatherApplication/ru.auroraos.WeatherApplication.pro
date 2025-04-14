@@ -45,21 +45,25 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
+    src/cachecleaner.cpp \
     src/clientcontroller.cpp \
     src/databasemanager.cpp \
     src/dataeditor.cpp \
     src/main.cpp \
     src/weatherapiclient.cpp \
     src/weathercache.cpp \
-    src/weathermanager.cpp
+    src/weathermanager.cpp \
+    src/weatherupdater.cpp
 
 HEADERS += \
+    src/cachecleaner.h \
     src/clientcontroller.h \
     src/databasemanager.h \
     src/dataeditor.h \
     src/weatherapiclient.h \
     src/weathercache.h \
-    src/weathermanager.h
+    src/weathermanager.h \
+    src/weatherupdater.h
 
 DISTFILES += \
     qml/pages/DateAndButtons.qml \

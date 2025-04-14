@@ -12,15 +12,16 @@
 #include <QDebug>
 #include <QDate>
 #include <QDateTime>
+#include <QThread>
 
-// обработка кнопки поиска города и отправить менеджеру запрос о том, что бы он нашел данный город и принять только нужные данные о погоде на текущий день (нельзя хранить мусор)
-// обработать кнопки следующего дня и предыдущего отправить менеджеру запрос о новых данных с другой датой и получить только нужные дангные без мусора
+#include "weatherupdater.h"
 
 class ClientController : public QObject
 {
     Q_OBJECT
 public:
     explicit ClientController(QObject *parent = nullptr);
+    ~ClientController();
     Q_INVOKABLE void clickSearchCityButton(const QString &data);
     Q_INVOKABLE void clickNextDayButton();
     Q_INVOKABLE void clickPrevDayButton();
@@ -57,9 +58,15 @@ private:
     void setNextDay();
     void setPrevDay();
 
+    QThread *updaterThread;
+    WeatherUpdater *updater;
+
 public slots:
     void slotWeatherDataArrived(const QJsonObject &jsonObj);
     void slotRecivedAuthorizationData(const QJsonObject &jsonObj);
+
+private slots:
+    void slotUpdateWeatherFromUpdater();
 
 signals:
     void findWeatherData(const QString &city, const QDate &date = QDate::currentDate());

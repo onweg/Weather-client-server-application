@@ -13,27 +13,32 @@
 
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QThread>
+#include "cachecleaner.h"
 
 class WeatherManager : public QObject
 {
     Q_OBJECT
 public:
     explicit WeatherManager(QObject *parent = nullptr);
-
+    ~WeatherManager();
 private:
     QString desiredCity;
     QDate desiredDate;
-
     WeatherApiClient api;
     WeatherCache cache;
     DataEditor dataEditor;
-
     QNetworkAccessManager *networkManager;
 
+    QThread *cleanerThread;
+    CacheCleaner *cacheCleaner;
+
+
 public slots:
-    void slotFindWeatherData(const QString &city, const QDate &date); //
-    void slotRecivedWeatherDataFromAPI(const QJsonObject &jsonObj); //
+    void slotFindWeatherData(const QString &city, const QDate &date);
+    void slotRecivedWeatherDataFromAPI(const QJsonObject &jsonObj);
     void sloRecivedAuthorizationData(const QString &command, const QString &login, const QString &password);
+
 
 private slots:
     void onReplyFinished(QNetworkReply *reply);

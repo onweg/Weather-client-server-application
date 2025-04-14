@@ -2,7 +2,25 @@
 
 ClientController::ClientController(QObject *parent) : QObject(parent)
 {
+    updater = new WeatherUpdater();
+    updaterThread = new QThread(this);
+    QObject::connect(updaterThread, &QThread::started, updater, &WeatherUpdater::start);
+    QObject::connect(updater, &WeatherUpdater::updateWeatherData, this, &ClientController::slotUpdateWeatherFromUpdater);
+    QObject::connect(updaterThread, &QThread::finished, updaterThread, &QThread::deleteLater);
+    updater->moveToThread(updaterThread);
+    updaterThread->start();
 
+}
+
+ClientController::~ClientController()
+{
+    if (updaterThread) {
+        updaterThread->quit();
+        updaterThread->wait();
+        delete updaterThread;
+    }
+    delete updater;
+    updater = nullptr;
 }
 
 void ClientController::clickSearchCityButton(const QString &city)
@@ -42,6 +60,11 @@ void ClientController::slotRecivedAuthorizationData(const QJsonObject &jsonObj)
     } else {
         emit authorizationFailed(jsonObj["message"].toString());
     }
+}
+
+void ClientController::slotUpdateWeatherFromUpdater()
+{
+    emit findWeatherData(weatherData.city, weatherData.date);
 }
 
 
@@ -112,6 +135,7 @@ void ClientController::setData(const QJsonObject &jsonObj) {
     weatherData.humidity = jsonObj["humidity"].toInt();
     weatherData.pressure = jsonObj["pressure"].toInt();
     emit dataUpdated();
+    // updater->resetTimer();
     return;
 }
 
