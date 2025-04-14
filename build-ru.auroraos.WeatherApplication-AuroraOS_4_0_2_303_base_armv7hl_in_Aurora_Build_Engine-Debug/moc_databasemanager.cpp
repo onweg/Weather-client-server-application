@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_DatabaseManager_t {
-    QByteArrayData data[8];
-    char stringdata0[94];
+    QByteArrayData data[6];
+    char stringdata0[76];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,15 +33,13 @@ QT_MOC_LITERAL(0, 0, 15), // "DatabaseManager"
 QT_MOC_LITERAL(1, 16, 43), // "slotSubmitCompletedWeatherDat..."
 QT_MOC_LITERAL(2, 60, 0), // ""
 QT_MOC_LITERAL(3, 61, 4), // "user"
-QT_MOC_LITERAL(4, 66, 9), // "timestamp"
-QT_MOC_LITERAL(5, 76, 4), // "city"
-QT_MOC_LITERAL(6, 81, 4), // "date"
-QT_MOC_LITERAL(7, 86, 7) // "jsonObj"
+QT_MOC_LITERAL(4, 66, 4), // "city"
+QT_MOC_LITERAL(5, 71, 4) // "date"
 
     },
     "DatabaseManager\0"
     "slotSubmitCompletedWeatherDataSearchRequest\0"
-    "\0user\0timestamp\0city\0date\0jsonObj"
+    "\0user\0city\0date"
 };
 #undef QT_MOC_LITERAL
 
@@ -59,10 +57,10 @@ static const uint qt_meta_data_DatabaseManager[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    5,   19,    2, 0x0a /* Public */,
+       1,    3,   19,    2, 0x0a /* Public */,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QString, QMetaType::QDateTime, QMetaType::QString, QMetaType::QDate, QMetaType::QJsonObject,    3,    4,    5,    6,    7,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString, QMetaType::QDate,    3,    4,    5,
 
        0        // eod
 };
@@ -73,7 +71,7 @@ void DatabaseManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         DatabaseManager *_t = static_cast<DatabaseManager *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->slotSubmitCompletedWeatherDataSearchRequest((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QDateTime(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QDate(*)>(_a[4])),(*reinterpret_cast< const QJsonObject(*)>(_a[5]))); break;
+        case 0: _t->slotSubmitCompletedWeatherDataSearchRequest((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QDate(*)>(_a[3]))); break;
         default: ;
         }
     }

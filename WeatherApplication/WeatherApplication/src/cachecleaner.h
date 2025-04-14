@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QTimer>
 
-#define SEC 20
+#define SEC 3600
 
 class CacheCleaner : public QObject
 {

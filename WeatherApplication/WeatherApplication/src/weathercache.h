@@ -29,7 +29,7 @@ public:
     };
     Q_ENUM(CacheStatus)
 
-    static const int CACHE_EXPIRATION_TIME = 20;
+    static const int CACHE_EXPIRATION_TIME = 3600;
     CacheStatus hasValidData(const QString &city, const QDate &date = QDate::currentDate()); // 0 - успех 1 - нет города 2 - есть город, но нет даты 3 - данные устарели
     QJsonObject getData(const QString &city, const QDate &date = QDate::currentDate());
     void addData(const QString &city, const QJsonObject &data);

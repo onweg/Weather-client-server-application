@@ -54,18 +54,21 @@ void WeatherManager::slotRecivedWeatherDataFromAPI(const QJsonObject &jsonObj)
 
     } else {
         cache.addData(desiredCity, correctJsonData);
+
         QJsonObject tmp = cache.getData(desiredCity, desiredDate);
         tmp["city"] = correctJsonData["city"].toString();
         tmp["date"] = desiredDate.toString("yyyy-MM-dd");
         QJsonDocument doc(tmp);
         qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
         emit sendWeatherDataToController(tmp);
+        emit submitCompletedWeatherDataSearchRequest(user, tmp["city"].toString(), desiredDate);
     }
-    // отправить бд что был удачный/неудачный запрос
+
 }
 
 void WeatherManager::sloRecivedAuthorizationData(const QString &command, const QString &login, const QString &password)
 {
+    user = login;
     QUrl url("http://10.42.0.227:33333");
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");

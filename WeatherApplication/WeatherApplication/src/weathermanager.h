@@ -23,6 +23,8 @@ public:
     explicit WeatherManager(QObject *parent = nullptr);
     ~WeatherManager();
 private:
+    QString user;
+
     QString desiredCity;
     QDate desiredDate;
     WeatherApiClient api;
@@ -44,8 +46,8 @@ private slots:
     void onReplyFinished(QNetworkReply *reply);
 
 signals:
-    void sendWeatherDataToController(const QJsonObject &jsonObj); //
-    void submitCompletedWeatherDataSearchRequest(const QString &user, const QDateTime &timestamp, const QString &city, const QDate &date, const QJsonObject &jsonObj);
+    void sendWeatherDataToController(const QJsonObject &jsonObj);
+    void submitCompletedWeatherDataSearchRequest(const QString &user, const QString &city, const QDate &date);
 
     void sendAuthorizationResult(const QJsonObject &jsonObj);
 

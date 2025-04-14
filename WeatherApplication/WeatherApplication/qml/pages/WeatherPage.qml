@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 
 
 Page {
+
     SearchPanel {
         anchors.top: parent.top
         anchors.topMargin: 250
