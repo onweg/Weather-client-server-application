@@ -26,7 +26,11 @@ QJsonObject WeatherCache::getData(const QString &city, const QDate &date)
     if (hasValidData(city, date) == Valid) {
         result = cache[city].data[date.toString("yyyy-MM-dd")].toObject();
     }
-    qDebug() << city << " " << date.toString("yyyy-MM-dd");
+    result["city"] = cache[city].data["city"].toString();
+    result["date"] = date.toString("yyyy-MM-dd");
+    // qDebug() << city << " " << date.toString("yyyy-MM-dd");
+    QJsonDocument doc(result);
+    qDebug() << "getCache: " << doc.toJson(QJsonDocument::Indented);
     return result;
 }
 

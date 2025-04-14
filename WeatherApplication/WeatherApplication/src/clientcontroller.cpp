@@ -20,12 +20,13 @@ void ClientController::clickNextDayButton()
 void ClientController::clickPrevDayButton()
 {
     setPrevDay();
+    qDebug() << weatherData.city << " " << weatherData.date.toString("yyyy-MM-dd");
     emit findWeatherData(weatherData.city, weatherData.date);
 }
 
 void ClientController::slotWeatherDataArrived(const QJsonObject &jsonObj)
 {
-    qDebug() << "Получил";
+    // qDebug() << "Получил";
     setData(jsonObj);
 }
 
@@ -42,6 +43,7 @@ QString ClientController::getDate()
 
 QString ClientController::getDescription()
 {
+    if (weatherData.description.isEmpty()) { return "..."; }
     return weatherData.description;
 }
 
@@ -81,7 +83,11 @@ QString ClientController::getPressure()
 }
 
 void ClientController::setData(const QJsonObject &jsonObj) {
-    weatherData.city = jsonObj["city"].toString();
+    if (jsonObj.contains("error")) {
+        weatherData.city = jsonObj["error"].toString();
+    } else {
+        weatherData.city = jsonObj["city"].toString();
+    }
     weatherData.date = QDate::fromString(jsonObj["date"].toString(), "yyyy-MM-dd");
     weatherData.description = jsonObj["description"].toString();
     weatherData.temp = jsonObj["temp"].toDouble();
@@ -92,6 +98,7 @@ void ClientController::setData(const QJsonObject &jsonObj) {
     weatherData.humidity = jsonObj["humidity"].toInt();
     weatherData.pressure = jsonObj["pressure"].toInt();
     emit dataUpdated();
+    return;
 }
 
 void ClientController::setNextDay()
@@ -99,7 +106,11 @@ void ClientController::setNextDay()
     if (!weatherData.date.isValid()) {
         weatherData.date = QDate();
     }
-    weatherData.date = weatherData.date.addDays(1);
+    const QDate tmp = QDate::currentDate();
+    int diff = tmp.daysTo(weatherData.date);
+    if (diff < 4) {
+        weatherData.date = weatherData.date.addDays(1);
+    }
     return;
 }
 
@@ -108,7 +119,11 @@ void ClientController::setPrevDay()
     if (!weatherData.date.isValid()) {
         weatherData.date = QDate();
     }
-    weatherData.date = weatherData.date.addDays(-1);
+    const QDate tmp = QDate::currentDate();
+    int diff = tmp.daysTo(weatherData.date);
+    if (diff > 0) {
+        weatherData.date = weatherData.date.addDays(-1);
+    }
     return;
 }
 

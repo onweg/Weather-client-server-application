@@ -46,11 +46,15 @@ Page {
         anchors.top: parent.top
         anchors.topMargin: 250
         anchors.horizontalCenter: parent.horizontalCenter
+
+        // scale: 0.6
     }
     WeatherInformation {
         width: 600
         height: 600
         anchors.centerIn: parent
+
+        // scale: 0.6
     }
 
 

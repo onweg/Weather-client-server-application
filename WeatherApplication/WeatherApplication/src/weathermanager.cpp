@@ -22,8 +22,6 @@ void WeatherManager::slotFindWeatherData(const QString &city, const QDate &date)
         emit sendWeatherDataToController(cache.getData(desiredCity, desiredDate));
     } else if (status == 1){
         api.findWeatherDataInAPI(desiredCity);
-    } else {
-        // отправляю json контроллеру и бд с данными о том, что такой даты нет (некорректная дата) и запрос error соответственно
     }
 
 }

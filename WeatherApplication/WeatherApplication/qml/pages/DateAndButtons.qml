@@ -6,7 +6,11 @@ Item {
     Row {
         spacing: 50
         Button {
-            text: "<- предыдущий день"
+            width: 70
+            text: "<-"
+            onClicked: {
+                controller.clickPrevDayButton();
+            }
         }
         Text {
             id: date
@@ -14,7 +18,11 @@ Item {
             font.pixelSize: 40
         }
         Button {
-            text: "следующий день ->"
+            width: 70
+            text: "->"
+            onClicked: {
+                controller.clickNextDayButton();
+            }
         }
     }
 }
