@@ -42,20 +42,8 @@ Page {
     objectName: "mainPage"
     allowedOrientations: Orientation.All
 
-    SearchPanel {
-        anchors.top: parent.top
-        anchors.topMargin: 250
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        // scale: 0.6
+    Authorization{
+        anchors.centerIn: parent;
     }
-    WeatherInformation {
-        width: 600
-        height: 600
-        anchors.centerIn: parent
-
-        // scale: 0.6
-    }
-
 
 }

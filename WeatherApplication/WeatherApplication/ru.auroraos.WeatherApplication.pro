@@ -35,7 +35,7 @@
 ##
 ################################################################################
 
-QT += network core
+QT += network core sql
 
 TARGET = ru.auroraos.WeatherApplication
 
@@ -67,6 +67,7 @@ DISTFILES += \
     qml/pages/SearchPanel.qml \
     qml/pages/WeatherData.qml \
     qml/pages/WeatherInformation.qml \
+    qml/pages/WeatherPage.qml \
     rpm/ru.auroraos.WeatherApplication.spec \
     AUTHORS.md \
     CODE_OF_CONDUCT.md \

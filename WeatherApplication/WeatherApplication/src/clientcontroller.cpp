@@ -24,10 +24,24 @@ void ClientController::clickPrevDayButton()
     emit findWeatherData(weatherData.city, weatherData.date);
 }
 
+void ClientController::sendAuthorizationData(const QString &command, const QString &login, const QString &password)
+{
+    emit sendAuthorizationDataToManager(command, login, password);
+}
+
 void ClientController::slotWeatherDataArrived(const QJsonObject &jsonObj)
 {
     // qDebug() << "Получил";
     setData(jsonObj);
+}
+
+void ClientController::slotRecivedAuthorizationData(const QJsonObject &jsonObj)
+{
+    if (jsonObj.contains("status") && jsonObj["status"].toString() == "success") {
+        emit authorizationCompleted();
+    } else {
+        emit authorizationFailed(jsonObj["message"].toString());
+    }
 }
 
 

@@ -57,7 +57,8 @@ int main(int argc, char *argv[])
     QObject::connect(&controller, &ClientController::findWeatherData, &manager, &WeatherManager::slotFindWeatherData);
     QObject::connect(&manager, &WeatherManager::sendWeatherDataToController, &controller, &ClientController::slotWeatherDataArrived);
     QObject::connect(&manager, &WeatherManager::submitCompletedWeatherDataSearchRequest, &db, &DatabaseManager::slotSubmitCompletedWeatherDataSearchRequest);
-
+    QObject::connect(&controller, &ClientController::sendAuthorizationDataToManager, &manager, &WeatherManager::sloRecivedAuthorizationData);
+    QObject::connect(&manager, &WeatherManager::sendAuthorizationResult, &controller, &ClientController::slotRecivedAuthorizationData);
 
     view->rootContext()->setContextProperty("controller", &controller);
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));
@@ -67,12 +68,7 @@ int main(int argc, char *argv[])
     return application->exec();
 }
 
-// проработать что город не найден
-// обработать случай когда кнопка следующего дня нажимается в самом начале
-
-// хотим найти город
-// ищем город в кеш (cc wm)
-// если в кеш нет идем искать в API
-// получили данные о городе идем записывать в кеш, в бд,
+//не хранить много кеша
+//чистить устаревшие по времени кеши (каждые пару минут проверыть на актуальность)
 
 

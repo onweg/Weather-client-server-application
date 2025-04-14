@@ -24,6 +24,8 @@ public:
     Q_INVOKABLE void clickSearchCityButton(const QString &data);
     Q_INVOKABLE void clickNextDayButton();
     Q_INVOKABLE void clickPrevDayButton();
+    Q_INVOKABLE void sendAuthorizationData(const QString &command, const QString &login, const QString &password);
+
     Q_INVOKABLE QString getCity();
     Q_INVOKABLE QString getDate();
     Q_INVOKABLE QString getDescription();
@@ -57,10 +59,15 @@ private:
 
 public slots:
     void slotWeatherDataArrived(const QJsonObject &jsonObj);
+    void slotRecivedAuthorizationData(const QJsonObject &jsonObj);
 
 signals:
     void findWeatherData(const QString &city, const QDate &date = QDate::currentDate());
     void dataUpdated();
+
+    void sendAuthorizationDataToManager(const QString &command, const QString &login, const QString &password);
+    void authorizationCompleted();
+    void authorizationFailed(const QString &message);
 };
 
 #endif // CLIENTCONTROLLER_H

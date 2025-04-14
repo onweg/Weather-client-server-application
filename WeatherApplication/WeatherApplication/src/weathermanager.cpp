@@ -2,15 +2,9 @@
 
 WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
 {
-
+    networkManager = new QNetworkAccessManager(this);
+    QObject::connect(networkManager, &QNetworkAccessManager::finished, this, &WeatherManager::onReplyFinished);
     QObject::connect(&api, &WeatherApiClient::sendRecivedWeatherDataFromAPI, this, &WeatherManager::slotRecivedWeatherDataFromAPI); // возвращаем сформированный json по поиску данных о погоде в города
-
-
-    // QObject::connect(this, &WeatherManager::findWeatherDataInCache, &cache, &WeatherCache::slotFindWeatherDataInCache); // ( сначала смотрим в кеш данные о горожде в определенный день)
-    // QObject::connect(&cache, &WeatherCache::sendWeatherDataFromCache, this, &WeatherManager::slotRecivedWeatherDataFromCache); // ( взвращает в манагер сформированный json )
-    // QObject::connect(this, &WeatherManager::findWeatherDataInAPI, &api, &WeatherApiClient::slotFindWeatherDataInAPI);     // если нет данных то идем искать все данные о городе через апи
-    // QObject::connect(this, &WeatherManager::addNewWeatherDataInCache, &cache, &WeatherCache::slotAddNewWeatherDataInCache); // должен сохранить новые данные из api что получили )
-    // QObject::connect(&cache, &WeatherCache::dataInCacheUpdtaed, this, &WeatherManager::slotDataInCacheUpdated); // обновили данные в кеш
 }
 
 void WeatherManager::slotFindWeatherData(const QString &city, const QDate &date)
@@ -45,6 +39,37 @@ void WeatherManager::slotRecivedWeatherDataFromAPI(const QJsonObject &jsonObj)
         qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
         emit sendWeatherDataToController(tmp);
     }
-    // отправить бд что был (не)удачный запрос
+    // отправить бд что был удачный/неудачный запрос
+}
+
+void WeatherManager::sloRecivedAuthorizationData(const QString &command, const QString &login, const QString &password)
+{
+    QUrl url("http://10.42.0.227:33333");
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+    json["command"] = command;
+    json["login"] = login;
+    json["password"] = password;
+
+    QJsonDocument doc(json);
+    qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
+    QByteArray data = doc.toJson();
+
+    networkManager->post(request, data);
+}
+
+void WeatherManager::onReplyFinished(QNetworkReply *reply)
+{
+    QByteArray responseData = reply->readAll();
+    QJsonDocument doc = QJsonDocument::fromJson(responseData);
+    if (!doc.isNull() && doc.isObject()) {
+        QJsonObject jsonObj = doc.object();
+        emit sendAuthorizationResult(jsonObj);
+
+    } else {
+        qDebug() << "Некорректный Json файл!";
+    }
 }
 
