@@ -23,7 +23,7 @@ Page {
     Button {
         text: "показать на неделю"
         anchors.top: info.bottom
-        anchors.topMargin: 70
+        anchors.topMargin: 100
         anchors.horizontalCenter: info.horizontalCenter
         onClicked: {
             pageStack.push(Qt.resolvedUrl("WeekWeatherPage.qml"));

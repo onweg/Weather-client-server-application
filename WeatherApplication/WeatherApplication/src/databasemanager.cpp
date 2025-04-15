@@ -13,9 +13,9 @@ void DatabaseManager::insertData(const QString &username, const QString &city, c
 
     query.prepare("INSERT INTO weather_data (username, city, date) "
                   "VALUES (:username, :city, :date)");
-    query.bindValue(":username", username);         // Привязываем имя пользователя
-    query.bindValue(":city", city);                 // Привязываем город
-    query.bindValue(":date", date);                 // Привязываем дату
+    query.bindValue(":username", username);
+    query.bindValue(":city", city);
+    query.bindValue(":date", date);
 
     if (!query.exec()) {
         qDebug() << "Ошибка при вставке данных: " << query.lastError();
