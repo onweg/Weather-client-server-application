@@ -13,6 +13,7 @@
 #include <QDate>
 #include <QDateTime>
 #include <QThread>
+#include <QVariantMap>
 
 #include "weatherupdater.h"
 
@@ -25,6 +26,7 @@ public:
     Q_INVOKABLE void clickSearchCityButton(const QString &data);
     Q_INVOKABLE void clickNextDayButton();
     Q_INVOKABLE void clickPrevDayButton();
+    Q_INVOKABLE void clickWeekWeatherDataButton();
     Q_INVOKABLE void sendAuthorizationData(const QString &command, const QString &login, const QString &password);
 
     Q_INVOKABLE QString getCity();
@@ -37,6 +39,9 @@ public:
     Q_INVOKABLE QString getWindSpeed();
     Q_INVOKABLE QString getHumidity();
     Q_INVOKABLE QString getPressure();
+
+    Q_INVOKABLE QString getDateFromWeek(int index);
+    Q_INVOKABLE QString getTempFromWeek(int index);
 
 private:
     struct WeatherData{
@@ -61,16 +66,25 @@ private:
     QThread *updaterThread;
     WeatherUpdater *updater;
 
+    QJsonObject weekWeatherData;
+
+
 public slots:
     void slotWeatherDataArrived(const QJsonObject &jsonObj);
+    void slotWeekWeatherDataArrived(const QJsonObject &jsonObj);
     void slotRecivedAuthorizationData(const QJsonObject &jsonObj);
+
+
 
 private slots:
     void slotUpdateWeatherFromUpdater();
 
 signals:
     void findWeatherData(const QString &city, const QDate &date = QDate::currentDate());
+    void findWeekWeatherData();
+
     void dataUpdated();
+    void weekDataUpdated();
 
     void sendAuthorizationDataToManager(const QString &command, const QString &login, const QString &password);
     void authorizationCompleted();

@@ -85,6 +85,30 @@ void WeatherManager::sloRecivedAuthorizationData(const QString &command, const Q
     networkManager->post(request, data);
 }
 
+void WeatherManager::slotFindWeekWeatherData()
+{
+    QDate tmpDate = QDate::currentDate();
+    QJsonObject weekData;
+    weekData["city"] = desiredCity;
+    for (int index_day = 0; index_day < 5; index_day++) {
+        int status = cache.hasValidData(desiredCity);
+        if (status != 0) {
+            return;
+        }
+        QJsonObject tmpDayData = cache.getData(desiredCity, tmpDate);
+//        QJsonDocument doc2(tmpDayData);
+//        qDebug().noquote() << doc2.toJson(QJsonDocument::Indented);
+        QJsonObject tmp;
+        tmp["date"] = tmpDayData["date"].toString();
+        tmp["temp"] = QString::number(tmpDayData["temp"].toDouble());
+        weekData[QString::number(index_day)] = tmp;
+        tmpDate = tmpDate.addDays(1);
+    }
+//    QJsonDocument doc(weekData);
+//    qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
+    emit sendWeekWeatherDataToController(weekData);
+}
+
 void WeatherManager::onReplyFinished(QNetworkReply *reply)
 {
     QByteArray responseData = reply->readAll();

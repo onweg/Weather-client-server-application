@@ -72,6 +72,7 @@ DISTFILES += \
     qml/pages/WeatherData.qml \
     qml/pages/WeatherInformation.qml \
     qml/pages/WeatherPage.qml \
+    qml/pages/WeekWeatherPage.qml \
     rpm/ru.auroraos.WeatherApplication.spec \
     AUTHORS.md \
     CODE_OF_CONDUCT.md \

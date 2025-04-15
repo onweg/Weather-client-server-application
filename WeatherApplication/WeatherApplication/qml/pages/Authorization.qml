@@ -50,7 +50,6 @@ Item {
     Connections {
         target: controller
         onAuthorizationCompleted: {
-            pageStack.pop();
             pageStack.push(Qt.resolvedUrl("WeatherPage.qml"));
         }
         onAuthorizationFailed: {

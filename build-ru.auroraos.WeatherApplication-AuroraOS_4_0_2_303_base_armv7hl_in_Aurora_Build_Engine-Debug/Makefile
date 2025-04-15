@@ -87,6 +87,7 @@ DIST          = ../WeatherApplication/WeatherApplication/qml/pages/DateAndButton
 		../WeatherApplication/WeatherApplication/qml/pages/WeatherData.qml \
 		../WeatherApplication/WeatherApplication/qml/pages/WeatherInformation.qml \
 		../WeatherApplication/WeatherApplication/qml/pages/WeatherPage.qml \
+		../WeatherApplication/WeatherApplication/qml/pages/WeekWeatherPage.qml \
 		../WeatherApplication/WeatherApplication/rpm/ru.auroraos.WeatherApplication.spec \
 		../WeatherApplication/WeatherApplication/AUTHORS.md \
 		../WeatherApplication/WeatherApplication/CODE_OF_CONDUCT.md \
@@ -503,6 +504,7 @@ moc_weathermanager.cpp: ../WeatherApplication/WeatherApplication/src/weatherapic
 		../WeatherApplication/WeatherApplication/src/weathercache.h \
 		../WeatherApplication/WeatherApplication/src/clientcontroller.h \
 		../WeatherApplication/WeatherApplication/src/weatherupdater.h \
+		../WeatherApplication/WeatherApplication/src/cachecleaner.h \
 		../WeatherApplication/WeatherApplication/src/weathermanager.h
 	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication -I/usr/include/auroraapp -I/usr/include/mdeclarativecache5 -I/usr/include/qt5 -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/8.3.0/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/8.3.0/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include ../WeatherApplication/WeatherApplication/src/weathermanager.h -o moc_weathermanager.cpp
 
@@ -540,6 +542,7 @@ main.o: ../WeatherApplication/WeatherApplication/src/main.cpp ../WeatherApplicat
 		../WeatherApplication/WeatherApplication/src/weathercache.h \
 		../WeatherApplication/WeatherApplication/src/clientcontroller.h \
 		../WeatherApplication/WeatherApplication/src/weatherupdater.h \
+		../WeatherApplication/WeatherApplication/src/cachecleaner.h \
 		../WeatherApplication/WeatherApplication/src/databasemanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../WeatherApplication/WeatherApplication/src/main.cpp
 
@@ -555,7 +558,8 @@ weathermanager.o: ../WeatherApplication/WeatherApplication/src/weathermanager.cp
 		../WeatherApplication/WeatherApplication/src/dataeditor.h \
 		../WeatherApplication/WeatherApplication/src/weathercache.h \
 		../WeatherApplication/WeatherApplication/src/clientcontroller.h \
-		../WeatherApplication/WeatherApplication/src/weatherupdater.h
+		../WeatherApplication/WeatherApplication/src/weatherupdater.h \
+		../WeatherApplication/WeatherApplication/src/cachecleaner.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o weathermanager.o ../WeatherApplication/WeatherApplication/src/weathermanager.cpp
 
 weatherupdater.o: ../WeatherApplication/WeatherApplication/src/weatherupdater.cpp ../WeatherApplication/WeatherApplication/src/weatherupdater.h

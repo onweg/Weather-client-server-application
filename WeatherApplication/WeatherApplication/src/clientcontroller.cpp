@@ -42,6 +42,13 @@ void ClientController::clickPrevDayButton()
     emit findWeatherData(weatherData.city, weatherData.date);
 }
 
+void ClientController::clickWeekWeatherDataButton()
+{
+    if (!weatherData.city.isEmpty() && weatherData.city != "..." && weatherData.city != "Город не найден!") {
+         emit findWeekWeatherData();
+    }
+}
+
 void ClientController::sendAuthorizationData(const QString &command, const QString &login, const QString &password)
 {
     emit sendAuthorizationDataToManager(command, login, password);
@@ -51,6 +58,15 @@ void ClientController::slotWeatherDataArrived(const QJsonObject &jsonObj)
 {
     // qDebug() << "Получил";
     setData(jsonObj);
+}
+
+void ClientController::slotWeekWeatherDataArrived(const QJsonObject &jsonObj)
+{
+    QJsonDocument doc(jsonObj);
+    qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
+    weekWeatherData = jsonObj;
+    emit weekDataUpdated();
+    qDebug() << "Emit отправлен";
 }
 
 void ClientController::slotRecivedAuthorizationData(const QJsonObject &jsonObj)
@@ -117,6 +133,16 @@ QString ClientController::getHumidity()
 QString ClientController::getPressure()
 {
     return QString::number(weatherData.pressure);
+}
+
+QString ClientController::getDateFromWeek(int index)
+{
+    return weekWeatherData[QString::number(index)].toObject()["date"].toString();
+}
+
+QString ClientController::getTempFromWeek(int index)
+{
+    return weekWeatherData[QString::number(index)].toObject()["temp"].toString();
 }
 
 void ClientController::setData(const QJsonObject &jsonObj) {
