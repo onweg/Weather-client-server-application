@@ -206,7 +206,7 @@ void HttpServer::sendHttpResponse(QTcpSocket *socket, const QJsonObject &respons
 }
 
 bool HttpServer::connectToDatabase() {
-    QFile configFile(QCoreApplication::applicationDirPath() + "/../../../../../db_config.json");
+    QFile configFile(QCoreApplication::applicationDirPath() + "/../../../db_config.json");
     if (!configFile.open(QIODevice::ReadOnly)) {
         qDebug() << "Не удалось открыть файл конфигурации";
         return false;
