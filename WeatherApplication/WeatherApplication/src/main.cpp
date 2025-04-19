@@ -38,9 +38,9 @@
 #include <auroraapp.h>
 #include <QtQuick>
 #include <QObject>
-#include "weathermanager.h"
-#include "clientcontroller.h"
-#include "databasemanager.h"
+#include "Manager/weathermanager.h"
+#include "ClientController/clientcontroller.h"
+#include "DatabaseManager/databasemanager.h"
 
 int main(int argc, char *argv[])
 {
