@@ -1,25 +1,21 @@
-FROM ubuntu:22.04
-
-ENV DEBIAN_FRONTEND=noninteractive
+FROM ubuntu:20.04
 
 RUN apt-get update && apt-get install -y \
+    build-essential \
     qt5-qmake \
     qtbase5-dev \
-    build-essential \
-    libpq-dev \
-    curl \
-    && apt-get clean
+    qtchooser \
+    qt5-qmake-bin \
+    libqt5sql5 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
-
-COPY ./server /app/server
+COPY . /app
 
 WORKDIR /app/server
 
 RUN qmake HttpServer2.pro && make
 
-RUN touch db_config.json
-
-EXPOSE 33333
+EXPOSE 33333 5432
 
 CMD ["./HttpServer2.app/Contents/MacOS/HttpServer2"]
