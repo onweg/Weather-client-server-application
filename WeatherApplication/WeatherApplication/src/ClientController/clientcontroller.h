@@ -17,6 +17,8 @@
 
 #include "weatherupdater.h"
 
+#define NUMBEROFDAYS 5
+
 class ClientController : public QObject
 {
     Q_OBJECT

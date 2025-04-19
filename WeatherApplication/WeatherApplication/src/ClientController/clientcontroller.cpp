@@ -172,7 +172,7 @@ void ClientController::setNextDay()
     }
     const QDate tmp = QDate::currentDate();
     int diff = tmp.daysTo(weatherData.date);
-    if (diff < 4) {
+    if (diff < NUMBEROFDAYS - 1) {
         weatherData.date = weatherData.date.addDays(1);
     }
     return;
