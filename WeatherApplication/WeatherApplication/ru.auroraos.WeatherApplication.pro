@@ -66,21 +66,24 @@ HEADERS += \
     src/Manager/weathermanager.h
 
 DISTFILES += \
-    qml/pages/DateAndButtons.qml \
-    qml/pages/InputCity.qml \
-    qml/pages/SearchPanel.qml \
-    qml/pages/WeatherData.qml \
-    qml/pages/WeatherInformation.qml \
+    qml/components/DateAndButtons.qml \
+    qml/components/InputCity.qml \
+    qml/components/SearchPanel.qml \
+    qml/components/WeatherData.qml \
+    qml/components/WeatherInformation.qml \
+    qml/pages/Authorization.qml \
+    qml/pages/MainPage.qml \
     qml/pages/WeatherPage.qml \
     qml/pages/WeekWeatherPage.qml \
+    qml/WeatherApplication.qml \
+    qml/cover/DefaultCoverPage.qml \
     rpm/ru.auroraos.WeatherApplication.spec \
     AUTHORS.md \
     CODE_OF_CONDUCT.md \
     CONTRIBUTING.md \
     LICENSE.BSD-3-CLAUSE.md \
-    README.md \
-    qml/WeatherApplication.qml \
-    qml/cover/DefaultCoverPage.qml \
+    README.md
+
 
 AURORAAPP_ICONS = 86x86 108x108 128x128 172x172
 
