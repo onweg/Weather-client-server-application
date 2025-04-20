@@ -7,11 +7,10 @@ WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
     QObject::connect(&api, &WeatherApiClient::sendRecivedWeatherDataFromAPI, this, &WeatherManager::slotRecivedWeatherDataFromAPI);
 
     cacheCleaner = new CacheCleaner();
-    cleanerThread = new QThread(this);
+    cleanerThread.reset(new QThread());
 
     QObject::connect(cleanerThread, &QThread::started, cacheCleaner, &CacheCleaner::start);
     QObject::connect(cacheCleaner, &CacheCleaner::timeout, &cache, &WeatherCache::clearExpired);
-    QObject::connect(cleanerThread, &QThread::finished, cleanerThread, &QThread::deleteLater);
 
     cacheCleaner->moveToThread(cleanerThread);
     cleanerThread->start();
@@ -23,7 +22,6 @@ WeatherManager::~WeatherManager()
     if (cleanerThread) {
         cleanerThread->quit();
         cleanerThread->wait();
-        delete cleanerThread;
     }
     delete cacheCleaner;
     cacheCleaner = nullptr;

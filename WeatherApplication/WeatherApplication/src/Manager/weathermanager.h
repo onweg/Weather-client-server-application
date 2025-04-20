@@ -14,6 +14,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QThread>
+#include <QScopedPoiter>
 #include "cachecleaner.h"
 
 class WeatherManager : public QObject
@@ -32,7 +33,7 @@ private:
     DataEditor dataEditor;
     QNetworkAccessManager *networkManager;
 
-    QThread *cleanerThread;
+    QScopedPointer<QThread> cleanerThread;
     CacheCleaner *cacheCleaner;
 
 
