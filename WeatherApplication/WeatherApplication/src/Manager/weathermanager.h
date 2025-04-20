@@ -9,7 +9,7 @@
 #include "weatherapiclient.h"
 #include "weathercache.h"
 #include "clientcontroller.h"
-#include "dataeditor.h"
+#include "../Utils/weatherjsonconverter.h"
 
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -30,7 +30,6 @@ private:
     QDate desiredDate;
     WeatherApiClient api;
     WeatherCache cache;
-    DataEditor dataEditor;
     QNetworkAccessManager *networkManager;
 
     QScopedPointer<QThread> cleanerThread;

@@ -18,8 +18,6 @@
 #include <QJsonParseError>
 #include <QJsonArray>
 
-#include "dataeditor.h"
-
 class WeatherApiClient : public QObject
 {
     Q_OBJECT

@@ -42,7 +42,7 @@ void WeatherManager::slotFindWeatherData(const QString &city, const QDate &date)
 
 void WeatherManager::slotRecivedWeatherDataFromAPI(const QJsonObject &jsonObj)
 {
-    QJsonObject correctJsonData = dataEditor.getCorrectData(jsonObj);
+    QJsonObject correctJsonData = WeatherJsonConverter::getCorrectData(jsonObj);
     QJsonDocument doc2(correctJsonData);
     qDebug().noquote() << doc2.toJson(QJsonDocument::Indented);
     if (correctJsonData.isEmpty()) {
