@@ -1,14 +1,13 @@
-#include "databasemanager.h"
+#include "weatherdatawriter.h"
 
-DatabaseManager::DatabaseManager(QObject *parent) : QObject(parent)
+WeatherDataWriter::WeatherDataWriter(QObject *parent) : QObject(parent)
 {
     connectToDataBase();
     createTable();
-    qDebug() << "Database file path:" << QDir::currentPath();
 }
 
-
-void DatabaseManager::insertData(const QString &username, const QString &city, const QString &date) {
+void WeatherDataWriter::insertData(const QString &username, const QString &city, const QString &date)
+{
     QSqlQuery query;
 
     query.prepare("INSERT INTO weather_data (username, city, date) "
@@ -24,20 +23,22 @@ void DatabaseManager::insertData(const QString &username, const QString &city, c
     }
 }
 
-bool DatabaseManager::connectToDataBase()
+bool WeatherDataWriter::connectToDataBase()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("weather_data_request.db");
-    if (!db.open()) {
-        qDebug() << "Ошибка подключения к базу данных";
-        return false;
-    } else {
-        qDebug() << "Успешное подключение к базе данных";
-        return true;
+    if (!QSqlDatabase::contains()) {
+        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+        db.setDatabaseName("weather_data_request.db");
+        if (!db.open()) {
+            qDebug() << "Ошибка подключения к базе данных";
+            return false;
+        }
     }
+    qDebug() << "Успешное подключение к базе данных";
+    return true;
 }
 
-void DatabaseManager::createTable() {
+void WeatherDataWriter::createTable()
+{
     QSqlQuery query;
     if (!query.exec("CREATE TABLE IF NOT EXISTS weather_data ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -49,7 +50,7 @@ void DatabaseManager::createTable() {
     }
 }
 
-void DatabaseManager::slotSubmitCompletedWeatherDataSearchRequest(const QString &user, const QString &city, const QDate &date)
+void WeatherDataWriter::slotSubmitCompletedWeatherDataSearchRequest(const QString &user, const QString &city, const QDate &date)
 {
     insertData(user, city, date.toString("yyyy-MM-dd"));
 }

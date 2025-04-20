@@ -47,7 +47,8 @@ PKGCONFIG += \
 SOURCES += \
     src/ClientController/clientcontroller.cpp \
     src/ClientController/weatherupdater.cpp \
-    src/DatabaseManager/databasemanager.cpp \
+    src/DatabaseManager/weatherdatawriter.cpp \
+    src/DatabaseManager/weatherdatareader.cpp \
     src/Manager/cachecleaner.cpp \
     src/Utils/weatherjsonconverter.cpp \
     src/Manager/weatherapiclient.cpp \
@@ -58,7 +59,8 @@ SOURCES += \
 HEADERS += \
     src/ClientController/clientcontroller.h \
     src/ClientController/weatherupdater.h \
-    src/DatabaseManager/databasemanager.h \
+    src/DatabaseManager/weatherdatawriter.h \
+    src/DatabaseManager/weatherdatareader.h \
     src/Manager/cachecleaner.h \
     src/Utils/weatherjsonconverter.h \
     src/Manager/weatherapiclient.h \

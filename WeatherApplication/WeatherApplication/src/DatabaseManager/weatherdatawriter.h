@@ -1,5 +1,5 @@
-#ifndef DATABASEMANAGER_H
-#define DATABASEMANAGER_H
+#ifndef WEATHERDATAWRITER_H
+#define WEATHERDATAWRITER_H
 
 #include <QObject>
 #include <QSqlDatabase>
@@ -10,14 +10,11 @@
 #include <QDate>
 #include <QDir>
 
-// работает с базой данных
-// хранит историю прогноза погоды
-
-class DatabaseManager : public QObject
+class WeatherDataWriter : public QObject
 {
     Q_OBJECT
 public:
-    explicit DatabaseManager(QObject *parent = nullptr);
+    explicit WeatherDataWriter(QObject *parent = nullptr);
     void insertData(const QString &user, const QString &city, const QString &date);
 
 private:
@@ -26,7 +23,6 @@ private:
 
 public slots:
     void slotSubmitCompletedWeatherDataSearchRequest(const QString &user, const QString &city, const QDate &date);
-
 };
 
-#endif // DATABASEMANAGER_H
+#endif // WEATHERDATAWRITER_H
