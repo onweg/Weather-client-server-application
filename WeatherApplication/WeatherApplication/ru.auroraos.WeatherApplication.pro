@@ -49,7 +49,7 @@ SOURCES += \
     src/ClientController/weatherupdater.cpp \
     src/DatabaseManager/databasemanager.cpp \
     src/Manager/cachecleaner.cpp \
-    src/Manager/dataeditor.cpp \
+    src/Utils/weatherjsonconverter.cpp \
     src/Manager/weatherapiclient.cpp \
     src/Manager/weathercache.cpp \
     src/Manager/weathermanager.cpp \
@@ -60,7 +60,7 @@ HEADERS += \
     src/ClientController/weatherupdater.h \
     src/DatabaseManager/databasemanager.h \
     src/Manager/cachecleaner.h \
-    src/Manager/dataeditor.h \
+    src/Utils/weatherjsonconverter.h \
     src/Manager/weatherapiclient.h \
     src/Manager/weathercache.h \
     src/Manager/weathermanager.h
