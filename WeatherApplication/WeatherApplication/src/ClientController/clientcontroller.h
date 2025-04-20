@@ -14,6 +14,7 @@
 #include <QDateTime>
 #include <QThread>
 #include <QVariantMap>
+#include <QScopedPointer>
 
 #include "weatherupdater.h"
 
@@ -65,7 +66,7 @@ private:
     void setNextDay();
     void setPrevDay();
 
-    QThread *updaterThread;
+    QScopedPointer<QThread> updaterThread;
     WeatherUpdater *updater;
 
     QJsonObject weekWeatherData;

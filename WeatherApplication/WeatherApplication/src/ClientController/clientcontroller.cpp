@@ -3,10 +3,10 @@
 ClientController::ClientController(QObject *parent) : QObject(parent)
 {
     updater = new WeatherUpdater();
-    updaterThread = new QThread(this);
+    updaterThread.reset(new QThread());
     QObject::connect(updaterThread, &QThread::started, updater, &WeatherUpdater::start);
     QObject::connect(updater, &WeatherUpdater::updateWeatherData, this, &ClientController::slotUpdateWeatherFromUpdater);
-    QObject::connect(updaterThread, &QThread::finished, updaterThread, &QThread::deleteLater);
+    
     updater->moveToThread(updaterThread);
     updaterThread->start();
 
@@ -17,7 +17,6 @@ ClientController::~ClientController()
     if (updaterThread) {
         updaterThread->quit();
         updaterThread->wait();
-        delete updaterThread;
     }
     delete updater;
     updater = nullptr;
