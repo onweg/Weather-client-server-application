@@ -12,8 +12,8 @@
 <context>
     <name>WeatherInformation</name>
     <message>
-        <location filename="../qml/components/WeatherInformation.qml" line="7"/>
-        <source>Информация о погоде в городе: </source>
+        <location filename="../qml/components/WeatherInformation.qml" line="11"/>
+        <source>Информация о погоде в городе</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

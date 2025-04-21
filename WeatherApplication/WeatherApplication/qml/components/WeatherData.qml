@@ -10,7 +10,7 @@ Item {
     property alias weather_humidity: weather_humidity
     property alias weather_pressure: weather_pressure
     Row {
-        spacing: 20
+        spacing: 80
         Column {
             spacing: 30
             Text {
@@ -114,3 +114,6 @@ Item {
         }
     }
 }
+
+//  сделать отдельную структуру в которй я буду писать описание и значение и в эту структуру буду записывать каждую информацию о погоде и сделать это не с помощью колонок и строк а с помощью anchors
+//  сделать данные как одной строкой как я это делаю при данных о погоде на неделю

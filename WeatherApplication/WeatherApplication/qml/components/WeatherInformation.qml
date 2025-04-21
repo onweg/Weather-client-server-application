@@ -1,26 +1,35 @@
 import QtQuick 2.0
 
+
 Item {
-    Row {
-        id: lbl_info
-        Text {
-            text: qsTr("Информация о погоде в городе: ")
-        }
-        Text{
-            id: weather_city
-            text: "..."
-        }
+    id: root_info
+    width: 470
+    height: 780
+    anchors.centerIn: parent
+    Text {
+        id: text_info
+        text: qsTr("Информация о погоде в городе")
     }
+    Text{
+        id: weather_city
+        font.pointSize: 40
+        text: "..."
+        anchors.top: text_info.bottom
+        anchors.topMargin: 10
+        anchors.horizontalCenter: text_info.horizontalCenter
+    }
+
 
     DateAndButtons {
         id: date
-        anchors.top: lbl_info.bottom
-        anchors.topMargin: 20
+        width: root_info.width
+        anchors.top: weather_city.bottom
+        anchors.topMargin: 30
     }
 
     WeatherData {
         id: weather_data
-        height: 460
+        // height: 460
         anchors.top: date.bottom
         anchors.topMargin: 80
 
@@ -42,5 +51,6 @@ Item {
             weather_data.weather_wind_speed.text = controller.getWindSpeed();
         }
     }
-
 }
+
+

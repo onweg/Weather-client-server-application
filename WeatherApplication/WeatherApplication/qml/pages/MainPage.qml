@@ -43,9 +43,18 @@ Page {
     objectName: "mainPage"
     allowedOrientations: Orientation.All
 
+    Item {
 
-    Authorization{
-        anchors.centerIn: parent;
+        width: 500
+        height: 400
+        x: parent.width / 2 - width / 2
+        y: parent.height / 2 - height / 2
+        //color: "lightgray"
+        Authorization{
+            anchors.centerIn: parent;
+        }
     }
+
+
 
 }

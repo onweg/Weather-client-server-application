@@ -1,8 +1,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+
 Item {
-    anchors.fill: parent
     Column {
         anchors.centerIn: parent
         spacing: 10
@@ -10,18 +10,16 @@ Item {
         TextField {
             id: loginField
             placeholderText: "Login"
-            width: parent.width * 0.8
+            width: parent.width
             color: "black"
-            inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText
         }
 
         TextField {
             id: passwordField
             placeholderText: "Password"
             echoMode: TextInput.Password
-            width: parent.width * 0.8
+            width: parent.width
             color: "black"
-            inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText
         }
 
         Row {
@@ -53,7 +51,7 @@ Item {
     Connections {
         target: controller
         onAuthorizationCompleted: {
-            pageStack.push(Qt.resolvedUrl("WeatherPage.qml"));
+            pageStack.push(Qt.resolvedUrl("../pages/WeatherPage.qml"));
         }
         onAuthorizationFailed: {
             resultText.text = message;
