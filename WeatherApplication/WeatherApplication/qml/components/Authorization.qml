@@ -12,6 +12,7 @@ Item {
             placeholderText: "Login"
             width: parent.width * 0.8
             color: "black"
+            inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText
         }
 
         TextField {
@@ -20,6 +21,7 @@ Item {
             echoMode: TextInput.Password
             width: parent.width * 0.8
             color: "black"
+            inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText
         }
 
         Row {

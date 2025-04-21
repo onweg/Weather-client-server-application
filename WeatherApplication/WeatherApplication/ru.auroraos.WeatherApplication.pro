@@ -73,7 +73,6 @@ DISTFILES += \
     qml/components/SearchPanel.qml \
     qml/components/WeatherData.qml \
     qml/components/WeatherInformation.qml \
-    qml/pages/Authorization.qml \
     qml/pages/MainPage.qml \
     qml/pages/WeatherPage.qml \
     qml/pages/WeekWeatherPage.qml \

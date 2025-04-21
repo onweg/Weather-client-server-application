@@ -43,7 +43,6 @@ Page {
     objectName: "mainPage"
     allowedOrientations: Orientation.All
 
-
     Authorization{
         anchors.centerIn: parent;
     }

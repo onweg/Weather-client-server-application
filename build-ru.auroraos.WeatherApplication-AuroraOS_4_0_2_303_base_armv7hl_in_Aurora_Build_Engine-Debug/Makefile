@@ -90,7 +90,6 @@ DIST          = ../WeatherApplication/WeatherApplication/qml/components/DateAndB
 		../WeatherApplication/WeatherApplication/qml/components/SearchPanel.qml \
 		../WeatherApplication/WeatherApplication/qml/components/WeatherData.qml \
 		../WeatherApplication/WeatherApplication/qml/components/WeatherInformation.qml \
-		../WeatherApplication/WeatherApplication/qml/pages/Authorization.qml \
 		../WeatherApplication/WeatherApplication/qml/pages/MainPage.qml \
 		../WeatherApplication/WeatherApplication/qml/pages/WeatherPage.qml \
 		../WeatherApplication/WeatherApplication/qml/pages/WeekWeatherPage.qml \
