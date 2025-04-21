@@ -6,16 +6,14 @@
 #include <QJsonObject>
 #include <QDebug>
 #include <QDateTime>
-#include "weatherapiclient.h"
-#include "weathercache.h"
-#include "clientcontroller.h"
-#include "../Utils/weatherjsonconverter.h"
-
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QThread>
-#include <QScopedPoiter>
+#include <QScopedPointer>
+#include "weatherapiclient.h"
+#include "weathercache.h"
 #include "cachecleaner.h"
+#include "../Utils/weatherjsonconverter.h"
 
 class WeatherManager : public QObject
 {

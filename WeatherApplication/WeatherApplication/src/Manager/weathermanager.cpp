@@ -9,10 +9,10 @@ WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
     cacheCleaner = new CacheCleaner();
     cleanerThread.reset(new QThread());
 
-    QObject::connect(cleanerThread, &QThread::started, cacheCleaner, &CacheCleaner::start);
+    QObject::connect(cleanerThread.data(), &QThread::started, cacheCleaner, &CacheCleaner::start);
     QObject::connect(cacheCleaner, &CacheCleaner::timeout, &cache, &WeatherCache::clearExpired);
 
-    cacheCleaner->moveToThread(cleanerThread);
+    cacheCleaner->moveToThread(cleanerThread.data());
     cleanerThread->start();
 
 }

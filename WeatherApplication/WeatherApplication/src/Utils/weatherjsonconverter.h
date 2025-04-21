@@ -16,8 +16,8 @@ public:
     static QJsonObject getCorrectData(QJsonObject jsonObj);
 
 private:
-    QJsonObject processWeatherData(const QJsonObject &originalJson);
-    QJsonObject createDayData(const QJsonObject &forecast);
+    static QJsonObject processWeatherData(const QJsonObject &originalJson);
+    static QJsonObject createDayData(const QJsonObject &forecast);
 
 };
 
