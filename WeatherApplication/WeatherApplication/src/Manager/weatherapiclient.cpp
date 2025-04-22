@@ -1,18 +1,35 @@
 #include "weatherapiclient.h"
 
-WeatherApiClient::WeatherApiClient(QObject *parent, QString zipCode_, QString countryCode_) : QObject(parent)
+WeatherApiClient::WeatherApiClient(QObject *parent) : QObject(parent)
 {
     manager = new QNetworkAccessManager(this);
 }
 
 void WeatherApiClient::findWeatherDataInAPI(const QString &city)
 {
-    QString url = QString("https://api.openweathermap.org/geo/1.0/direct?q=%1&appid=%2").arg(city).arg(apiKey);
+
+    QString url = QString(urlFindCityByName).arg(city).arg(apiKey);
     qDebug() << url;
     QNetworkRequest request((QUrl(url)));
     replyCity = manager->get(request);
     connect(replyCity, &QNetworkReply::finished, this, &WeatherApiClient::onSlotFindCity);
     return ;
+}
+
+bool WeatherApiClient::loadConfig(const QJsonObject &settingsAPI)
+{
+    if (settingsAPI.contains("api") && settingsAPI["api"].isObject() && settingsAPI.contains("key")) {
+        apiKey = settingsAPI["api"].toObject()["key"].toString();
+        if (settingsAPI.contains("urlFindCityByName") && settingsAPI.contains("urlFindWeatherByCoordinates")) {
+            urlFindCityByName = settingsAPI["api"].toObject()["urlFindCityByName"].toString();
+            urlFindWeatherByCoordinates = settingsAPI["api"].toObject()["urlFindWeatherByCoordinates"].toString();
+            return true;
+        } else {
+            qDebug("Нет нужных элементо в JSON");
+            return false;
+        }
+    }
+    return false;
 }
 
 void WeatherApiClient::onSlotFindCity()
@@ -96,7 +113,7 @@ void WeatherApiClient::onSlotFindWeatherData()
 
 void WeatherApiClient::findWeatherData(const QString &lat, const QString &lon)
 {
-    QString url = QString("https://api.openweathermap.org/data/2.5/forecast?lat=%1&lon=%2&appid=%3&units=metric&lang=ru").arg(lat).arg(lon).arg(apiKey);
+    QString url = QString(urlFindWeatherByCoordinates).arg(lat).arg(lon).arg(apiKey);
     qDebug() << url;
     QNetworkRequest request((QUrl(url)));
     replyWeather = manager->get(request);

@@ -51,6 +51,9 @@ int main(int argc, char *argv[])
     QScopedPointer<QQuickView> view(Aurora::Application::createView());
 
     WeatherManager manager;
+    if (!manager.loadConfig()) {
+        return 0;
+    }
     ClientController controller;
     WeatherDataWriter writer;
 

@@ -13,6 +13,7 @@
 #include "weatherapiclient.h"
 #include "weathercache.h"
 #include "cachecleaner.h"
+#include <QFile>
 #include "../Utils/weatherjsonconverter.h"
 
 class WeatherManager : public QObject
@@ -24,9 +25,11 @@ public:
 private:
     QString user;
 
+    QJsonObject settingsAPI;
+
     QString desiredCity;
     QDate desiredDate;
-    WeatherApiClient api;
+    WeatherApiClient *api;
     WeatherCache cache;
     QNetworkAccessManager *networkManager;
 
@@ -40,8 +43,11 @@ public slots:
     void sloRecivedAuthorizationData(const QString &command, const QString &login, const QString &password);
     void slotFindWeekWeatherData();
 
+    bool loadConfig();
+
 private slots:
     void onReplyFinished(QNetworkReply *reply);
+
 
 signals:
     void sendWeatherDataToController(const QJsonObject &jsonObj);

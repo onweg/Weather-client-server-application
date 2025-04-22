@@ -2,9 +2,11 @@
 
 WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
 {
+    api = new WeatherApiClient(this);
+
     networkManager = new QNetworkAccessManager(this);
     QObject::connect(networkManager, &QNetworkAccessManager::finished, this, &WeatherManager::onReplyFinished);
-    QObject::connect(&api, &WeatherApiClient::sendRecivedWeatherDataFromAPI, this, &WeatherManager::slotRecivedWeatherDataFromAPI);
+    QObject::connect(api, &WeatherApiClient::sendRecivedWeatherDataFromAPI, this, &WeatherManager::slotRecivedWeatherDataFromAPI);
 
     cacheCleaner = new CacheCleaner();
     cleanerThread.reset(new QThread());
@@ -35,7 +37,7 @@ void WeatherManager::slotFindWeatherData(const QString &city, const QDate &date)
     if (status == 0) {
         emit sendWeatherDataToController(cache.getData(desiredCity, desiredDate));
     } else if (status == 1){
-        api.findWeatherDataInAPI(desiredCity);
+        api->findWeatherDataInAPI(desiredCity);
     }
 
 }
@@ -107,6 +109,25 @@ void WeatherManager::slotFindWeekWeatherData()
     emit sendWeekWeatherDataToController(weekData);
 }
 
+bool WeatherManager::loadConfig()
+{
+    QFile file("../config/api_config.json");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Не удалось открыть api_config.json файл";
+        return false;
+    }
+    QByteArray jsonData = file.readAll();
+    file.close();
+    QJsonParseError parseError;
+    QJsonDocument doc = QJsonDocument::fromJson(jsonData, &parseError);
+    if (parseError.error != QJsonParseError::NoError) {
+        qDebug() << "Ошибка парсинга json файла";
+        return false;
+    }
+    settingsAPI = doc.object();
+    return api->loadConfig(settingsAPI);
+}
+
 void WeatherManager::onReplyFinished(QNetworkReply *reply)
 {
     QByteArray responseData = reply->readAll();
@@ -119,4 +140,5 @@ void WeatherManager::onReplyFinished(QNetworkReply *reply)
         qDebug() << "Некорректный Json файл!";
     }
 }
+
 
