@@ -18,24 +18,18 @@ Item {
         anchors.topMargin: 10
         anchors.horizontalCenter: text_info.horizontalCenter
     }
-
-
     DateAndButtons {
         id: date
         width: root_info.width
         anchors.top: weather_city.bottom
         anchors.topMargin: 50
     }
-
     WeatherData {
         id: weather_data
         // height: 460
         anchors.top: date.bottom
         anchors.topMargin: 80
-
     }
-
-
     Connections {
         target: controller
         onDataUpdated: {

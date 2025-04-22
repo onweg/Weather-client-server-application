@@ -9,16 +9,10 @@ Page {
         anchors.topMargin: 250
         anchors.horizontalCenter: parent.horizontalCenter
     }
-
-
     WeatherInformation {
         id: info
         anchors.centerIn: parent
     }
-
-
-
-
     Button {
         text: "показать на неделю"
         anchors.bottom: parent.bottom

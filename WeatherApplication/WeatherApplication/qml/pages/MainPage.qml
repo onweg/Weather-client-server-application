@@ -42,21 +42,14 @@ import "../components"
 Page {
     objectName: "mainPage"
     allowedOrientations: Orientation.All
-
     Item {
-
         width: 500
         height: 400
         x: parent.width / 2 - width / 2
         y: parent.height / 2 - height / 2
         //color: "lightgray"
         Authorization{
-            x: 250
-            y: -100
-            // anchors.centerIn: parent;
+            anchors.centerIn: parent;
         }
     }
-
-
-
 }

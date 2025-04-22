@@ -9,7 +9,6 @@ Page {
         anchors.topMargin: 50
         anchors.horizontalCenter: parent.horizontalCenter
     }
-
     Column {
         spacing: 40
         Column {
@@ -23,7 +22,6 @@ Page {
                 text: "Temp: "
             }
         }
-
         Column {
             spacing: 20
             Text {
@@ -35,7 +33,6 @@ Page {
                 text: "Temp: "
             }
         }
-
         Column {
             spacing: 20
             Text {
@@ -47,7 +44,6 @@ Page {
                 text: "Temp: "
             }
         }
-
         Column {
             spacing: 20
             Text {
@@ -59,7 +55,6 @@ Page {
                 text: "Temp: "
             }
         }
-
         Column {
             spacing: 20
             Text {

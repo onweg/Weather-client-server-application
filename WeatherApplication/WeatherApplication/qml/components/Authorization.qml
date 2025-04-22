@@ -6,14 +6,12 @@ Item {
     Column {
         anchors.centerIn: parent
         spacing: 10
-
         TextField {
             id: loginField
             placeholderText: "Login"
             width: parent.width
             color: "black"
         }
-
         TextField {
             id: passwordField
             placeholderText: "Password"
@@ -21,17 +19,14 @@ Item {
             width: parent.width
             color: "black"
         }
-
         Row {
             spacing: 10
-
             Button {
                 text: "Log In"
                 onClicked: {
                     controller.sendAuthorizationData("LOGIN", loginField.text, passwordField.text)
                 }
             }
-
             Button {
                 text: "Sign Up"
                 onClicked: {
@@ -39,7 +34,6 @@ Item {
                 }
             }
         }
-
         Text {
             id: resultText
             width: parent.width * 0.9
@@ -47,7 +41,6 @@ Item {
             color: "black"
         }
     }
-
     Connections {
         target: controller
         onAuthorizationCompleted: {

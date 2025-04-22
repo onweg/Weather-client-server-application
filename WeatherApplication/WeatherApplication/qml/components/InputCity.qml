@@ -15,7 +15,6 @@ Item {
             wrapMode: Text.NoWrap
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
-
         }
     }
 }

@@ -13,7 +13,6 @@ Item {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
         }
-
         Button {
             width: 100
             text: "go"
