@@ -15,7 +15,6 @@
 #include <QThread>
 #include <QVariantMap>
 #include <QScopedPointer>
-
 #include "weatherupdater.h"
 
 #define NUMBEROFDAYS 5
@@ -32,19 +31,8 @@ public:
     Q_INVOKABLE void clickWeekWeatherDataButton();
     Q_INVOKABLE void sendAuthorizationData(const QString &command, const QString &login, const QString &password);
 
-    Q_INVOKABLE QString getCity();
-    Q_INVOKABLE QString getDate();
-    Q_INVOKABLE QString getDescription();
-    Q_INVOKABLE QString getTemp();
-    Q_INVOKABLE QString getFeelsLike();
-    Q_INVOKABLE QString getTempMax();
-    Q_INVOKABLE QString getTempMin();
-    Q_INVOKABLE QString getWindSpeed();
-    Q_INVOKABLE QString getHumidity();
-    Q_INVOKABLE QString getPressure();
-
-    Q_INVOKABLE QString getDateFromWeek(int index);
-    Q_INVOKABLE QString getTempFromWeek(int index);
+    Q_INVOKABLE QVariantMap getWeatherDataFromOneDay();
+    Q_INVOKABLE QVariantMap getWeatherDataFromWeek();
 
 private:
     struct WeatherData{
@@ -69,7 +57,9 @@ private:
     QScopedPointer<QThread> updaterThread;
     WeatherUpdater *updater;
 
-    QJsonObject weekWeatherData;
+    QVariantMap convertToVariantMap(const WeatherData &data) const;
+    QVariantMap weekWeatherData;
+
 
 
 public slots:

@@ -53,6 +53,16 @@ void ClientController::sendAuthorizationData(const QString &command, const QStri
     emit sendAuthorizationDataToManager(command, login, password);
 }
 
+QVariantMap ClientController::getWeatherDataFromOneDay()
+{
+    return convertToVariantMap(weatherData);
+}
+
+QVariantMap ClientController::getWeatherDataFromWeek()
+{
+    return weekWeatherData;
+}
+
 void ClientController::slotWeatherDataArrived(const QJsonObject &jsonObj)
 {
     // qDebug() << "Получил";
@@ -63,7 +73,7 @@ void ClientController::slotWeekWeatherDataArrived(const QJsonObject &jsonObj)
 {
     QJsonDocument doc(jsonObj);
     qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
-    weekWeatherData = jsonObj;
+    weekWeatherData = jsonObj.toVariantMap();
     emit weekDataUpdated();
     qDebug() << "Emit отправлен";
 }
@@ -83,66 +93,6 @@ void ClientController::slotUpdateWeatherFromUpdater()
 }
 
 
-QString ClientController::getCity()
-{
-    return weatherData.city;
-}
-
-QString ClientController::getDate()
-{
-    return weatherData.date.toString("yyyy-MM-dd");
-}
-
-QString ClientController::getDescription()
-{
-    if (weatherData.description.isEmpty()) { return "..."; }
-    return weatherData.description;
-}
-
-QString ClientController::getTemp()
-{
-    return QString::number(weatherData.temp, 'f', 1);
-}
-
-QString ClientController::getFeelsLike()
-{
-    return QString::number(weatherData.feels_like, 'f', 1);
-}
-
-QString ClientController::getTempMax()
-{
-    return QString::number(weatherData.temp_max, 'f', 1);
-}
-
-QString ClientController::getTempMin()
-{
-    return QString::number(weatherData.temp_min, 'f', 1);
-}
-
-QString ClientController::getWindSpeed()
-{
-    return QString::number(weatherData.wind_speed, 'f', 1);
-}
-
-QString ClientController::getHumidity()
-{
-    return QString::number(weatherData.humidity);
-}
-
-QString ClientController::getPressure()
-{
-    return QString::number(weatherData.pressure);
-}
-
-QString ClientController::getDateFromWeek(int index)
-{
-    return weekWeatherData[QString::number(index)].toObject()["date"].toString();
-}
-
-QString ClientController::getTempFromWeek(int index)
-{
-    return weekWeatherData[QString::number(index)].toObject()["temp"].toString();
-}
 
 void ClientController::setData(const QJsonObject &jsonObj) {
     if (jsonObj.contains("error")) {
@@ -188,6 +138,22 @@ void ClientController::setPrevDay()
         weatherData.date = weatherData.date.addDays(-1);
     }
     return;
+}
+
+QVariantMap ClientController::convertToVariantMap(const WeatherData &data) const
+{
+    QVariantMap result;
+    result["city"] = data.city;
+    result["date"] = data.date.toString("yyyy-MM-dd");
+    result["description"] = data.description;
+    result["temp"] = QString::number(data.temp);
+    result["feels_like"] = QString::number(data.feels_like);
+    result["temp_max"] = QString::number(data.temp_max);
+    result["temp_min"] = QString::number(data.temp_min);
+    result["wind_speed"] = QString::number(data.wind_speed);
+    result["humidity"] = QString::number(data.humidity);
+    result["pressure"] = QString::number(data.pressure);
+    return result;
 }
 
 

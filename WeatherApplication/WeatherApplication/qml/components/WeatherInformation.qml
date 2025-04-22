@@ -24,7 +24,7 @@ Item {
         id: date
         width: root_info.width
         anchors.top: weather_city.bottom
-        anchors.topMargin: 30
+        anchors.topMargin: 50
     }
 
     WeatherData {
@@ -39,16 +39,16 @@ Item {
     Connections {
         target: controller
         onDataUpdated: {
-            weather_city.text = controller.getCity();
-            date.date.text = controller.getDate();
-            weather_data.weather_description.text = controller.getDescription();
-            weather_data.weather_feels_like.text = controller.getFeelsLike();
-            weather_data.weather_humidity.text = controller.getHumidity();
-            weather_data.weather_pressure.text = controller.getPressure();
-            weather_data.weather_temp.text = controller.getTemp();
-            weather_data.weather_temp_max.text = controller.getTempMax();
-            weather_data.weather_temp_min.text = controller.getTempMin();
-            weather_data.weather_wind_speed.text = controller.getWindSpeed();
+            weather_city.text = controller.getWeatherDataFromOneDay()["city"];
+            date.date.text = controller.getWeatherDataFromOneDay()["date"];
+            weather_data.weather_description.text = controller.getWeatherDataFromOneDay()["description"];
+            weather_data.weather_feels_like.text = controller.getWeatherDataFromOneDay()["feels_like"];
+            weather_data.weather_humidity.text = controller.getWeatherDataFromOneDay()["humidity"];
+            weather_data.weather_pressure.text = controller.getWeatherDataFromOneDay()["pressure"];
+            weather_data.weather_temp.text = controller.getWeatherDataFromOneDay()["temp"];
+            weather_data.weather_temp_max.text = controller.getWeatherDataFromOneDay()["temp_max"];
+            weather_data.weather_temp_min.text = controller.getWeatherDataFromOneDay()["temp_min"];
+            weather_data.weather_wind_speed.text = controller.getWeatherDataFromOneDay()["wind_speed"];
         }
     }
 }
