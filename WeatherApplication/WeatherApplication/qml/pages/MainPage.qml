@@ -51,7 +51,9 @@ Page {
         y: parent.height / 2 - height / 2
         //color: "lightgray"
         Authorization{
-            anchors.centerIn: parent;
+            x: 250
+            y: -100
+            // anchors.centerIn: parent;
         }
     }
 
