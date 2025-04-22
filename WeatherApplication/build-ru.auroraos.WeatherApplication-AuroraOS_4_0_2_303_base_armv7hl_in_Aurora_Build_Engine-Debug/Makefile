@@ -101,6 +101,7 @@ DIST          = ../WeatherApplication/qml/components/DateAndButtons.qml \
 		../WeatherApplication/CONTRIBUTING.md \
 		../WeatherApplication/LICENSE.BSD-3-CLAUSE.md \
 		../WeatherApplication/README.md \
+		../WeatherApplication/config/api_config.json \
 		/usr/share/qt5/mkspecs/features/spec_pre.prf \
 		/usr/share/qt5/mkspecs/common/unix.conf \
 		/usr/share/qt5/mkspecs/common/linux.conf \
@@ -601,6 +602,15 @@ moc_weathermanager.o: moc_weathermanager.cpp
 
 ####### Install
 
+install_my_additional_files: first FORCE
+	@test -d $(INSTALL_ROOT)/usr/share/ru.auroraos.WeatherApplication/config || mkdir -p $(INSTALL_ROOT)/usr/share/ru.auroraos.WeatherApplication/config
+	-$(INSTALL_FILE) /home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication/config/api_config.json $(INSTALL_ROOT)/usr/share/ru.auroraos.WeatherApplication/config/
+
+uninstall_my_additional_files: FORCE
+	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/ru.auroraos.WeatherApplication/config/api_config.json
+	-$(DEL_DIR) $(INSTALL_ROOT)/usr/share/ru.auroraos.WeatherApplication/config/ 
+
+
 install_qm: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/ru.auroraos.WeatherApplication/translations || mkdir -p $(INSTALL_ROOT)/usr/share/ru.auroraos.WeatherApplication/translations
 	lupdate -noobsolete /home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication/src /home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication/qml -ts /home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication/translations/ru.auroraos.WeatherApplication.ts /home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication/translations/ru.auroraos.WeatherApplication.ts /home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication/translations/ru.auroraos.WeatherApplication-ru.ts && mkdir -p translations && [ "/home/arkadiy/Weather-client-server-application/WeatherApplication/build-ru.auroraos.WeatherApplication-AuroraOS_4_0_2_303_base_armv7hl_in_Aurora_Build_Engine-Debug" != "/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication" -a 1 -eq 1 ] && cp -af /home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication/translations/ru.auroraos.WeatherApplication.ts /home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication/translations/ru.auroraos.WeatherApplication-ru.ts /home/arkadiy/Weather-client-server-application/WeatherApplication/build-ru.auroraos.WeatherApplication-AuroraOS_4_0_2_303_base_armv7hl_in_Aurora_Build_Engine-Debug/translations || : ; [ 1 -eq 1 ] && lrelease -nounfinished /home/arkadiy/Weather-client-server-application/WeatherApplication/build-ru.auroraos.WeatherApplication-AuroraOS_4_0_2_303_base_armv7hl_in_Aurora_Build_Engine-Debug/translations/ru.auroraos.WeatherApplication.ts /home/arkadiy/Weather-client-server-application/WeatherApplication/build-ru.auroraos.WeatherApplication-AuroraOS_4_0_2_303_base_armv7hl_in_Aurora_Build_Engine-Debug/translations/ru.auroraos.WeatherApplication-ru.ts || :
@@ -676,9 +686,9 @@ uninstall_icon172x172: FORCE
 	-$(DEL_DIR) $(INSTALL_ROOT)/usr/share/icons/hicolor/172x172/apps/ 
 
 
-install: install_qm install_qml install_target install_desktop install_icon86x86 install_icon108x108 install_icon128x128 install_icon172x172  FORCE
+install: install_my_additional_files install_qm install_qml install_target install_desktop install_icon86x86 install_icon108x108 install_icon128x128 install_icon172x172  FORCE
 
-uninstall: uninstall_qm uninstall_qml uninstall_target uninstall_desktop uninstall_icon86x86 uninstall_icon108x108 uninstall_icon128x128 uninstall_icon172x172  FORCE
+uninstall: uninstall_my_additional_files uninstall_qm uninstall_qml uninstall_target uninstall_desktop uninstall_icon86x86 uninstall_icon108x108 uninstall_icon128x128 uninstall_icon172x172  FORCE
 
 FORCE:
 

@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 
     WeatherManager manager;
     if (!manager.loadConfig()) {
-        return 0;
+       return 0;
     }
     ClientController controller;
     WeatherDataWriter writer;

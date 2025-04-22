@@ -83,7 +83,8 @@ DISTFILES += \
     CODE_OF_CONDUCT.md \
     CONTRIBUTING.md \
     LICENSE.BSD-3-CLAUSE.md \
-    README.md
+    README.md \
+    config/api_config.json
 
 
 AURORAAPP_ICONS = 86x86 108x108 128x128 172x172
@@ -93,3 +94,10 @@ CONFIG += auroraapp_i18n
 TRANSLATIONS += \
     translations/ru.auroraos.WeatherApplication.ts \
     translations/ru.auroraos.WeatherApplication-ru.ts \
+    
+my_additional_files.files = $${PWD}/config/*
+my_additional_files.path = /usr/share/ru.auroraos.WeatherApplication/config
+my_additional_files.CONFIG = no_check_exist
+
+INSTALLS += \
+    my_additional_files

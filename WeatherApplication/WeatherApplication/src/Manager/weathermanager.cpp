@@ -111,7 +111,9 @@ void WeatherManager::slotFindWeekWeatherData()
 
 bool WeatherManager::loadConfig()
 {
-    QFile file("../config/api_config.json");
+    QString filePath = QCoreApplication::applicationDirPath();
+    qDebug() << filePath;
+    QFile file("/usr/share/ru.auroraos.WeatherApplication/config/api_config.json");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Не удалось открыть api_config.json файл";
         return false;

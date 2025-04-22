@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_WeatherManager_t {
-    QByteArrayData data[20];
-    char stringdata0[325];
+    QByteArrayData data[21];
+    char stringdata0[336];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -46,9 +46,10 @@ QT_MOC_LITERAL(13, 241, 7), // "command"
 QT_MOC_LITERAL(14, 249, 5), // "login"
 QT_MOC_LITERAL(15, 255, 8), // "password"
 QT_MOC_LITERAL(16, 264, 23), // "slotFindWeekWeatherData"
-QT_MOC_LITERAL(17, 288, 15), // "onReplyFinished"
-QT_MOC_LITERAL(18, 304, 14), // "QNetworkReply*"
-QT_MOC_LITERAL(19, 319, 5) // "reply"
+QT_MOC_LITERAL(17, 288, 10), // "loadConfig"
+QT_MOC_LITERAL(18, 299, 15), // "onReplyFinished"
+QT_MOC_LITERAL(19, 315, 14), // "QNetworkReply*"
+QT_MOC_LITERAL(20, 330, 5) // "reply"
 
     },
     "WeatherManager\0sendWeatherDataToController\0"
@@ -58,7 +59,8 @@ QT_MOC_LITERAL(19, 319, 5) // "reply"
     "slotFindWeatherData\0slotRecivedWeatherDataFromAPI\0"
     "sloRecivedAuthorizationData\0command\0"
     "login\0password\0slotFindWeekWeatherData\0"
-    "onReplyFinished\0QNetworkReply*\0reply"
+    "loadConfig\0onReplyFinished\0QNetworkReply*\0"
+    "reply"
 };
 #undef QT_MOC_LITERAL
 
@@ -68,7 +70,7 @@ static const uint qt_meta_data_WeatherManager[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -76,17 +78,18 @@ static const uint qt_meta_data_WeatherManager[] = {
        4,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   59,    2, 0x06 /* Public */,
-       4,    1,   62,    2, 0x06 /* Public */,
-       5,    3,   65,    2, 0x06 /* Public */,
-       9,    1,   72,    2, 0x06 /* Public */,
+       1,    1,   64,    2, 0x06 /* Public */,
+       4,    1,   67,    2, 0x06 /* Public */,
+       5,    3,   70,    2, 0x06 /* Public */,
+       9,    1,   77,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      10,    2,   75,    2, 0x0a /* Public */,
-      11,    1,   80,    2, 0x0a /* Public */,
-      12,    3,   83,    2, 0x0a /* Public */,
-      16,    0,   90,    2, 0x0a /* Public */,
-      17,    1,   91,    2, 0x08 /* Private */,
+      10,    2,   80,    2, 0x0a /* Public */,
+      11,    1,   85,    2, 0x0a /* Public */,
+      12,    3,   88,    2, 0x0a /* Public */,
+      16,    0,   95,    2, 0x0a /* Public */,
+      17,    0,   96,    2, 0x0a /* Public */,
+      18,    1,   97,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QJsonObject,    3,
@@ -99,7 +102,8 @@ static const uint qt_meta_data_WeatherManager[] = {
     QMetaType::Void, QMetaType::QJsonObject,    3,
     QMetaType::Void, QMetaType::QString, QMetaType::QString, QMetaType::QString,   13,   14,   15,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 18,   19,
+    QMetaType::Bool,
+    QMetaType::Void, 0x80000000 | 19,   20,
 
        0        // eod
 };
@@ -118,13 +122,15 @@ void WeatherManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 5: _t->slotRecivedWeatherDataFromAPI((*reinterpret_cast< const QJsonObject(*)>(_a[1]))); break;
         case 6: _t->sloRecivedAuthorizationData((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
         case 7: _t->slotFindWeekWeatherData(); break;
-        case 8: _t->onReplyFinished((*reinterpret_cast< QNetworkReply*(*)>(_a[1]))); break;
+        case 8: { bool _r = _t->loadConfig();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 9: _t->onReplyFinished((*reinterpret_cast< QNetworkReply*(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
         default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 8:
+        case 9:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
@@ -191,13 +197,13 @@ int WeatherManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }

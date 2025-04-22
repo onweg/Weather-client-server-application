@@ -18,18 +18,29 @@ void WeatherApiClient::findWeatherDataInAPI(const QString &city)
 
 bool WeatherApiClient::loadConfig(const QJsonObject &settingsAPI)
 {
-    if (settingsAPI.contains("api") && settingsAPI["api"].isObject() && settingsAPI.contains("key")) {
-        apiKey = settingsAPI["api"].toObject()["key"].toString();
-        if (settingsAPI.contains("urlFindCityByName") && settingsAPI.contains("urlFindWeatherByCoordinates")) {
-            urlFindCityByName = settingsAPI["api"].toObject()["urlFindCityByName"].toString();
-            urlFindWeatherByCoordinates = settingsAPI["api"].toObject()["urlFindWeatherByCoordinates"].toString();
-            return true;
-        } else {
-            qDebug("Нет нужных элементо в JSON");
-            return false;
-        }
+    if (!settingsAPI.contains("api") || !settingsAPI["api"].isObject()) {
+        qDebug() << "Ошибка: ключ 'api' отсутствует или не является объектом.";
+        return false;
     }
-    return false;
+    QJsonObject apiObject = settingsAPI["api"].toObject();
+    if (!apiObject.contains("key") || apiObject["key"].toString().isEmpty()) {
+        qDebug() << "Ошибка: ключ 'key' отсутствует или пуст.";
+        return false;
+    }
+    if (!apiObject.contains("urlFindCityByName") || apiObject["urlFindCityByName"].toString().isEmpty()) {
+        qDebug() << "Ошибка: ключ 'urlFindCityByName' отсутствует или пуст.";
+        return false;
+    }
+    if (!apiObject.contains("urlFindWeatherByCoordinates") || apiObject["urlFindWeatherByCoordinates"].toString().isEmpty()) {
+        qDebug() << "Ошибка: ключ 'urlFindWeatherByCoordinates' отсутствует или пуст.";
+        return false;
+    }
+    apiKey = apiObject["key"].toString();
+    urlFindCityByName = apiObject["urlFindCityByName"].toString();
+    urlFindWeatherByCoordinates = apiObject["urlFindWeatherByCoordinates"].toString();
+
+    qDebug() << "Конфигурация успешно загружена.";
+    return true;
 }
 
 void WeatherApiClient::onSlotFindCity()

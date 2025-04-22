@@ -14,6 +14,7 @@
 #include "weathercache.h"
 #include "cachecleaner.h"
 #include <QFile>
+#include <QCoreApplication>
 #include "../Utils/weatherjsonconverter.h"
 
 class WeatherManager : public QObject
