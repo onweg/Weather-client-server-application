@@ -4,15 +4,20 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Установка зависимостей
 RUN apt-get update && apt-get install -y \
-    qt5-default qtbase5-dev qmake build-essential curl && \
+    qtbase5-dev qtchooser qt5-qmake build-essential curl \
+    libpq-dev \
+    libqt5sql5-psql && \
     apt-get clean
 
-# Копируем проект внутрь контейнера
-WORKDIR /app
-COPY ../server ./server
-COPY entrypoint.sh .
 
-# Даем права на запуск скрипта
+# Копируем проект внутрь контейнера
+WORKDIR /app/server
+COPY ../server .
+
+# Копируем скрипт запуска
+WORKDIR /app
+COPY docker/entrypoint.sh .
+
 RUN chmod +x entrypoint.sh
 
 CMD ["./entrypoint.sh"]

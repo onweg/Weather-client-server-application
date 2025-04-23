@@ -207,6 +207,7 @@ void HttpServer::sendHttpResponse(QTcpSocket *socket, const QJsonObject &respons
 
 #ifdef USE_STRICT_CONFIG_PATH
 QString getConfigPath() {
+    qDebug() << "App dir:" << QCoreApplication::applicationDirPath();
     QString configPath = QCoreApplication::applicationDirPath() + "/db_config.json";
     if (!QFile::exists(configPath)) {
         qWarning() << "Config file not found at" << configPath;
@@ -216,6 +217,7 @@ QString getConfigPath() {
 }
 #else
 QString getConfigPath() {
+    qDebug() << "App dir:" << QCoreApplication::applicationDirPath();
     QDir dir(QCoreApplication::applicationDirPath());
     while (!dir.exists("db_config.json") && dir.cdUp()) {}
     QString configPath = dir.filePath("db_config.json");

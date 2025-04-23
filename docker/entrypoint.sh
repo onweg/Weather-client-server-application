@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "🔧 Генерация config.json..."
-cat <<EOF > server/config.json
+echo "Генерация db_config.json..."
+cat <<EOF > server/db_config.json
 {
-  "host": "db",
+  "host": "postgres_db",
   "port": 5432,
   "database": "myapp",
   "username": "user",
@@ -11,10 +11,10 @@ cat <<EOF > server/config.json
 }
 EOF
 
-echo "🔨 Сборка сервера..."
+echo "Сборка сервера..."
 cd server
 qmake HttpServer2.pro
 make
 
-echo "🚀 Запуск сервера..."
+echo "Запуск сервера..."
 ./HttpServer2

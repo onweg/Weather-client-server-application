@@ -1,10 +1,10 @@
-#include "server/httpserver.h"
+#include "src/httpserver.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QCoreApplication a(argc, argv);
     QCoreApplication::addLibraryPath("/opt/homebrew/Cellar/qt/6.9.0/share/qt/plugins");
     // qDebug() << "Доступные драйверы SQL:" << QSqlDatabase::drivers();
 
