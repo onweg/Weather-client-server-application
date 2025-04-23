@@ -10,6 +10,7 @@
 #include <QJsonObject>
 #include <QDebug>
 #include <QFile>
+#include <QDir>
 #include <QCoreApplication>
 
 

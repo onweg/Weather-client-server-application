@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.db
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    networks:
+      - appnet
+
+  server:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.server
+    container_name: qt_server
+    depends_on:
+      - db
+    networks:
+      - appnet
+
+networks:
+  appnet:

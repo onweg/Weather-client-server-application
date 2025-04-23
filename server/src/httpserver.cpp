@@ -205,8 +205,37 @@ void HttpServer::sendHttpResponse(QTcpSocket *socket, const QJsonObject &respons
     socket->disconnectFromHost();
 }
 
+#ifdef USE_STRICT_CONFIG_PATH
+QString getConfigPath() {
+    QString configPath = QCoreApplication::applicationDirPath() + "/db_config.json";
+    if (!QFile::exists(configPath)) {
+        qWarning() << "Config file not found at" << configPath;
+        return {};
+    }
+    return configPath;
+}
+#else
+QString getConfigPath() {
+    QDir dir(QCoreApplication::applicationDirPath());
+    while (!dir.exists("db_config.json") && dir.cdUp()) {}
+    QString configPath = dir.filePath("db_config.json");
+    if (!QFile::exists(configPath)) {
+        qWarning() << "Config file not found at" << configPath;
+        return {};
+    }
+    return configPath;
+}
+#endif
+
+
 bool HttpServer::connectToDatabase() {
-    QFile configFile(QCoreApplication::applicationDirPath() + "/../../../db_config.json");
+    QString configPath = getConfigPath();
+    if (configPath.isEmpty()) {
+        qDebug() << "Не удалось найти конфигурационный файл";
+        return false;
+    }
+
+    QFile configFile(configPath);
     if (!configFile.open(QIODevice::ReadOnly)) {
         qDebug() << "Не удалось открыть файл конфигурации";
         return false;
@@ -222,13 +251,11 @@ bool HttpServer::connectToDatabase() {
     }
 
     QJsonObject jsonObject = doc.object();
-
     QString host = jsonObject.value("host").toString();
     int port = jsonObject.value("port").toInt();
     QString dbname = jsonObject.value("database").toString();
     QString username = jsonObject.value("username").toString();
     QString password = jsonObject.value("password").toString();
-
 
     if (port == 0) {
         qDebug() << "Порт из конфигурации равен 0, возможно ошибка в файле";
