@@ -10,7 +10,7 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
+-- SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -23,11 +23,14 @@ SET row_security = off;
 -- TOC entry 3667 (class 1262 OID 57389)
 -- Name: myapp; Type: DATABASE; Schema: -; Owner: user
 --
+\connect postgres
+
+DROP DATABASE IF EXISTS myapp;
 
 CREATE DATABASE myapp WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'C';
 
 
-ALTER DATABASE myapp OWNER TO user;
+ALTER DATABASE myapp OWNER TO "user";
 
 \connect myapp
 
@@ -51,7 +54,7 @@ SET row_security = off;
 -- *not* creating schema, since initdb creates it
 
 
-ALTER SCHEMA public OWNER TO user;
+ALTER SCHEMA public OWNER TO "user";
 
 SET default_tablespace = '';
 
@@ -69,7 +72,7 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO user;
+ALTER TABLE public.users OWNER TO "user";
 
 --
 -- TOC entry 209 (class 1259 OID 57390)
@@ -85,7 +88,7 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.users_id_seq OWNER TO user;
+ALTER SEQUENCE public.users_id_seq OWNER TO "user";
 
 --
 -- TOC entry 3669 (class 0 OID 0)
