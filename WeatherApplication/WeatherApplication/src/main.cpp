@@ -40,7 +40,7 @@
 #include <QObject>
 #include "Manager/weathermanager.h"
 #include "ClientController/clientcontroller.h"
-#include "DatabaseManager/weatherdatawriter.h"
+#include "DatabaseManager/databasemanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -55,13 +55,13 @@ int main(int argc, char *argv[])
        return 0;
     }
     ClientController controller;
-    WeatherDataWriter writer;
+    DatabaseManager dbManager;
 
     QObject::connect(&controller, &ClientController::findWeatherData, &manager, &WeatherManager::slotFindWeatherData);
     QObject::connect(&controller, &ClientController::findWeekWeatherData, &manager, &WeatherManager::slotFindWeekWeatherData);
     QObject::connect(&manager, &WeatherManager::sendWeatherDataToController, &controller, &ClientController::slotWeatherDataArrived);
     QObject::connect(&manager, &WeatherManager::sendWeekWeatherDataToController, &controller, &ClientController::slotWeekWeatherDataArrived);
-    QObject::connect(&manager, &WeatherManager::submitCompletedWeatherDataSearchRequest, &writer, &WeatherDataWriter::slotSubmitCompletedWeatherDataSearchRequest);
+    QObject::connect(&manager, &WeatherManager::submitCompletedWeatherDataSearchRequest, &dbManager, &DatabaseManager::slotSubmitCompletedWeatherDataSearchRequest);
     QObject::connect(&controller, &ClientController::sendAuthorizationDataToManager, &manager, &WeatherManager::sloRecivedAuthorizationData);
     QObject::connect(&manager, &WeatherManager::sendAuthorizationResult, &controller, &ClientController::slotRecivedAuthorizationData);
 
@@ -72,8 +72,5 @@ int main(int argc, char *argv[])
 
     return application->exec();
 }
-
-// добавлять в бд все запросы
-// погода на неделю
 
 
