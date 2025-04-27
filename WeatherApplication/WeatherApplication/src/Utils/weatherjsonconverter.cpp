@@ -1,113 +1,96 @@
-#include "weatherjsonconverter.h"
+#include "WeatherJsonConverter.h"
 
-WeatherJsonConverter::WeatherJsonConverter(QObject *parent) : QObject(parent)
+WeatherJsonConverter::WeatherJsonConverter(QObject *parent)
+    : QObject(parent)
 {
-
 }
 
-QJsonObject WeatherJsonConverter::getCorrectData(QJsonObject jsonObj)
+WeatherData WeatherJsonConverter::parseWeatherDay(const QJsonObject &jsonObj)
 {
-    return processWeatherData(jsonObj);
+    WeatherData data;
+    if (!jsonObj.contains("list")) return data;
+
+    QJsonArray forecasts = jsonObj["list"].toArray();
+    if (forecasts.isEmpty()) return data;
+
+    QJsonObject forecast = forecasts.first().toObject();
+    data = createWeatherDataFromForecast(forecast);
+
+    if (jsonObj.contains("city")) {
+        data.city = jsonObj["city"].toObject()["name"].toString();
+    }
+
+    return data;
 }
 
-QJsonObject WeatherJsonConverter::processWeatherData(const QJsonObject &originalJson) {
-    QJsonObject result;
-    QDate currentDate = QDate::currentDate();
+WeatherWeekData WeatherJsonConverter::parseWeatherWeek(const QJsonObject &jsonObj)
+{
+    WeatherWeekData weekData;
 
-    if (originalJson.contains("city") && originalJson["city"].isObject()) {
-        QJsonObject cityObj = originalJson["city"].toObject();
-        result["city"] = cityObj["name"];
+    if (!jsonObj.contains("list")) return weekData;
 
-        if (cityObj.contains("country")) {
-            result["country"] = cityObj["country"];
+    QJsonArray forecasts = jsonObj["list"].toArray();
+    QMap<QString, WeatherData> days;
+
+    for (const QJsonValue &value : forecasts) {
+        QJsonObject forecast = value.toObject();
+        QString dateStr = QDateTime::fromString(forecast["dt_txt"].toString(), "yyyy-MM-dd HH:mm:ss").date().toString("yyyy-MM-dd");
+
+        if (!days.contains(dateStr)) {
+            days[dateStr] = createWeatherDataFromForecast(forecast);
         }
     }
 
-    if (originalJson.contains("list") && originalJson["list"].isArray()) {
-        QJsonArray forecasts = originalJson["list"].toArray();
-        QMap<QString, QJsonObject> dailyData;
-
-        for (const QJsonValue &forecastValue : forecasts) {
-            if (!forecastValue.isObject()) continue;
-            QJsonObject forecast = forecastValue.toObject();
-
-            QString dtTxt = forecast["dt_txt"].toString();
-            QDateTime forecastTime = QDateTime::fromString(dtTxt, "yyyy-MM-dd HH:mm:ss");
-            QString dateKey = forecastTime.date().toString("yyyy-MM-dd");
-
-            QJsonObject mainData = forecast["main"].toObject();
-            QJsonArray weatherArray = forecast["weather"].toArray();
-            QJsonObject windData = forecast.contains("wind") ? forecast["wind"].toObject() : QJsonObject();
-
-            QJsonObject dayData;
-
-            dayData["temp"] = mainData["temp"];
-            dayData["feels_like"] = mainData["feels_like"];
-            dayData["temp_min"] = mainData["temp_min"];
-            dayData["temp_max"] = mainData["temp_max"];
-
-            if (!weatherArray.isEmpty()) {
-                QJsonObject weather = weatherArray[0].toObject();
-                dayData["description"] = weather["description"];
-                dayData["icon"] = weather["icon"];
-                dayData["main_weather"] = weather["main"];
-            }
-
-            dayData["wind_speed"] = windData["speed"];
-            dayData["humidity"] = mainData["humidity"];
-            dayData["pressure"] = mainData["pressure"];
-            dayData["time"] = forecastTime.time().hour();
-
-            if (forecastTime.date() == currentDate) {
-                if (forecastTime.time().hour() >= 12) {
-                    if (!dailyData.contains(dateKey) ||
-                        (forecastTime.time().hour() <= 15 &&
-                         forecastTime.time().hour() > dailyData[dateKey]["time"].toInt())) {
-                        dailyData[dateKey] = dayData;
-                    }
-                }
-            }
-            else if (forecastTime.time().hour() == 15) {
-                dailyData[dateKey] = dayData;
-            }
-        }
-
-        QString todayKey = currentDate.toString("yyyy-MM-dd");
-        if (!dailyData.contains(todayKey) && !forecasts.isEmpty()) {
-            QJsonObject lastForecast = forecasts.last().toObject();
-            QDateTime lastTime = QDateTime::fromString(lastForecast["dt_txt"].toString(), "yyyy-MM-dd HH:mm:ss");
-            if (lastTime.date() == currentDate) {
-                dailyData[todayKey] = createDayData(lastForecast);
-            }
-        }
-        for (auto it = dailyData.begin(); it != dailyData.end(); ++it) {
-            result[it.key()] = it.value();
-        }
+    for (auto it = days.begin(); it != days.end(); ++it) {
+        weekData.dailyForecasts.append(it.value());
     }
-    return result;
+
+    if (jsonObj.contains("city")) {
+        weekData.city = jsonObj["city"].toObject()["name"].toString();
+    }
+
+    return weekData;
 }
 
-QJsonObject WeatherJsonConverter::createDayData(const QJsonObject &forecast) {
-    QJsonObject dayData;
-    QJsonObject mainData = forecast["main"].toObject();
+UserData WeatherJsonConverter::parseUserData(const QJsonObject &jsonObj)
+{
+    UserData user;
+    user.username = jsonObj["username"].toString();
+    user.token = jsonObj["token"].toString();
+    user.email = jsonObj["email"].toString();
+    return user;
+}
+
+ApiReply WeatherJsonConverter::parseApiReply(const QJsonObject &jsonObj)
+{
+    ApiReply reply;
+    reply.status = jsonObj["status"].toString();
+    reply.message = jsonObj["message"].toString();
+    reply.errorCode = jsonObj["error_code"].toInt();
+    return reply;
+}
+
+WeatherData WeatherJsonConverter::createWeatherDataFromForecast(const QJsonObject &forecast)
+{
+    WeatherData data;
+    QJsonObject main = forecast["main"].toObject();
     QJsonArray weatherArray = forecast["weather"].toArray();
-    QJsonObject windData = forecast.contains("wind") ? forecast["wind"].toObject() : QJsonObject();
-
-    dayData["temp"] = mainData["temp"];
-    dayData["feels_like"] = mainData["feels_like"];
-    dayData["temp_min"] = mainData["temp_min"];
-    dayData["temp_max"] = mainData["temp_max"];
+    QJsonObject wind = forecast.contains("wind") ? forecast["wind"].toObject() : QJsonObject();
 
     if (!weatherArray.isEmpty()) {
-        QJsonObject weather = weatherArray[0].toObject();
-        dayData["description"] = weather["description"];
-        dayData["icon"] = weather["icon"];
+        QJsonObject weather = weatherArray.first().toObject();
+        data.description = weather["description"].toString();
+        data.icon = weather["icon"].toString();
     }
 
-    dayData["wind_speed"] = windData["speed"];
-    dayData["humidity"] = mainData["humidity"];
-    dayData["pressure"] = mainData["pressure"];
-    dayData["time"] = QDateTime::fromString(forecast["dt_txt"].toString(), "yyyy-MM-dd HH:mm:ss").time().hour();
+    data.temp = main["temp"].toDouble();
+    data.feels_like = main["feels_like"].toDouble();
+    data.temp_min = main["temp_min"].toDouble();
+    data.temp_max = main["temp_max"].toDouble();
+    data.humidity = main["humidity"].toInt();
+    data.pressure = main["pressure"].toInt();
+    data.wind_speed = wind["speed"].toDouble();
+    data.date = QDateTime::fromString(forecast["dt_txt"].toString(), "yyyy-MM-dd HH:mm:ss").date();
 
-    return dayData;
+    return data;
 }

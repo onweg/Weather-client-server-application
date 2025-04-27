@@ -16,6 +16,10 @@
 #include <QFile>
 #include <QCoreApplication>
 #include "../Utils/weatherjsonconverter.h"
+#include "../Models/weekweatherdata.h"
+#include "../Models/weatherdata.h"
+#include "../Models/authorizationreply.h"
+#include "../Models/apireply.h"
 
 class WeatherManager : public QObject
 {

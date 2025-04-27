@@ -4,21 +4,24 @@
 #include <QObject>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QDateTime>
-#include <QDateTime>
-#include <QMap>
+#include "../Models/WeatherData.h"
+#include "../Models/WeatherWeekData.h"
+#include "../Models/UserData.h"
+#include "../Models/ApiReply.h"
 
 class WeatherJsonConverter : public QObject
 {
     Q_OBJECT
 public:
     explicit WeatherJsonConverter(QObject *parent = nullptr);
-    static QJsonObject getCorrectData(QJsonObject jsonObj);
+
+    static WeatherData parseWeatherDay(const QJsonObject &jsonObj);
+    static WeatherWeekData parseWeatherWeek(const QJsonObject &jsonObj);
+    static UserData parseUserData(const QJsonObject &jsonObj);
+    static ApiReply parseApiReply(const QJsonObject &jsonObj);
 
 private:
-    static QJsonObject processWeatherData(const QJsonObject &originalJson);
-    static QJsonObject createDayData(const QJsonObject &forecast);
-
+    static WeatherData createWeatherDataFromForecast(const QJsonObject &forecast);
 };
 
-#endif // DATAEDITOR_H
+#endif // WEATHERJSONCONVERTER_H

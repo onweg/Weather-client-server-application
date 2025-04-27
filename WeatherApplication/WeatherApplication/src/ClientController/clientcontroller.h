@@ -16,6 +16,10 @@
 #include <QVariantMap>
 #include <QScopedPointer>
 #include "weatherupdater.h"
+#include "../Models/weekweatherdata.h"
+#include "../Models/weatherdata.h"
+#include "../Models/authorizationreply.h"
+#include "../Models/apireply.h"
 
 #define NUMBEROFDAYS 5
 
@@ -35,21 +39,8 @@ public:
     Q_INVOKABLE QVariantMap getWeatherDataFromWeek();
 
 private:
-    struct WeatherData{
-        double lat;
-        double lon;
-        QString city;
-        QDate date;
-        QString description;
-        double temp;
-        double feels_like;
-        double temp_max;
-        double temp_min;
-        double wind_speed;
-        int humidity;
-        int pressure;
-    };
     WeatherData weatherData;
+    WeekWeatherData weekWeatherData;
     void setData(const QJsonObject &jsonObj);
     void setNextDay();
     void setPrevDay();
@@ -57,17 +48,10 @@ private:
     QScopedPointer<QThread> updaterThread;
     WeatherUpdater *updater;
 
-    QVariantMap convertToVariantMap(const WeatherData &data) const;
-    QVariantMap weekWeatherData;
-
-
-
 public slots:
     void slotWeatherDataArrived(const QJsonObject &jsonObj);
     void slotWeekWeatherDataArrived(const QJsonObject &jsonObj);
     void slotRecivedAuthorizationData(const QJsonObject &jsonObj);
-
-
 
 private slots:
     void slotUpdateWeatherFromUpdater();

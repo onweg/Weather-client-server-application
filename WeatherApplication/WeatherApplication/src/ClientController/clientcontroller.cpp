@@ -30,22 +30,22 @@ void ClientController::clickSearchCityButton(const QString &city)
 void ClientController::clickNextDayButton()
 {
     setNextDay();
-    qDebug() << weatherData.city << " " << weatherData.date.toString("yyyy-MM-dd");
+    // qDebug() << weatherData.city << " " << weatherData.date.toString("yyyy-MM-dd");
     emit findWeatherData(weatherData.city, weatherData.date);
 }
 
 void ClientController::clickPrevDayButton()
 {
     setPrevDay();
-    qDebug() << weatherData.city << " " << weatherData.date.toString("yyyy-MM-dd");
+    // qDebug() << weatherData.city << " " << weatherData.date.toString("yyyy-MM-dd");
     emit findWeatherData(weatherData.city, weatherData.date);
 }
 
 void ClientController::clickWeekWeatherDataButton()
 {
-    if (!weatherData.city.isEmpty() && weatherData.city != "..." && weatherData.city != "Город не найден!") {
+    // if (!weatherData.city.isEmpty() && weatherData.city != "..." && weatherData.city != "Город не найден!") {
          emit findWeekWeatherData();
-    }
+    // }
 }
 
 void ClientController::sendAuthorizationData(const QString &command, const QString &login, const QString &password)
@@ -55,35 +55,35 @@ void ClientController::sendAuthorizationData(const QString &command, const QStri
 
 QVariantMap ClientController::getWeatherDataFromOneDay()
 {
-    return convertToVariantMap(weatherData);
+    return QVariant::fromValue(weatherData);
 }
 
 QVariantMap ClientController::getWeatherDataFromWeek()
 {
-    return weekWeatherData;
+    return QVariant::fromValue(weekWeatherData);
 }
 
-void ClientController::slotWeatherDataArrived(const QJsonObject &jsonObj)
+void ClientController::slotWeatherDataArrived(const WeatherData &data)
 {
     // qDebug() << "Получил";
-    setData(jsonObj);
+    weatherData = data;
 }
 
-void ClientController::slotWeekWeatherDataArrived(const QJsonObject &jsonObj)
+void ClientController::slotWeekWeatherDataArrived(const WeekWeatherData &data)
 {
-    QJsonDocument doc(jsonObj);
-    qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
-    weekWeatherData = jsonObj.toVariantMap();
+    // QJsonDocument doc(jsonObj);
+    // qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
+    weekWeatherData = data;
     emit weekDataUpdated();
-    qDebug() << "Emit отправлен";
+    // qDebug() << "Emit отправлен";
 }
 
-void ClientController::slotRecivedAuthorizationData(const QJsonObject &jsonObj)
+void ClientController::slotRecivedAuthorizationData(const AuthorizationReply &authorizationReply)
 {
-    if (jsonObj.contains("status") && jsonObj["status"].toString() == "success") {
+    if (authorizationReply.success) {
         emit authorizationCompleted();
     } else {
-        emit authorizationFailed(jsonObj["message"].toString());
+        emit authorizationFailed(authorizationReply.message);
     }
 }
 
@@ -92,27 +92,25 @@ void ClientController::slotUpdateWeatherFromUpdater()
     emit findWeatherData(weatherData.city, weatherData.date);
 }
 
-
-
-void ClientController::setData(const QJsonObject &jsonObj) {
-    if (jsonObj.contains("error")) {
-        weatherData.city = jsonObj["error"].toString();
-    } else {
-        weatherData.city = jsonObj["city"].toString();
-    }
-    weatherData.date = QDate::fromString(jsonObj["date"].toString(), "yyyy-MM-dd");
-    weatherData.description = jsonObj["description"].toString();
-    weatherData.temp = jsonObj["temp"].toDouble();
-    weatherData.feels_like = jsonObj["feels_like"].toDouble();
-    weatherData.temp_max = jsonObj["temp_max"].toDouble();
-    weatherData.temp_min = jsonObj["temp_min"].toDouble();
-    weatherData.wind_speed = jsonObj["wind_speed"].toDouble();
-    weatherData.humidity = jsonObj["humidity"].toInt();
-    weatherData.pressure = jsonObj["pressure"].toInt();
-    emit dataUpdated();
-    // updater->resetTimer();
-    return;
-}
+// void ClientController::setData(const QJsonObject &jsonObj) {
+//     if (jsonObj.contains("error")) {
+//         weatherData.city = jsonObj["error"].toString();
+//     } else {
+//         weatherData.city = jsonObj["city"].toString();
+//     }
+//     weatherData.date = QDate::fromString(jsonObj["date"].toString(), "yyyy-MM-dd");
+//     weatherData.description = jsonObj["description"].toString();
+//     weatherData.temp = jsonObj["temp"].toDouble();
+//     weatherData.feels_like = jsonObj["feels_like"].toDouble();
+//     weatherData.temp_max = jsonObj["temp_max"].toDouble();
+//     weatherData.temp_min = jsonObj["temp_min"].toDouble();
+//     weatherData.wind_speed = jsonObj["wind_speed"].toDouble();
+//     weatherData.humidity = jsonObj["humidity"].toInt();
+//     weatherData.pressure = jsonObj["pressure"].toInt();
+//     emit dataUpdated();
+//     // updater->resetTimer();
+//     return;
+// }
 
 void ClientController::setNextDay()
 {

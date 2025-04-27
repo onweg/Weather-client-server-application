@@ -36,7 +36,7 @@ void WeatherManager::slotFindWeatherData(const QString &city, const QDate &date)
     int status = cache.hasValidData(desiredCity, desiredDate);
     if (status == 0) {
         emit sendWeatherDataToController(cache.getData(desiredCity, desiredDate));
-    } else if (status == 1){
+    } else if (status == 1 || status == 3){
         api->findWeatherDataInAPI(desiredCity);
     }
 
@@ -44,24 +44,22 @@ void WeatherManager::slotFindWeatherData(const QString &city, const QDate &date)
 
 void WeatherManager::slotRecivedWeatherDataFromAPI(const QJsonObject &jsonObj)
 {
-    QJsonObject correctJsonData = WeatherJsonConverter::getCorrectData(jsonObj);
-    QJsonDocument doc2(correctJsonData);
-    qDebug().noquote() << doc2.toJson(QJsonDocument::Indented);
-    if (correctJsonData.isEmpty()) {
-        QJsonObject error;
-        error["error"] = "Город не найден!";
+    ApiReply apiRply = WeatherJsonConverter::parseApiReply(jsonObj);
+    // QJsonDocument doc2(correctJsonData);
+    // qDebug().noquote() << doc2.toJson(QJsonDocument::Indented);
+    if (!apiRply.success) {
+        WeatherData error;
+        error.messageError = apiReply.messageError;
         emit sendWeatherDataToController(error);
-
     } else {
-        cache.addData(desiredCity, correctJsonData);
-
-        QJsonObject tmp = cache.getData(desiredCity, desiredDate);
-        tmp["city"] = correctJsonData["city"].toString();
-        tmp["date"] = desiredDate.toString("yyyy-MM-dd");
-        QJsonDocument doc(tmp);
-        qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
-        emit sendWeatherDataToController(tmp);
-        emit submitCompletedWeatherDataSearchRequest(user, tmp["city"].toString(), desiredDate);
+        cache.addData(desiredCity, apiReply.data);
+        WeatherData result = cache.getData(desiredCity, desiredDate);
+        // tmp["city"] = correctJsonData["city"].toString();
+        // tmp["date"] = desiredDate.toString("yyyy-MM-dd");
+        // QJsonDocument doc(tmp);
+        // qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
+        emit sendWeatherDataToController(result);
+        emit submitCompletedWeatherDataSearchRequest(user, result.city, desiredDate);
     }
 
 }
@@ -87,23 +85,22 @@ void WeatherManager::sloRecivedAuthorizationData(const QString &command, const Q
 
 void WeatherManager::slotFindWeekWeatherData()
 {
-    QDate tmpDate = QDate::currentDate();
-    QJsonObject weekData;
-    weekData["city"] = desiredCity;
-    for (int index_day = 0; index_day < 5; index_day++) {
-        int status = cache.hasValidData(desiredCity);
-        if (status != 0) {
-            return;
-        }
-        QJsonObject tmpDayData = cache.getData(desiredCity, tmpDate);
-//        QJsonDocument doc2(tmpDayData);
-//        qDebug().noquote() << doc2.toJson(QJsonDocument::Indented);
-        QJsonObject tmp;
-        tmp["date"] = tmpDayData["date"].toString();
-        tmp["temp"] = QString::number(tmpDayData["temp"].toDouble());
-        weekData[QString::number(index_day)] = tmp;
-        tmpDate = tmpDate.addDays(1);
-    }
+    // QDate tmpDate = QDate::currentDate();
+    WeekWeatherData weekData = cache.getWeekWeatherData(desiredCity);
+//     for (int index_day = 0; index_day < 5; index_day++) {
+//         int status = cache.hasValidData(desiredCity);
+//         if (status != 0) {
+//             return;
+//         }
+//         QJsonObject tmpDayData = cache.getData(desiredCity, tmpDate);
+// //        QJsonDocument doc2(tmpDayData);
+// //        qDebug().noquote() << doc2.toJson(QJsonDocument::Indented);
+//         QJsonObject tmp;
+//         tmp["date"] = tmpDayData["date"].toString();
+//         tmp["temp"] = QString::number(tmpDayData["temp"].toDouble());
+//         weekData[QString::number(index_day)] = tmp;
+//         tmpDate = tmpDate.addDays(1);
+//     }
 //    QJsonDocument doc(weekData);
 //    qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
     emit sendWeekWeatherDataToController(weekData);
@@ -132,13 +129,13 @@ void WeatherManager::onReplyFinished(QNetworkReply *reply)
 {
     QByteArray responseData = reply->readAll();
     QJsonDocument doc = QJsonDocument::fromJson(responseData);
-    if (!doc.isNull() && doc.isObject()) {
+    // if (!doc.isNull() && doc.isObject()) {
         QJsonObject jsonObj = doc.object();
-        emit sendAuthorizationResult(jsonObj);
-
-    } else {
-        qDebug() << "Некорректный Json файл!";
-    }
+        AuthorizationReply authorizationReply = WeatherJsonConverter::parseApiReply(jsonObj);
+        emit sendAuthorizationResult(authorizationReply);
+    // } else {
+    //     qDebug() << "Некорректный Json файл!";
+    // }
 }
 
 

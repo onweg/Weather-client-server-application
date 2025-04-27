@@ -15,6 +15,8 @@
 #include <QString>
 #include <QDebug>
 
+#include "../Models/weekweatherdata.h"
+
 class WeatherCache : public QObject
 {
     Q_OBJECT
@@ -31,15 +33,16 @@ public:
 
     static const int CACHE_EXPIRATION_TIME = 3600;
     CacheStatus hasValidData(const QString &city, const QDate &date = QDate::currentDate()); // 0 - успех 1 - нет города 2 - есть город, но нет даты 3 - данные устарели
-    QJsonObject getData(const QString &city, const QDate &date = QDate::currentDate());
+    WeatherData getWeatherData(const QString &city, const QDate &date = QDate::currentDate());
+    WeatherData getWeekWeatherData(const QString &city);
     void addData(const QString &city, const QJsonObject &data);
     void removeData(const QString &city);
     void clearExpired();
 
 private:
-
+    int getIndexInListByDate(const QDate &date);
     struct CacheEntry{
-        QJsonObject data;
+        WeekWeatherData data;
         QDateTime timestamp;
     };
     QMap<QString, CacheEntry> cache;
