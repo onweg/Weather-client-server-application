@@ -59,13 +59,17 @@ SOURCES += \
 HEADERS += \
     src/ClientController/clientcontroller.h \
     src/ClientController/weatherupdater.h \
-    src/DatabaseManager/weatherdatawriter.h \
-    src/DatabaseManager/weatherdatareader.h \
+    src/DatabaseManager/databasemanager.h \
     src/Manager/cachecleaner.h \
     src/Utils/weatherjsonconverter.h \
     src/Manager/weatherapiclient.h \
     src/Manager/weathercache.h \
-    src/Manager/weathermanager.h
+    src/Manager/weathermanager.h \
+    src/Models/apireply.h \
+    src/authorizationreply.h \
+    src/serverhost.h \
+    src/weatherdata.h \
+    weekweatherdata.h
 
 DISTFILES += \
     qml/components/DateAndButtons.qml \
@@ -85,7 +89,7 @@ DISTFILES += \
     CONTRIBUTING.md \
     LICENSE.BSD-3-CLAUSE.md \
     README.md \
-    config/api_config.json
+    config/config.json
 
 
 AURORAAPP_ICONS = 86x86 108x108 128x128 172x172
