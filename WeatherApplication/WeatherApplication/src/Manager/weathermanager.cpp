@@ -42,24 +42,24 @@ void WeatherManager::slotFindWeatherData(const QString &city, const QDate &date)
 
 }
 
-void WeatherManager::slotRecivedWeatherDataFromAPI(const QJsonObject &jsonObj)
+void WeatherManager::slotRecivedWeatherDataFromAPI(const ApiReply &response)
 {
-    ApiReply apiRply = WeatherJsonConverter::parseApiReply(jsonObj);
     // QJsonDocument doc2(correctJsonData);
     // qDebug().noquote() << doc2.toJson(QJsonDocument::Indented);
-    if (!apiRply.success) {
+    if (!response.success) {
         WeatherData error;
-        error.messageError = apiReply.messageError;
+        error.messageError = response.messageError;
         emit sendWeatherDataToController(error);
     } else {
-        cache.addData(desiredCity, apiReply.data);
-        WeatherData result = cache.getData(desiredCity, desiredDate);
+        WeekWeather weatherData = WeatherJsonConverter::parseWeekWeather(response.data);
+        cache.addData(desiredCity, weatherData);
+        WeatherData dataResult = cache.getData(desiredCity, desiredDate);
         // tmp["city"] = correctJsonData["city"].toString();
         // tmp["date"] = desiredDate.toString("yyyy-MM-dd");
         // QJsonDocument doc(tmp);
         // qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
-        emit sendWeatherDataToController(result);
-        emit submitCompletedWeatherDataSearchRequest(user, result.city, desiredDate);
+        emit sendWeatherDataToController(dataResult);
+        emit submitCompletedWeatherDataSearchRequest(user, dataResult.city, desiredDate);
     }
 
 }
@@ -67,7 +67,8 @@ void WeatherManager::slotRecivedWeatherDataFromAPI(const QJsonObject &jsonObj)
 void WeatherManager::sloRecivedAuthorizationData(const QString &command, const QString &login, const QString &password)
 {
     user = login;
-    QUrl url("http://10.42.0.227:33333");
+    QString urlStr = "http://" + serverHost.ip + ":" + serverHost.port;
+    QUrl url(urlStr);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -108,9 +109,9 @@ void WeatherManager::slotFindWeekWeatherData()
 
 bool WeatherManager::loadConfig()
 {
-    QFile file("/usr/share/ru.auroraos.WeatherApplication/config/api_config.json");
+    QFile file("/usr/share/ru.auroraos.WeatherApplication/config/config.json");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Не удалось открыть api_config.json файл";
+        qDebug() << "Не удалось открыть config.json файл";
         return false;
     }
     QByteArray jsonData = file.readAll();
@@ -121,8 +122,24 @@ bool WeatherManager::loadConfig()
         qDebug() << "Ошибка парсинга json файла";
         return false;
     }
-    settingsAPI = doc.object();
-    return api->loadConfig(settingsAPI);
+    QJsonObject config = doc.object();
+    if (!config.contains("server host")) {
+        qDebug() << "В config файле нет настроек хоста сервера";
+        return false;
+    } else {
+        QJsonObject serverHostObj = config["server host"].toObject();
+        if (serverHostObj.contains("api") && serverHostObj.contains("port")) {
+            serverHost.ip = serverHostObj["ip"].toString();
+            serverHost.port = serverHostObj["port"].toString();
+        } else {
+            return false;
+        }
+    }
+    if (!config.contains("api") && api->loadConfig(settingsAPI["api"].toObject()) == false) {
+        qDebug() << "В config файле нет настроек api";
+        return false;
+    }
+    return true;
 }
 
 void WeatherManager::onReplyFinished(QNetworkReply *reply)

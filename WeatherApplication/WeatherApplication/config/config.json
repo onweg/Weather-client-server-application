@@ -3,5 +3,9 @@
     "urlFindCityByName": "https://api.openweathermap.org/geo/1.0/direct?q=%1&appid=%2",
     "urlFindWeatherByCoordinates": "https://api.openweathermap.org/data/2.5/forecast?lat=%1&lon=%2&appid=%3&units=metric&lang=ru",
     "key": "42742ea2be4d089818ddf4c59fd721be"
+  },
+  "server host": {
+    "ip": "10.42.0.227",
+    "port": "33333"
   }
 }

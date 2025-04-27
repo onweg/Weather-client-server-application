@@ -20,6 +20,7 @@
 #include "../Models/weatherdata.h"
 #include "../Models/authorizationreply.h"
 #include "../Models/apireply.h"
+#include "../Models/serverhost.h"
 
 class WeatherManager : public QObject
 {
@@ -29,11 +30,10 @@ public:
     ~WeatherManager();
 private:
     QString user;
-
-    QJsonObject settingsAPI;
-
     QString desiredCity;
     QDate desiredDate;
+    ServerHost serverHost;
+
     WeatherApiClient *api;
     WeatherCache cache;
     QNetworkAccessManager *networkManager;

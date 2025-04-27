@@ -14,7 +14,7 @@ WeatherCache::CacheStatus WeatherCache::hasValidData(const QString &city, const 
          removeData(city);
          return Expired;
     }
-    int index = getgetIndexInListByDateIndexByDate(date);
+    int index = getIndexInListByDateIndexByDate(date);
     if (index < 0 || index >= cache[city].data.dailyWeather.size()) {
         return DateNotFound;
     }

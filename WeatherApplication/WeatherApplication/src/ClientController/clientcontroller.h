@@ -41,7 +41,7 @@ public:
 private:
     WeatherData weatherData;
     WeekWeatherData weekWeatherData;
-    void setData(const QJsonObject &jsonObj);
+    // void setData(const Weathe &jsonObj);
     void setNextDay();
     void setPrevDay();
 
@@ -49,9 +49,9 @@ private:
     WeatherUpdater *updater;
 
 public slots:
-    void slotWeatherDataArrived(const QJsonObject &jsonObj);
-    void slotWeekWeatherDataArrived(const QJsonObject &jsonObj);
-    void slotRecivedAuthorizationData(const QJsonObject &jsonObj);
+    void slotWeatherDataArrived(const WeatherData &data);
+    void slotWeekWeatherDataArrived(const WeekWeatherData &data);
+    void slotRecivedAuthorizationData(const AuthorizationReply &data);
 
 private slots:
     void slotUpdateWeatherFromUpdater();

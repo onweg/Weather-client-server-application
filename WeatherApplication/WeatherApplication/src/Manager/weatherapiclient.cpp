@@ -16,29 +16,30 @@ void WeatherApiClient::findWeatherDataInAPI(const QString &city)
     return ;
 }
 
+ApiReply createErroneousResponse(const QString &message) {
+    ApiReply response;
+    response.success = false;
+    response.message = message;
+    return response;
+}
+
 bool WeatherApiClient::loadConfig(const QJsonObject &settingsAPI)
 {
-    if (!settingsAPI.contains("api") || !settingsAPI["api"].isObject()) {
-        qDebug() << "Ошибка: ключ 'api' отсутствует или не является объектом.";
-        return false;
-    }
-    QJsonObject apiObject = settingsAPI["api"].toObject();
-    if (!apiObject.contains("key") || apiObject["key"].toString().isEmpty()) {
+    if (!settingsAPI.contains("key") || settingsAPI["key"].toString().isEmpty()) {
         qDebug() << "Ошибка: ключ 'key' отсутствует или пуст.";
         return false;
     }
-    if (!apiObject.contains("urlFindCityByName") || apiObject["urlFindCityByName"].toString().isEmpty()) {
+    if (!settingsAPI.contains("urlFindCityByName") || settingsAPI["urlFindCityByName"].toString().isEmpty()) {
         qDebug() << "Ошибка: ключ 'urlFindCityByName' отсутствует или пуст.";
         return false;
     }
-    if (!apiObject.contains("urlFindWeatherByCoordinates") || apiObject["urlFindWeatherByCoordinates"].toString().isEmpty()) {
+    if (!settingsAPI.contains("urlFindWeatherByCoordinates") || settingsAPI["urlFindWeatherByCoordinates"].toString().isEmpty()) {
         qDebug() << "Ошибка: ключ 'urlFindWeatherByCoordinates' отсутствует или пуст.";
         return false;
     }
-    apiKey = apiObject["key"].toString();
-    urlFindCityByName = apiObject["urlFindCityByName"].toString();
-    urlFindWeatherByCoordinates = apiObject["urlFindWeatherByCoordinates"].toString();
-
+    apiKey = settingsAPI["key"].toString();
+    urlFindCityByName = settingsAPI["urlFindCityByName"].toString();
+    urlFindWeatherByCoordinates = settingsAPI["urlFindWeatherByCoordinates"].toString();
     qDebug() << "Конфигурация успешно загружена.";
     return true;
 }
@@ -56,18 +57,21 @@ void WeatherApiClient::onSlotFindCity()
         QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData, &error);
         if (error.error != QJsonParseError::NoError) {
             qDebug() << "Ошибка парсинга Json при поиске города: " << error.errorString();
-            emit sendRecivedWeatherDataFromAPI({});
+            ApiReply response = createErroneousResponse("Ошибка парсинга Json при поиске города: " + error.errorString());
+            emit sendRecivedWeatherDataFromAPI(response);
             return;
         }
         if (!jsonDocument.isArray()) {
             qDebug() << "Json не является массивом";
-            emit sendRecivedWeatherDataFromAPI({});
+            ApiReply response = createErroneousResponse("Json не является массивом");
+            emit sendRecivedWeatherDataFromAPI(response);
             return;
         }
         QJsonArray jsonArray = jsonDocument.array();
         if (jsonArray.isEmpty()) {
             qDebug() << "Город не найден";
-            emit sendRecivedWeatherDataFromAPI({});
+            ApiReply response = createErroneousResponse("Город не найден");
+            emit sendRecivedWeatherDataFromAPI(response);
             return;
         }
         QJsonObject cityData = jsonArray[0].toObject();
@@ -76,7 +80,8 @@ void WeatherApiClient::onSlotFindCity()
         findWeatherData(lat, lon);
     } else {
         qDebug() << "Error: " << reply->errorString();
-        emit sendRecivedWeatherDataFromAPI({});
+        ApiReply response = createErroneousResponse("Error: " << reply->errorString());
+        emit sendRecivedWeatherDataFromAPI(response);
         return;
     }
     reply->deleteLater();
@@ -98,24 +103,30 @@ void WeatherApiClient::onSlotFindWeatherData()
         QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData, &error);
         if (error.error != QJsonParseError::NoError) {
             qDebug() << "Ошибка парсинга Json при поиске погоды: " << error.errorString();
-            emit sendRecivedWeatherDataFromAPI({});
+            ApiReply response = createErroneousResponse("Error: " << reply->errorString());
+            emit sendRecivedWeatherDataFromAPI(response);
             return;
         }
         if (!jsonDocument.isObject()) {
             qDebug() << "Json не является объектом";
-            emit sendRecivedWeatherDataFromAPI({});
+            ApiReply response = createErroneousResponse("Json не является объектом");
+            emit sendRecivedWeatherDataFromAPI(response);
             return;
         }
         weatherJsonData = jsonDocument.object();
         if (weatherJsonData.isEmpty()) {
             qDebug() << "Погода не найден";
-            emit sendRecivedWeatherDataFromAPI({});
+            ApiReply response = createErroneousResponse("Погода не найден");
+            emit sendRecivedWeatherDataFromAPI(response);
             return;
         }
-        emit sendRecivedWeatherDataFromAPI(weatherJsonData);
+        ApiReply response;
+        response.data = weatherJsonData;
+        emit sendRecivedWeatherDataFromAPI(response);
     } else {
         qDebug() << "Error: " << reply->errorString();
-        emit sendRecivedWeatherDataFromAPI({});
+        ApiReply response = createErroneousResponse("Error: " << reply->errorString());
+        emit sendRecivedWeatherDataFromAPI(response);
         return;
     }
     reply->deleteLater();

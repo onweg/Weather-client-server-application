@@ -66,7 +66,9 @@ QVariantMap ClientController::getWeatherDataFromWeek()
 void ClientController::slotWeatherDataArrived(const WeatherData &data)
 {
     // qDebug() << "Получил";
+    // setData(data);
     weatherData = data;
+    emit dataUpdated();
 }
 
 void ClientController::slotWeekWeatherDataArrived(const WeekWeatherData &data)
@@ -138,21 +140,21 @@ void ClientController::setPrevDay()
     return;
 }
 
-QVariantMap ClientController::convertToVariantMap(const WeatherData &data) const
-{
-    QVariantMap result;
-    result["city"] = data.city;
-    result["date"] = data.date.toString("yyyy-MM-dd");
-    result["description"] = data.description;
-    result["temp"] = QString::number(data.temp);
-    result["feels_like"] = QString::number(data.feels_like);
-    result["temp_max"] = QString::number(data.temp_max);
-    result["temp_min"] = QString::number(data.temp_min);
-    result["wind_speed"] = QString::number(data.wind_speed);
-    result["humidity"] = QString::number(data.humidity);
-    result["pressure"] = QString::number(data.pressure);
-    return result;
-}
+// QVariantMap ClientController::convertToVariantMap(const WeatherData &data) const
+// {
+//     QVariantMap result;
+//     result["city"] = data.city;
+//     result["date"] = data.date.toString("yyyy-MM-dd");
+//     result["description"] = data.description;
+//     result["temp"] = QString::number(data.temp);
+//     result["feels_like"] = QString::number(data.feels_like);
+//     result["temp_max"] = QString::number(data.temp_max);
+//     result["temp_min"] = QString::number(data.temp_min);
+//     result["wind_speed"] = QString::number(data.wind_speed);
+//     result["humidity"] = QString::number(data.humidity);
+//     result["pressure"] = QString::number(data.pressure);
+//     return result;
+// }
 
 
 

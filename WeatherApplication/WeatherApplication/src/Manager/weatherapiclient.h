@@ -17,6 +17,7 @@
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonArray>
+#include "../Models/apireply.h"
 
 class WeatherApiClient : public QObject
 {
@@ -34,13 +35,17 @@ private:
     QString apiKey;
     QString urlFindCityByName;
     QString urlFindWeatherByCoordinates;
+
     QNetworkAccessManager *manager;
     QNetworkReply *replyCity;
     QNetworkReply *replyWeather;
+
+    ApiReply createErroneousResponse(const QString &message);
+
     void findWeatherData(const QString &lat, const QString &lon);
 
 signals:
-    void sendRecivedWeatherDataFromAPI(const QJsonObject &jsonObj);
+    void sendRecivedWeatherDataFromAPI(const ApiReply &data);
 };
 
 #endif // WEATHERAPICLIENT_H

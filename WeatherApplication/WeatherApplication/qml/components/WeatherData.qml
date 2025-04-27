@@ -9,6 +9,7 @@ Item {
     property alias weather_wind_speed: weather_wind_speed
     property alias weather_humidity: weather_humidity
     property alias weather_pressure: weather_pressure
+    property alias weather_error: text_error
     Row {
         spacing: 80
         Column {
@@ -36,6 +37,11 @@ Item {
             }
             Text {
                 text: "давление"
+            }
+            Text {
+                id: text_error
+                color: "red"
+                visible: false
             }
         }
         Column {

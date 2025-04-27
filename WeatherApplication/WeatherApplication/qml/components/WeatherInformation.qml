@@ -33,16 +33,25 @@ Item {
     Connections {
         target: controller
         onDataUpdated: {
-            weather_city.text = controller.getWeatherDataFromOneDay()["city"];
-            date.date.text = controller.getWeatherDataFromOneDay()["date"];
-            weather_data.weather_description.text = controller.getWeatherDataFromOneDay()["description"];
-            weather_data.weather_feels_like.text = controller.getWeatherDataFromOneDay()["feels_like"];
-            weather_data.weather_humidity.text = controller.getWeatherDataFromOneDay()["humidity"];
-            weather_data.weather_pressure.text = controller.getWeatherDataFromOneDay()["pressure"];
-            weather_data.weather_temp.text = controller.getWeatherDataFromOneDay()["temp"];
-            weather_data.weather_temp_max.text = controller.getWeatherDataFromOneDay()["temp_max"];
-            weather_data.weather_temp_min.text = controller.getWeatherDataFromOneDay()["temp_min"];
-            weather_data.weather_wind_speed.text = controller.getWeatherDataFromOneDay()["wind_speed"];
+            var data = controller.getWeatherDataFromOneDay();
+            weather_city.text = data["city"];
+            date.date.text = data["date"];
+            weather_data.weather_description.text = data["description"];
+            weather_data.weather_feels_like.text = data["feels_like"];
+            weather_data.weather_humidity.text = data["humidity"];
+            weather_data.weather_pressure.text = data["pressure"];
+            weather_data.weather_temp.text = data["temp"];
+            weather_data.weather_temp_max.text = data["temp_max"];
+            weather_data.weather_temp_min.text = data["temp_min"];
+            weather_data.weather_wind_speed.text = data["wind_speed"];
+            
+            if (data["error"].length > 0) {
+                weather_data.weather_error.text = data["error"];
+                weather_data.weather_error.visible = true;
+            } else {
+                weather_data.weather_error.text = "";
+                weather_data.weather_error.visible = false;
+            }
         }
     }
 }

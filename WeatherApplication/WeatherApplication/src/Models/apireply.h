@@ -6,9 +6,9 @@
 
 struct ApiReply
 {
-    WeekWeatherData data;
+    QJsonObject data;
     bool success = true;
-    QString errorMessage;
+    QString messageError;
 };
 
 #endif // APIREPLY_H
