@@ -5,10 +5,6 @@
 
 #include <QObject>
 #include <QString>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QJsonArray>
-#include <QJsonValueRef>
 #include <QDebug>
 #include <QDate>
 #include <QDateTime>
@@ -42,7 +38,6 @@ public:
 private:
     WeatherData weatherData;
     WeekWeatherData weekWeatherData;
-    // void setData(const Weathe &jsonObj);
     void setNextDay();
     void setPrevDay();
 

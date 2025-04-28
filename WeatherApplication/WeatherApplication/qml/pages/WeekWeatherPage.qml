@@ -97,7 +97,7 @@ Page {
                 text_error.visible = true;
             } else {
                 text_error.text = "";
-                text_error.visible = false; // Скрываем текст ошибки, если ошибки нет
+                text_error.visible = false;
             }
         }
     }

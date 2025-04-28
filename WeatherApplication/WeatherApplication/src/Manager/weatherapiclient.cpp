@@ -7,7 +7,6 @@ WeatherApiClient::WeatherApiClient(QObject *parent) : QObject(parent)
 
 void WeatherApiClient::findWeatherDataInAPI(const QString &city)
 {
-    qDebug() << urlFindCityByName;
     QString url = urlFindCityByName.arg(city).arg(apiKey);
     qDebug() << url;
     QNetworkRequest request((QUrl(url)));

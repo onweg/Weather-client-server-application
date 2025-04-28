@@ -3,6 +3,7 @@
 
 #include <QString>
 #include "weekweatherdata.h"
+#include <QJsonObject>
 
 struct ApiReply
 {

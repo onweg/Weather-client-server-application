@@ -27,11 +27,6 @@ WeatherData WeatherCache::getWeatherData(const QString &city, const QDate &date)
         int index = getIndexInListByDate(date);
         return cache[city].data.dailyWeather[index];
     }
-    // result["city"] = cache[city].data["city"].toString();
-    // result["date"] = date.toString("yyyy-MM-dd");
-    // qDebug() << city << " " << date.toString("yyyy-MM-dd");
-    // QJsonDocument doc(result);
-    // qDebug() << "getCache: " << doc.toJson(QJsonDocument::Indented);
     WeatherData error;
     error.messageError = "Not Found Weather";
     return error;
