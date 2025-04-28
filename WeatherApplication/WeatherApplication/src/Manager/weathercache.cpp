@@ -14,7 +14,7 @@ WeatherCache::CacheStatus WeatherCache::hasValidData(const QString &city, const 
          removeData(city);
          return Expired;
     }
-    int index = getIndexInListByDateIndexByDate(date);
+    int index = getIndexInListByDate(date);
     if (index < 0 || index >= cache[city].data.dailyWeather.size()) {
         return DateNotFound;
     }
@@ -34,25 +34,21 @@ WeatherData WeatherCache::getWeatherData(const QString &city, const QDate &date)
     // qDebug() << "getCache: " << doc.toJson(QJsonDocument::Indented);
     WeatherData error;
     error.messageError = "Not Found Weather";
-    return result;
+    return error;
 }
 
-WeatherData getWeekWeatherData(const QString &city) {
+WeekWeatherData WeatherCache::getWeekWeatherData(const QString &city)
+{
     if (hasValidData(city) == Valid) {
-        return cache[city].data.dailyWeather;
+        return cache[city].data;
     }
     WeekWeatherData error;
     error.messageError = "Not Found Weather";
-    return result;
+    return error;
 }
 
-int getIndexInListByDate(const QDate &date) {
-    QDate currDate = QDate:currentDate();
-    int index = currDate.daysTo(date);
-    return index;
-}
-
-void WeatherCache::addData(const QString &city, const WeekWeatherData &data) {
+void WeatherCache::addData(const QString &city, const WeekWeatherData &data)
+{
     cache[city] = {data, QDateTime::currentDateTime()};
 }
 
@@ -71,4 +67,11 @@ void WeatherCache::clearExpired()
             ++it;
         }
     }
+}
+
+int WeatherCache::getIndexInListByDate(const QDate &date)
+{
+    QDate currDate = QDate::currentDate();
+    int index = currDate.daysTo(date);
+    return index;
 }

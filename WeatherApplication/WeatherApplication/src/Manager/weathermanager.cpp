@@ -35,7 +35,7 @@ void WeatherManager::slotFindWeatherData(const QString &city, const QDate &date)
     desiredDate = date;
     int status = cache.hasValidData(desiredCity, desiredDate);
     if (status == 0) {
-        emit sendWeatherDataToController(cache.getData(desiredCity, desiredDate));
+        emit sendWeatherDataToController(cache.getWeatherData(desiredCity, desiredDate));
     } else if (status == 1 || status == 3){
         api->findWeatherDataInAPI(desiredCity);
     }
@@ -51,13 +51,15 @@ void WeatherManager::slotRecivedWeatherDataFromAPI(const ApiReply &response)
         error.messageError = response.messageError;
         emit sendWeatherDataToController(error);
     } else {
-        WeekWeather weatherData = WeatherJsonConverter::parseWeekWeather(response.data);
+        WeekWeatherData weatherData = WeatherJsonConverter::parseWeekWeather(response.data);
+        qDebug() << weatherData.city << "               QWEQWEQWEWQEWEQWEQWEQWEQWEWEQWEQWEQWEQWE";
         cache.addData(desiredCity, weatherData);
-        WeatherData dataResult = cache.getData(desiredCity, desiredDate);
+        WeatherData dataResult = cache.getWeatherData(desiredCity, desiredDate);
         // tmp["city"] = correctJsonData["city"].toString();
         // tmp["date"] = desiredDate.toString("yyyy-MM-dd");
         // QJsonDocument doc(tmp);
         // qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
+        qDebug() << dataResult.city << "               QWEQWEQWEWQEWEQWEQWEQWEQWEWEQWEQWEQWEQWE";
         emit sendWeatherDataToController(dataResult);
         emit submitCompletedWeatherDataSearchRequest(user, dataResult.city, desiredDate);
     }
@@ -87,7 +89,7 @@ void WeatherManager::sloRecivedAuthorizationData(const QString &command, const Q
 void WeatherManager::slotFindWeekWeatherData()
 {
     // QDate tmpDate = QDate::currentDate();
-    WeekWeatherData weekData = cache.getWeekWeatherData(desiredCity);
+    WeekWeatherData weekWeatherData = cache.getWeekWeatherData(desiredCity);
 //     for (int index_day = 0; index_day < 5; index_day++) {
 //         int status = cache.hasValidData(desiredCity);
 //         if (status != 0) {
@@ -104,7 +106,7 @@ void WeatherManager::slotFindWeekWeatherData()
 //     }
 //    QJsonDocument doc(weekData);
 //    qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
-    emit sendWeekWeatherDataToController(weekData);
+    emit sendWeekWeatherDataToController(weekWeatherData);
 }
 
 bool WeatherManager::loadConfig()
@@ -128,17 +130,19 @@ bool WeatherManager::loadConfig()
         return false;
     } else {
         QJsonObject serverHostObj = config["server host"].toObject();
-        if (serverHostObj.contains("api") && serverHostObj.contains("port")) {
+        if (serverHostObj.contains("ip") && serverHostObj.contains("port")) {
             serverHost.ip = serverHostObj["ip"].toString();
             serverHost.port = serverHostObj["port"].toString();
         } else {
+            qDebug() << "В config файле нет настроек хоста сервера";
             return false;
         }
     }
-    if (!config.contains("api") && api->loadConfig(settingsAPI["api"].toObject()) == false) {
+    if (!(config.contains("api") && api->loadConfig(config["api"].toObject()))) {
         qDebug() << "В config файле нет настроек api";
         return false;
     }
+
     return true;
 }
 
@@ -148,7 +152,7 @@ void WeatherManager::onReplyFinished(QNetworkReply *reply)
     QJsonDocument doc = QJsonDocument::fromJson(responseData);
     // if (!doc.isNull() && doc.isObject()) {
         QJsonObject jsonObj = doc.object();
-        AuthorizationReply authorizationReply = WeatherJsonConverter::parseApiReply(jsonObj);
+        AuthorizationReply authorizationReply = WeatherJsonConverter::parseAuthorizationReply(jsonObj);
         emit sendAuthorizationResult(authorizationReply);
     // } else {
     //     qDebug() << "Некорректный Json файл!";

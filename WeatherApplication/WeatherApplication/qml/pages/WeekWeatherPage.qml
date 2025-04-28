@@ -81,22 +81,23 @@ Page {
         target: controller
         onWeekDataUpdated: {
             var data = controller.getWeatherDataFromWeek();
-            today_date.text = "Date: " + data[0]["date"];
-            today_temp.text = "Temp: " + data[0]["temp"];
-            tomorrow_date.text = "Date: " + data[1]["date"];
-            tomorrow_temp.text = "Temp: " + data[1]["temp"];
-            after_tomorrow_date.text = "Date: " + data[2]["date"];
-            after_tomorrow_temp.text = "Temp: " + data[2]["temp"];
-            today_plus_3_date.text = "Date: " + data[3]["date"];
-            today_plus_3_temp.text = "Temp: " + data[3]["temp"];
-            today_plus_4_date.text = "Date: " + data[4]["date"];
-            today_plus_4_temp.text = "Temp: " + data[4]["temp"];
-            if (data["messageError"].length > 0) {
+            var dailyWeather = data["dailyWeather"];
+            today_date.text = "Date: " + (dailyWeather[0] ? dailyWeather[0]["date"] : "No data");
+            today_temp.text = "Temp: " + (dailyWeather[0] ? dailyWeather[0]["temp"] : "No data");
+            tomorrow_date.text = "Date: " + (dailyWeather[1] ? dailyWeather[1]["date"] : "No data");
+            tomorrow_temp.text = "Temp: " + (dailyWeather[1] ? dailyWeather[1]["temp"] : "No data");
+            after_tomorrow_date.text = "Date: " + (dailyWeather[2] ? dailyWeather[2]["date"] : "No data");
+            after_tomorrow_temp.text = "Temp: " + (dailyWeather[2] ? dailyWeather[2]["temp"] : "No data");
+            today_plus_3_date.text = "Date: " + (dailyWeather[3] ? dailyWeather[3]["date"] : "No data");
+            today_plus_3_temp.text = "Temp: " + (dailyWeather[3] ? dailyWeather[3]["temp"] : "No data");
+            today_plus_4_date.text = "Date: " + (dailyWeather[4] ? dailyWeather[4]["date"] : "No data");
+            today_plus_4_temp.text = "Temp: " + (dailyWeather[4] ? dailyWeather[4]["temp"] : "No data");
+            if (data["messageError"] && data["messageError"].length > 0) {
                 text_error.text = "Error: " + data["messageError"];
                 text_error.visible = true;
             } else {
                 text_error.text = "";
-                text_error.visible = true;
+                text_error.visible = false; // Скрываем текст ошибки, если ошибки нет
             }
         }
     }

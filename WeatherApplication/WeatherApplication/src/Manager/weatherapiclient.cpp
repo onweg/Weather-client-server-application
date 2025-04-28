@@ -7,20 +7,13 @@ WeatherApiClient::WeatherApiClient(QObject *parent) : QObject(parent)
 
 void WeatherApiClient::findWeatherDataInAPI(const QString &city)
 {
-
-    QString url = QString(urlFindCityByName).arg(city).arg(apiKey);
+    qDebug() << urlFindCityByName;
+    QString url = urlFindCityByName.arg(city).arg(apiKey);
     qDebug() << url;
     QNetworkRequest request((QUrl(url)));
     replyCity = manager->get(request);
     connect(replyCity, &QNetworkReply::finished, this, &WeatherApiClient::onSlotFindCity);
     return ;
-}
-
-ApiReply createErroneousResponse(const QString &message) {
-    ApiReply response;
-    response.success = false;
-    response.message = message;
-    return response;
 }
 
 bool WeatherApiClient::loadConfig(const QJsonObject &settingsAPI)
@@ -80,7 +73,7 @@ void WeatherApiClient::onSlotFindCity()
         findWeatherData(lat, lon);
     } else {
         qDebug() << "Error: " << reply->errorString();
-        ApiReply response = createErroneousResponse("Error: " << reply->errorString());
+        ApiReply response = createErroneousResponse("Error: " + reply->errorString());
         emit sendRecivedWeatherDataFromAPI(response);
         return;
     }
@@ -103,7 +96,7 @@ void WeatherApiClient::onSlotFindWeatherData()
         QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData, &error);
         if (error.error != QJsonParseError::NoError) {
             qDebug() << "Ошибка парсинга Json при поиске погоды: " << error.errorString();
-            ApiReply response = createErroneousResponse("Error: " << reply->errorString());
+            ApiReply response = createErroneousResponse("Error: " + reply->errorString());
             emit sendRecivedWeatherDataFromAPI(response);
             return;
         }
@@ -125,12 +118,20 @@ void WeatherApiClient::onSlotFindWeatherData()
         emit sendRecivedWeatherDataFromAPI(response);
     } else {
         qDebug() << "Error: " << reply->errorString();
-        ApiReply response = createErroneousResponse("Error: " << reply->errorString());
+        ApiReply response = createErroneousResponse("Error: " + reply->errorString());
         emit sendRecivedWeatherDataFromAPI(response);
         return;
     }
     reply->deleteLater();
     return;
+}
+
+ApiReply WeatherApiClient::createErroneousResponse(const QString &message)
+{
+    ApiReply response;
+    response.success = false;
+    response.messageError = message;
+    return response;
 }
 
 void WeatherApiClient::findWeatherData(const QString &lat, const QString &lon)

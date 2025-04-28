@@ -44,7 +44,7 @@ private:
 
 public slots:
     void slotFindWeatherData(const QString &city, const QDate &date);
-    void slotRecivedWeatherDataFromAPI(const QJsonObject &jsonObj);
+    void slotRecivedWeatherDataFromAPI(const ApiReply &jsonObj);
     void sloRecivedAuthorizationData(const QString &command, const QString &login, const QString &password);
     void slotFindWeekWeatherData();
 
@@ -55,11 +55,11 @@ private slots:
 
 
 signals:
-    void sendWeatherDataToController(const QJsonObject &jsonObj);
-    void sendWeekWeatherDataToController(const QJsonObject &jsonObj);
+    void sendWeatherDataToController(const WeatherData &data);
+    void sendWeekWeatherDataToController(const WeekWeatherData &data);
     void submitCompletedWeatherDataSearchRequest(const QString &user, const QString &city, const QDate &date);
 
-    void sendAuthorizationResult(const QJsonObject &jsonObj);
+    void sendAuthorizationResult(const AuthorizationReply &data);
 
 
 };

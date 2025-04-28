@@ -40,6 +40,7 @@ Item {
             }
             Text {
                 id: text_error
+                text: "error"
                 color: "red"
                 visible: false
             }

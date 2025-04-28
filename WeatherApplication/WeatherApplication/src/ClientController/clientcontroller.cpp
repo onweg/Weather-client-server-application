@@ -55,12 +55,12 @@ void ClientController::sendAuthorizationData(const QString &command, const QStri
 
 QVariantMap ClientController::getWeatherDataFromOneDay()
 {
-    return QVariant::fromValue(weatherData);
+    return weatherData.toVariantMap();
 }
 
 QVariantMap ClientController::getWeatherDataFromWeek()
 {
-    return QVariant::fromValue(weekWeatherData);
+    return weekWeatherData.toVariantMap();
 }
 
 void ClientController::slotWeatherDataArrived(const WeatherData &data)

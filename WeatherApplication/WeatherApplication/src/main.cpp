@@ -41,6 +41,8 @@
 #include "Manager/weathermanager.h"
 #include "ClientController/clientcontroller.h"
 #include "DatabaseManager/databasemanager.h"
+#include "Models/weekweatherdata.h"
+#include "Models/weatherdata.h"
 
 int main(int argc, char *argv[])
 {
@@ -54,6 +56,7 @@ int main(int argc, char *argv[])
     if (!manager.loadConfig()) {
        return 0;
     }
+
     ClientController controller;
     DatabaseManager dbManager;
 
@@ -64,6 +67,9 @@ int main(int argc, char *argv[])
     QObject::connect(&manager, &WeatherManager::submitCompletedWeatherDataSearchRequest, &dbManager, &DatabaseManager::slotSubmitCompletedWeatherDataSearchRequest);
     QObject::connect(&controller, &ClientController::sendAuthorizationDataToManager, &manager, &WeatherManager::sloRecivedAuthorizationData);
     QObject::connect(&manager, &WeatherManager::sendAuthorizationResult, &controller, &ClientController::slotRecivedAuthorizationData);
+
+    qRegisterMetaType<WeatherData>("WeatherData");
+    qRegisterMetaType<WeekWeatherData>("WeekWeatherData");
 
     view->rootContext()->setContextProperty("controller", &controller);
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));

@@ -14,6 +14,7 @@
 #include <QDateTime>
 #include <QThread>
 #include <QVariantMap>
+#include <QVariant>
 #include <QScopedPointer>
 #include "weatherupdater.h"
 #include "../Models/weekweatherdata.h"

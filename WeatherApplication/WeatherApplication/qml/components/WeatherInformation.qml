@@ -44,9 +44,8 @@ Item {
             weather_data.weather_temp_max.text = data["temp_max"];
             weather_data.weather_temp_min.text = data["temp_min"];
             weather_data.weather_wind_speed.text = data["wind_speed"];
-            
-            if (data["error"].length > 0) {
-                weather_data.weather_error.text = data["error"];
+            if (data["messageError"].length > 0) {
+                weather_data.weather_error.text = data["messageError"];
                 weather_data.weather_error.visible = true;
             } else {
                 weather_data.weather_error.text = "";

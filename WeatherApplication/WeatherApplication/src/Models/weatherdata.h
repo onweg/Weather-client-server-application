@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDate>
+#include <QVariantMap>
 
 struct WeatherData
 {
@@ -19,8 +20,26 @@ struct WeatherData
     int humidity = 0;
     int pressure = 0;
 	QString messageError;
+
+    QVariantMap toVariantMap() const {
+        QVariantMap map;
+        map["lat"] = lat;
+        map["lon"] = lon;
+        map["city"] = city;
+        map["date"] = date.toString("yyyy-MM-dd");
+        map["description"] = description;
+        map["temp"] = temp;
+        map["feels_like"] = feels_like;
+        map["temp_max"] = temp_max;
+        map["temp_min"] = temp_min;
+        map["wind_speed"] = wind_speed;
+        map["humidity"] = humidity;
+        map["pressure"] = pressure;
+        map["messageError"] = messageError;
+        return map;
+    }
 };
 
-Q_DECLARE_METATYPE(WeatherData)
+Q_DECLARE_METATYPE(WeatherData);
 
 #endif // WEATHERDATA_H

@@ -4,8 +4,9 @@
 #include <QObject>
 #include <QJsonObject>
 #include <QJsonArray>
-#include "../Models/WeekWeatherData.h"
-#include "../Models/WeatherData.h"
+#include <QMap>
+#include "../Models/weekweatherdata.h"
+#include "../Models/authorizationreply.h"
 
 class WeatherJsonConverter : public QObject
 {
@@ -14,6 +15,8 @@ public:
     explicit WeatherJsonConverter(QObject *parent = nullptr);
 
     static WeekWeatherData parseWeekWeather(const QJsonObject &jsonObj);
+    static AuthorizationReply parseAuthorizationReply(const QJsonObject &jsonObj);
+
 };
 
 #endif // WEATHERJSONCONVERTER_H
