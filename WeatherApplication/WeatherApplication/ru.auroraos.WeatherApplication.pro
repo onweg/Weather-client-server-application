@@ -45,30 +45,32 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
-    src/ClientController/clientcontroller.cpp \
-    src/ClientController/weatherupdater.cpp \
-    src/DatabaseManager/databasemanager.cpp \
-    src/Manager/cachecleaner.cpp \
-    src/Utils/weatherjsonconverter.cpp \
-    src/Manager/weatherapiclient.cpp \
-    src/Manager/weathercache.cpp \
-    src/Manager/weathermanager.cpp \
+    src/ClientController/ClientController.cpp \
+    src/ClientController/WeatherUpdater.cpp \
+    src/DatabaseManager/DatabaseManager.cpp \
+    src/DatabaseManager/DatabaseCreator.cpp \
+    src/Manager/CacheCleaner.cpp \
+    src/Utils/WeatherJsonConverter.cpp \
+    src/Manager/WeatherApiClient.cpp \
+    src/Manager/WeatherCache.cpp \
+    src/Manager/WeatherManager.cpp \
     src/main.cpp
 
 HEADERS += \
-    src/ClientController/clientcontroller.h \
-    src/ClientController/weatherupdater.h \
-    src/DatabaseManager/databasemanager.h \
-    src/Manager/cachecleaner.h \
-    src/Utils/weatherjsonconverter.h \
-    src/Manager/weatherapiclient.h \
-    src/Manager/weathercache.h \
-    src/Manager/weathermanager.h \
-    src/Models/apireply.h \
-    src/Models/authorizationreply.h \
-    src/Models/serverhost.h \
-    src/Models/weatherdata.h \
-    src/Models/weekweatherdata.h
+    src/ClientController/ClientController.h \
+    src/ClientController/WeatherUpdater.h \
+    src/DatabaseManager/DatabaseManager.h \
+    src/DatabaseManager/DatabaseCreator.h \
+    src/Manager/CacheCleaner.h \
+    src/Utils/WeatherJsonConverter.h \
+    src/Manager/WeatherApiClient.h \
+    src/Manager/WeatherCache.h \
+    src/Manager/WeatherManager.h \
+    src/Models/ApiReply.h \
+    src/Models/AuthorizationReply.h \
+    src/Models/ServerHost.h \
+    src/Models/WeatherData.h \
+    src/Models/WeekWeatherData.h
 
 DISTFILES += \
     qml/components/DateAndButtons.qml \
