@@ -38,11 +38,12 @@
 #include <auroraapp.h>
 #include <QtQuick>
 #include <QObject>
-#include "Manager/weathermanager.h"
-#include "ClientController/clientcontroller.h"
-#include "DatabaseManager/databasemanager.h"
-#include "Models/weekweatherdata.h"
-#include "Models/weatherdata.h"
+#include "Manager/WeatherManager.h"
+#include "ClientController/ClientController.h"
+#include "DatabaseManager/DatabaseManager.h"
+#include "DatabaseManager/DatabaseCreator.h"
+#include "Models/WeekWeatherData.h"
+#include "Models/WeatherData.h"
 
 int main(int argc, char *argv[])
 {
@@ -59,6 +60,7 @@ int main(int argc, char *argv[])
 
     ClientController controller;
     DatabaseManager dbManager;
+    DatabaseCreator dbCreator;
 
     QObject::connect(&controller, &ClientController::findWeatherData, &manager, &WeatherManager::slotFindWeatherData);
     QObject::connect(&controller, &ClientController::findWeekWeatherData, &manager, &WeatherManager::slotFindWeekWeatherData);

@@ -1,4 +1,4 @@
-#include "weatherjsonconverter.h"
+#include "WeatherJsonConverter.h"
 
 WeatherJsonConverter::WeatherJsonConverter(QObject *parent)
     : QObject(parent)

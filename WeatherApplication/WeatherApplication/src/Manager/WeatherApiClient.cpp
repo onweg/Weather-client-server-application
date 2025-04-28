@@ -1,17 +1,17 @@
-#include "weatherapiclient.h"
+#include "WeatherApiClient.h"
 
 WeatherApiClient::WeatherApiClient(QObject *parent) : QObject(parent)
 {
-    manager = new QNetworkAccessManager(this);
+    manager_ = new QNetworkAccessManager(this);
 }
 
 void WeatherApiClient::findWeatherDataInAPI(const QString &city)
 {
-    QString url = urlFindCityByName.arg(city).arg(apiKey);
+    QString url = urlFindCityByName_.arg(city).arg(apiKey_);
     qDebug() << url;
     QNetworkRequest request((QUrl(url)));
-    replyCity = manager->get(request);
-    connect(replyCity, &QNetworkReply::finished, this, &WeatherApiClient::onSlotFindCity);
+    replyCity_ = manager_->get(request);
+    connect(replyCity_, &QNetworkReply::finished, this, &WeatherApiClient::onSlotFindCity);
     return ;
 }
 
@@ -29,9 +29,9 @@ bool WeatherApiClient::loadConfig(const QJsonObject &settingsAPI)
         qDebug() << "Ошибка: ключ 'urlFindWeatherByCoordinates' отсутствует или пуст.";
         return false;
     }
-    apiKey = settingsAPI["key"].toString();
-    urlFindCityByName = settingsAPI["urlFindCityByName"].toString();
-    urlFindWeatherByCoordinates = settingsAPI["urlFindWeatherByCoordinates"].toString();
+    apiKey_ = settingsAPI["key"].toString();
+    urlFindCityByName_ = settingsAPI["urlFindCityByName"].toString();
+    urlFindWeatherByCoordinates_ = settingsAPI["urlFindWeatherByCoordinates"].toString();
     qDebug() << "Конфигурация успешно загружена.";
     return true;
 }
@@ -135,11 +135,11 @@ ApiReply WeatherApiClient::createErroneousResponse(const QString &message)
 
 void WeatherApiClient::findWeatherData(const QString &lat, const QString &lon)
 {
-    QString url = QString(urlFindWeatherByCoordinates).arg(lat).arg(lon).arg(apiKey);
+    QString url = QString(urlFindWeatherByCoordinates_).arg(lat).arg(lon).arg(apiKey_);
     qDebug() << url;
     QNetworkRequest request((QUrl(url)));
-    replyWeather = manager->get(request);
-    connect(replyWeather, &QNetworkReply::finished, this, &WeatherApiClient::onSlotFindWeatherData);
+    replyWeather_ = manager_->get(request);
+    connect(replyWeather_, &QNetworkReply::finished, this, &WeatherApiClient::onSlotFindWeatherData);
     return;
 }
 

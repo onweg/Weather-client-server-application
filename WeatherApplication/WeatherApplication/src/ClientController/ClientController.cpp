@@ -1,25 +1,25 @@
-#include "clientcontroller.h"
+#include "ClientController.h"
 
 ClientController::ClientController(QObject *parent) : QObject(parent)
 {
-    updater = new WeatherUpdater();
-    updaterThread.reset(new QThread());
-    QObject::connect(updaterThread.data(), &QThread::started, updater, &WeatherUpdater::start);
-    QObject::connect(updater, &WeatherUpdater::updateWeatherData, this, &ClientController::slotUpdateWeatherFromUpdater);
+    updater_ = new WeatherUpdater();
+    updaterThread_.reset(new QThread());
+    QObject::connect(updaterThread_.data(), &QThread::started, updater_, &WeatherUpdater::start);
+    QObject::connect(updater_, &WeatherUpdater::updateWeatherData, this, &ClientController::slotUpdateWeatherFromUpdater);
     
-    updater->moveToThread(updaterThread.data());
-    updaterThread->start();
+    updater_->moveToThread(updaterThread_.data());
+    updaterThread_->start();
 
 }
 
 ClientController::~ClientController()
 {
-    if (updaterThread) {
-        updaterThread->quit();
-        updaterThread->wait();
+    if (updaterThread_) {
+        updaterThread_->quit();
+        updaterThread_->wait();
     }
-    delete updater;
-    updater = nullptr;
+    delete updater_;
+    updater_ = nullptr;
 }
 
 void ClientController::clickSearchCityButton(const QString &city)
@@ -30,13 +30,13 @@ void ClientController::clickSearchCityButton(const QString &city)
 void ClientController::clickNextDayButton()
 {
     setNextDay();
-    emit findWeatherData(weatherData.city, weatherData.date);
+    emit findWeatherData(weatherData_.city, weatherData_.date);
 }
 
 void ClientController::clickPrevDayButton()
 {
     setPrevDay();
-    emit findWeatherData(weatherData.city, weatherData.date);
+    emit findWeatherData(weatherData_.city, weatherData_.date);
 }
 
 void ClientController::clickWeekWeatherDataButton()
@@ -51,23 +51,23 @@ void ClientController::sendAuthorizationData(const QString &command, const QStri
 
 QVariantMap ClientController::getWeatherDataFromOneDay()
 {
-    return weatherData.toVariantMap();
+    return weatherData_.toVariantMap();
 }
 
 QVariantMap ClientController::getWeatherDataFromWeek()
 {
-    return weekWeatherData.toVariantMap();
+    return weekWeatherData_.toVariantMap();
 }
 
 void ClientController::slotWeatherDataArrived(const WeatherData &data)
 {
-    weatherData = data;
+    weatherData_ = data;
     emit dataUpdated();
 }
 
 void ClientController::slotWeekWeatherDataArrived(const WeekWeatherData &data)
 {
-    weekWeatherData = data;
+    weekWeatherData_ = data;
     emit weekDataUpdated();
 }
 
@@ -82,31 +82,31 @@ void ClientController::slotRecivedAuthorizationData(const AuthorizationReply &au
 
 void ClientController::slotUpdateWeatherFromUpdater()
 {
-    emit findWeatherData(weatherData.city, weatherData.date);
+    emit findWeatherData(weatherData_.city, weatherData_.date);
 }
 
 void ClientController::setNextDay()
 {
-    if (!weatherData.date.isValid()) {
-        weatherData.date = QDate();
+    if (!weatherData_.date.isValid()) {
+        weatherData_.date = QDate();
     }
     const QDate tmp = QDate::currentDate();
-    int diff = tmp.daysTo(weatherData.date);
+    int diff = tmp.daysTo(weatherData_.date);
     if (diff < NUMBEROFDAYS - 1) {
-        weatherData.date = weatherData.date.addDays(1);
+        weatherData_.date = weatherData_.date.addDays(1);
     }
     return;
 }
 
 void ClientController::setPrevDay()
 {
-    if (!weatherData.date.isValid()) {
-        weatherData.date = QDate();
+    if (!weatherData_.date.isValid()) {
+        weatherData_.date = QDate();
     }
     const QDate tmp = QDate::currentDate();
-    int diff = tmp.daysTo(weatherData.date);
+    int diff = tmp.daysTo(weatherData_.date);
     if (diff > 0) {
-        weatherData.date = weatherData.date.addDays(-1);
+        weatherData_.date = weatherData_.date.addDays(-1);
     }
     return;
 }

@@ -5,8 +5,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QMap>
-#include "../Models/weekweatherdata.h"
-#include "../Models/authorizationreply.h"
+#include "../Models/WeekWeatherData.h"
+#include "../Models/AuthorizationReply.h"
 
 class WeatherJsonConverter : public QObject
 {

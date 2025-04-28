@@ -2,7 +2,7 @@
 #define APIREPLY_H
 
 #include <QString>
-#include "weekweatherdata.h"
+#include "WeekWeatherData.h"
 #include <QJsonObject>
 
 struct ApiReply

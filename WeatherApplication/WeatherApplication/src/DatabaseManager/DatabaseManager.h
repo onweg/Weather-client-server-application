@@ -2,7 +2,6 @@
 #define DATABASEMANAGER_H
 
 #include <QObject>
-#include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
@@ -22,8 +21,7 @@ public slots:
     void slotSubmitCompletedWeatherDataSearchRequest(const QString &username, const QString &city, const QDate &date);
 
 private:
-    bool connectToDataBase();
-    void createTable();
+    QSqlDatabase db;
 };
 
 #endif // DATABASEMANAGER_H

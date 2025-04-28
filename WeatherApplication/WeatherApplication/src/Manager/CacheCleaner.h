@@ -14,7 +14,7 @@ public:
     void start();
 
 private:
-    QTimer *timer;
+    QTimer *timer_;
 
 signals:
     void timeout();

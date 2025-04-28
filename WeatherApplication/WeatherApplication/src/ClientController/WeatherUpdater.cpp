@@ -1,4 +1,4 @@
-#include "weatherupdater.h"
+#include "WeatherUpdater.h"
 
 WeatherUpdater::WeatherUpdater(QObject *parent) : QObject(parent)
 {

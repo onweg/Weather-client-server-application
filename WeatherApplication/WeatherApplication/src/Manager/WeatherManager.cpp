@@ -1,4 +1,4 @@
-#include "weathermanager.h"
+#include "WeatherManager.h"
 
 WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
 {

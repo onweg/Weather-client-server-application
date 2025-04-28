@@ -12,11 +12,11 @@
 #include <QVariantMap>
 #include <QVariant>
 #include <QScopedPointer>
-#include "weatherupdater.h"
-#include "../Models/weekweatherdata.h"
-#include "../Models/weatherdata.h"
-#include "../Models/authorizationreply.h"
-#include "../Models/apireply.h"
+#include "WeatherUpdater.h"
+#include "../Models/WeekWeatherData.h"
+#include "../Models/WeatherData.h"
+#include "../Models/AuthorizationReply.h"
+#include "../Models/ApiReply.h"
 
 #define NUMBEROFDAYS 5
 
@@ -36,13 +36,13 @@ public:
     Q_INVOKABLE QVariantMap getWeatherDataFromWeek();
 
 private:
-    WeatherData weatherData;
-    WeekWeatherData weekWeatherData;
+    WeatherData weatherData_;
+    WeekWeatherData weekWeatherData_;
     void setNextDay();
     void setPrevDay();
 
-    QScopedPointer<QThread> updaterThread;
-    WeatherUpdater *updater;
+    QScopedPointer<QThread> updaterThread_;
+    WeatherUpdater *updater_;
 
 public slots:
     void slotWeatherDataArrived(const WeatherData &data);

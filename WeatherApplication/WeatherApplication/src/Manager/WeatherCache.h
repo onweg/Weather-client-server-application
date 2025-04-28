@@ -12,7 +12,7 @@
 #include <QString>
 #include <QDebug>
 
-#include "../Models/weekweatherdata.h"
+#include "../Models/WeekWeatherData.h"
 
 class WeatherCache : public QObject
 {
@@ -42,7 +42,7 @@ private:
         WeekWeatherData data;
         QDateTime timestamp;
     };
-    QMap<QString, CacheEntry> cache;
+    QMap<QString, CacheEntry> cache_;
 };
 
 #endif // WEATHERCACHE_H

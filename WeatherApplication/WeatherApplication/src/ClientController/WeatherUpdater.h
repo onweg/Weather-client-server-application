@@ -15,7 +15,7 @@ public:
     void resetTimer();
 
 private:
-    QTimer *timer;
+    QTimer *timer_;
 
 signals:
     void updateWeatherData();

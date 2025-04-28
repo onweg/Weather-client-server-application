@@ -10,17 +10,17 @@
 #include <QNetworkReply>
 #include <QThread>
 #include <QScopedPointer>
-#include "weatherapiclient.h"
-#include "weathercache.h"
-#include "cachecleaner.h"
+#include "WeatherApiClient.h"
+#include "WeatherCache.h"
+#include "CacheCleaner.h"
 #include <QFile>
 #include <QCoreApplication>
-#include "../Utils/weatherjsonconverter.h"
-#include "../Models/weekweatherdata.h"
-#include "../Models/weatherdata.h"
-#include "../Models/authorizationreply.h"
-#include "../Models/apireply.h"
-#include "../Models/serverhost.h"
+#include "../Utils/WeatherJsonConverter.h"
+#include "../Models/WeekWeatherData.h"
+#include "../Models/WeatherData.h"
+#include "../Models/AuthorizationReply.h"
+#include "../Models/ApiReply.h"
+#include "../Models/ServerHost.h"
 
 class WeatherManager : public QObject
 {
@@ -29,17 +29,17 @@ public:
     explicit WeatherManager(QObject *parent = nullptr);
     ~WeatherManager();
 private:
-    QString user;
-    QString desiredCity;
-    QDate desiredDate;
-    ServerHost serverHost;
+    QString user_;
+    QString desiredCity_;
+    QDate desiredDate_;
+    ServerHost serverHost_;
 
-    WeatherApiClient *api;
-    WeatherCache cache;
-    QNetworkAccessManager *networkManager;
+    WeatherApiClient *api_;
+    WeatherCache cache_;
+    QNetworkAccessManager *networkManager_;
 
-    QScopedPointer<QThread> cleanerThread;
-    CacheCleaner *cacheCleaner;
+    QScopedPointer<QThread> cleanerThread_;
+    CacheCleaner *cacheCleaner_;
 
 
 public slots:

@@ -1,7 +1,7 @@
 #ifndef WEEKWEATHERDATA_H
 #define WEEKWEATHERDATA_H
 
-#include "weatherdata.h"
+#include "WeatherData.h"
 #include <QList>
 
 struct WeekWeatherData
