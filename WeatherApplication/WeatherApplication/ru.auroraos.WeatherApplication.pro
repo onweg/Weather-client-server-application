@@ -47,8 +47,7 @@ PKGCONFIG += \
 SOURCES += \
     src/ClientController/clientcontroller.cpp \
     src/ClientController/weatherupdater.cpp \
-    src/DatabaseManager/weatherdatawriter.cpp \
-    src/DatabaseManager/weatherdatareader.cpp \
+    src/DatabaseManager/databasemanager.cpp \
     src/Manager/cachecleaner.cpp \
     src/Utils/weatherjsonconverter.cpp \
     src/Manager/weatherapiclient.cpp \
@@ -66,10 +65,10 @@ HEADERS += \
     src/Manager/weathercache.h \
     src/Manager/weathermanager.h \
     src/Models/apireply.h \
-    src/authorizationreply.h \
-    src/serverhost.h \
-    src/weatherdata.h \
-    weekweatherdata.h
+    src/Models/authorizationreply.h \
+    src/Models/serverhost.h \
+    src/Models/weatherdata.h \
+    src/Models/weekweatherdata.h
 
 DISTFILES += \
     qml/components/DateAndButtons.qml \
