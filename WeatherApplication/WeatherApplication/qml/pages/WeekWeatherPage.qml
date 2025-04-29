@@ -83,12 +83,6 @@ Page {
         onWeekWeatherDataUpdated: {
             var data = controller.weekWeatherModel
             var list = data.dailyWeather;
-            console.log("dailyWeather type:", typeof list);
-            console.log("dailyWeather length:", list.count());
-            console.log("dailyWeather contents:", list);
-            console.log("has count():", typeof list.count === 'function'); // true
-            console.log("has get():", typeof list.get === 'function');     // true
-            console.log("has length:", 'length' in list);                  // false
             var len = list.count();
             today_date.text = "Date: " + (len > 0 ? list.get(0).date : "No Data");
             today_temp.text = "Temp: " + (len > 0 ? list.get(0).temp : "No Data");

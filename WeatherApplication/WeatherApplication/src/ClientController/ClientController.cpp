@@ -64,9 +64,6 @@ void ClientController::slotWeatherDataArrived(const WeatherData &data)
 
 void ClientController::slotWeekWeatherDataArrived(const WeekWeatherData &data)
 {
-    if (weekWeatherData_ == data) {
-        return;
-    }
     weekWeatherData_ = data;
     weekWeatherModel_->setData(weekWeatherData_);
     emit weekWeatherDataUpdated();

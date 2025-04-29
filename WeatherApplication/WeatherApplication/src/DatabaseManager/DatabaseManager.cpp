@@ -2,7 +2,7 @@
 
 DatabaseManager::DatabaseManager(QObject *parent) : QObject(parent)
 {
-    db = QSqlDatabase::database(); // Получаем уже созданное соединение
+    db = QSqlDatabase::database();
     if (!db.isOpen()) {
         qDebug() << "База данных не открыта. Убедитесь, что DatabaseCreator был инициализирован.";
     }

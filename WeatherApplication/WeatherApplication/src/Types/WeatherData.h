@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QDate>
-#include <QtMath> // Для qFuzzyCompare
+#include <QtMath>
 
 struct WeatherData
 {
