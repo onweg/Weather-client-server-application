@@ -7,7 +7,7 @@ WeatherApiClient::WeatherApiClient(QObject *parent) : QObject(parent)
 
 void WeatherApiClient::findWeatherDataInAPI(const QString &city)
 {
-    QString url = urlFindCityByName_.arg(city).arg(apiKey_);
+    QString url = apiConfig_.urlFindCityByName.arg(city).arg(apiConfig_.key);
     qDebug() << url;
     QNetworkRequest request((QUrl(url)));
     replyCity_ = manager_->get(request);
@@ -15,24 +15,10 @@ void WeatherApiClient::findWeatherDataInAPI(const QString &city)
     return ;
 }
 
-bool WeatherApiClient::loadConfig(const QJsonObject &settingsAPI)
+bool WeatherApiClient::loadConfig(const ApiConfig &config)
 {
-    if (!settingsAPI.contains("key") || settingsAPI["key"].toString().isEmpty()) {
-        qDebug() << "Ошибка: ключ 'key' отсутствует или пуст.";
-        return false;
-    }
-    if (!settingsAPI.contains("urlFindCityByName") || settingsAPI["urlFindCityByName"].toString().isEmpty()) {
-        qDebug() << "Ошибка: ключ 'urlFindCityByName' отсутствует или пуст.";
-        return false;
-    }
-    if (!settingsAPI.contains("urlFindWeatherByCoordinates") || settingsAPI["urlFindWeatherByCoordinates"].toString().isEmpty()) {
-        qDebug() << "Ошибка: ключ 'urlFindWeatherByCoordinates' отсутствует или пуст.";
-        return false;
-    }
-    apiKey_ = settingsAPI["key"].toString();
-    urlFindCityByName_ = settingsAPI["urlFindCityByName"].toString();
-    urlFindWeatherByCoordinates_ = settingsAPI["urlFindWeatherByCoordinates"].toString();
-    qDebug() << "Конфигурация успешно загружена.";
+    apiConfig_ = config;
+    qDebug() << "Конфигурация API успешно загружена.";
     return true;
 }
 
@@ -135,7 +121,7 @@ ApiReply WeatherApiClient::createErroneousResponse(const QString &message)
 
 void WeatherApiClient::findWeatherData(const QString &lat, const QString &lon)
 {
-    QString url = QString(urlFindWeatherByCoordinates_).arg(lat).arg(lon).arg(apiKey_);
+    QString url = apiConfig_.urlFindWeatherByCoordinates.arg(lat).arg(lon).arg(apiConfig_.key);
     qDebug() << url;
     QNetworkRequest request((QUrl(url)));
     replyWeather_ = manager_->get(request);

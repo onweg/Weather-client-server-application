@@ -18,6 +18,7 @@
 #include <QJsonParseError>
 #include <QJsonArray>
 #include "../Models/ApiReply.h"
+#include "../Types/ApiConfig.h"
 
 class WeatherApiClient : public QObject
 {
@@ -25,16 +26,14 @@ class WeatherApiClient : public QObject
 public:
     explicit WeatherApiClient(QObject *parent = nullptr);
     void findWeatherDataInAPI(const QString &city);
-    bool loadConfig(const QJsonObject &jsonObj);
+    bool loadConfig(const ApiConfig &config);
 
 private slots:
     void onSlotFindCity();
     void onSlotFindWeatherData();
 
 private:
-    QString apiKey_;
-    QString urlFindCityByName_;
-    QString urlFindWeatherByCoordinates_;
+    ApiConfig apiConfig_;
 
     QNetworkAccessManager *manager_;
     QNetworkReply *replyCity_;

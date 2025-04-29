@@ -100,23 +100,14 @@ bool WeatherManager::loadConfig()
         return false;
     }
     QJsonObject config = doc.object();
-    if (!config.contains("server host")) {
-        qDebug() << "В config файле нет настроек хоста сервера";
-        return false;
-    } else {
-        QJsonObject serverHostObj = config["server host"].toObject();
-        if (serverHostObj.contains("ip") && serverHostObj.contains("port")) {
-            serverHost_.ip = serverHostObj["ip"].toString();
-            serverHost_.port = serverHostObj["port"].toString();
-        } else {
-            qDebug() << "В config файле нет настроек хоста сервера";
-            return false;
-        }
-    }
-    if (!(config.contains("api") && api_->loadConfig(config["api"].toObject()))) {
-        qDebug() << "В config файле нет настроек api";
+
+    AppConfig appConfig;
+    if (!AppConfig::fromJson(config, appConfig)) {
+        qDebug() << "Ошибка при загрузке конфигурации из json";
         return false;
     }
+    serverHost_ = appConfig.serverHostConfig;
+    api_->loadConfig(appConfig.apiConfig);
 
     return true;
 }
