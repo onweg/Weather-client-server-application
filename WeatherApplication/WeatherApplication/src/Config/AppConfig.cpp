@@ -1,5 +1,4 @@
-#include "appconfig.h"
-#include <QJsonObject>
+#include "AppConfig.h"
 #include <QJsonArray>
 
 bool AppConfig::fromJson(const QJsonObject &obj, AppConfig &config)
@@ -17,8 +16,8 @@ bool AppConfig::fromJson(const QJsonObject &obj, AppConfig &config)
     {
         return false;
     }
-    config.apiConfig.urlFindCityByName = apiObj["urlFindCityByName"].toString();
-    config.apiConfig.urlFindWeatherByCoordinates = apiObj["urlFindWeatherByCoordinates"].toString();
-    config.apiConfig.key = apiObj["key"].toString();
+    config.rawApiConfig.urlFindCityByName = apiObj["urlFindCityByName"].toString();
+    config.rawApiConfig.urlFindWeatherByCoordinates = apiObj["urlFindWeatherByCoordinates"].toString();
+    config.rawApiConfig.key = apiObj["key"].toString();
     return true;
 }

@@ -1,10 +1,6 @@
 #ifndef WEATHERAPICLIENT_H
 #define WEATHERAPICLIENT_H
 
-// общается с внешним API через Http протокол
-// получает данные в виде JSON формата
-// Обрабатывает ошибки
-
 #include <QObject>
 #include <QString>
 #include <QDebug>
@@ -17,7 +13,7 @@
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonArray>
-#include "../Models/ApiReply.h"
+#include "../Types/ApiReply.h"
 #include "../Types/ApiConfig.h"
 
 class WeatherApiClient : public QObject

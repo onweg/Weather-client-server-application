@@ -58,10 +58,11 @@ void WeatherManager::slotRecivedWeatherDataFromAPI(const ApiReply &response)
 
 }
 
+
 void WeatherManager::sloRecivedAuthorizationData(const QString &command, const QString &login, const QString &password)
 {
     user_ = login;
-    QString urlStr = "http://" + serverHost_.ip + ":" + serverHost_.port;
+    QString urlStr = "http://" + serverHostConfig_.ip + ":" + serverHostConfig_.port;
     QUrl url(urlStr);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -99,25 +100,16 @@ bool WeatherManager::loadConfig()
         qDebug() << "Ошибка парсинга json файла";
         return false;
     }
-    QJsonObject config = doc.object();
-    if (!config.contains("server host")) {
-        qDebug() << "В config файле нет настроек хоста сервера";
-        return false;
-    } else {
-        QJsonObject serverHostObj = config["server host"].toObject();
-        if (serverHostObj.contains("ip") && serverHostObj.contains("port")) {
-            serverHost_.ip = serverHostObj["ip"].toString();
-            serverHost_.port = serverHostObj["port"].toString();
-        } else {
-            qDebug() << "В config файле нет настроек хоста сервера";
-            return false;
-        }
-    }
-    if (!(config.contains("api") && api_->loadConfig(config["api"].toObject()))) {
-        qDebug() << "В config файле нет настроек api";
+    QJsonObject configJson = doc.object();
+    AppConfig appConfig;
+    if (AppConfig::fromJson(configJson, appConfig) == false) {
         return false;
     }
-
+    serverHostConfig_ = appConfig.serverHostConfig;
+    ApiConfig apiConfig = appConfig.rawApiConfig;
+    if (api_->loadConfig(apiConfig) == false) {
+        return false;
+    }
     return true;
 }
 

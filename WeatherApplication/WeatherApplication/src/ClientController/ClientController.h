@@ -1,22 +1,20 @@
 #ifndef CLIENTCONTROLLER_H
 #define CLIENTCONTROLLER_H
 
-// взаимодействие между пользовательским интерфейсом и WeatherManager
-
 #include <QObject>
 #include <QString>
 #include <QDebug>
 #include <QDate>
 #include <QDateTime>
 #include <QThread>
-#include <QVariantMap>
-#include <QVariant>
 #include <QScopedPointer>
 #include "WeatherUpdater.h"
-#include "../Models/WeekWeatherData.h"
-#include "../Models/WeatherData.h"
-#include "../Models/AuthorizationReply.h"
-#include "../Models/ApiReply.h"
+#include "../Models/WeekWeatherModel.h"
+#include "../Models/WeatherModel.h"
+#include "../Types/AuthorizationReply.h"
+#include "../Types/ApiReply.h"
+#include "../Types/WeatherData.h"
+#include "../Types/WeekWeatherData.h"
 
 #define NUMBEROFDAYS 5
 
@@ -32,12 +30,16 @@ public:
     Q_INVOKABLE void clickWeekWeatherDataButton();
     Q_INVOKABLE void sendAuthorizationData(const QString &command, const QString &login, const QString &password);
 
-    Q_INVOKABLE QVariantMap getWeatherDataFromOneDay();
-    Q_INVOKABLE QVariantMap getWeatherDataFromWeek();
+    Q_PROPERTY(WeatherModel* weatherModel READ getWeatherModel NOTIFY weatherDataUpdated)
+    Q_PROPERTY(WeekWeatherModel* weekWeatherModel READ getWeekWeatherModel NOTIFY weekWeatherDataUpdated)
 
 private:
     WeatherData weatherData_;
     WeekWeatherData weekWeatherData_;
+    WeatherModel *weatherModel_ = nullptr;
+    WeekWeatherModel *weekWeatherModel_ = nullptr;
+    WeatherModel* getWeatherModel();
+    WeekWeatherModel* getWeekWeatherModel();
     void setNextDay();
     void setPrevDay();
 
@@ -56,8 +58,8 @@ signals:
     void findWeatherData(const QString &city, const QDate &date = QDate::currentDate());
     void findWeekWeatherData();
 
-    void dataUpdated();
-    void weekDataUpdated();
+    void weatherDataUpdated();
+    void weekWeatherDataUpdated();
 
     void sendAuthorizationDataToManager(const QString &command, const QString &login, const QString &password);
     void authorizationCompleted();

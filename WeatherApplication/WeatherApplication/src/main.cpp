@@ -42,8 +42,8 @@
 #include "ClientController/ClientController.h"
 #include "DatabaseManager/DatabaseManager.h"
 #include "DatabaseManager/DatabaseCreator.h"
-#include "Models/WeekWeatherData.h"
-#include "Models/WeatherData.h"
+#include "Models/WeekWeatherModel.h"
+#include "Models/WeatherModel.h"
 
 int main(int argc, char *argv[])
 {
@@ -70,8 +70,9 @@ int main(int argc, char *argv[])
     QObject::connect(&controller, &ClientController::sendAuthorizationDataToManager, &manager, &WeatherManager::sloRecivedAuthorizationData);
     QObject::connect(&manager, &WeatherManager::sendAuthorizationResult, &controller, &ClientController::slotRecivedAuthorizationData);
 
-    qRegisterMetaType<WeatherData>("WeatherData");
-    qRegisterMetaType<WeekWeatherData>("WeekWeatherData");
+    qmlRegisterType<WeatherModel>("ru.auroraos.weather", 1, 0, "WeatherModel");
+    qmlRegisterUncreatableType<WeatherModelList>("ru.auroraos.weather", 1, 0, "WeatherModelList", "Cannot create in QML");
+    qmlRegisterUncreatableType<WeekWeatherModel>("ru.auroraos.weather", 1, 0, "WeekWeatherModel", "Use controller.weekWeatherModel");
 
     view->rootContext()->setContextProperty("controller", &controller);
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));

@@ -1,14 +1,27 @@
 #ifndef WEEKWEATHERDATA_H
 #define WEEKWEATHERDATA_H
 
-#include "WeatherData.h"
+#include <QString>
 #include <QList>
+#include "WeatherData.h"
 
-struct WeekWeatherData
-{
+struct WeekWeatherData {
     QString city;
     QList<WeatherData> dailyWeather;
-	QString messageError;
+    QString messageError;
+
+    bool operator==(const WeekWeatherData &other) const;
+    bool operator!=(const WeekWeatherData &other) const;
 };
-Q_DECLARE_METATYPE(WeekWeatherData);
+
+inline bool WeekWeatherData::operator==(const WeekWeatherData &other) const {
+    return city == other.city &&
+           dailyWeather == other.dailyWeather &&
+           messageError == other.messageError;
+}
+
+inline bool WeekWeatherData::operator!=(const WeekWeatherData &other) const {
+    return !(*this == other);
+}
+
 #endif // WEEKWEATHERDATA_H

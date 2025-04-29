@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import ru.auroraos.weather 1.0
 
 
 Item {
@@ -32,20 +33,20 @@ Item {
     }
     Connections {
         target: controller
-        onDataUpdated: {
-            var data = controller.getWeatherDataFromOneDay();
-            weather_city.text = data["city"];
-            date.date.text = data["date"];
-            weather_data.weather_description.text = data["description"];
-            weather_data.weather_feels_like.text = data["feels_like"];
-            weather_data.weather_humidity.text = data["humidity"];
-            weather_data.weather_pressure.text = data["pressure"];
-            weather_data.weather_temp.text = data["temp"];
-            weather_data.weather_temp_max.text = data["temp_max"];
-            weather_data.weather_temp_min.text = data["temp_min"];
-            weather_data.weather_wind_speed.text = data["wind_speed"];
-            if (data["messageError"].length > 0) {
-                weather_data.weather_error.text = data["messageError"];
+        onWeatherDataUpdated: {
+            var data = controller.weatherModel;
+            weather_city.text = data.city;
+            date.date.text = data.date;
+            weather_data.weather_description.text = data.description;
+            weather_data.weather_feels_like.text = data.feelsLike;
+            weather_data.weather_humidity.text = data.humidity;
+            weather_data.weather_pressure.text = data.pressure;
+            weather_data.weather_temp.text = data.temp;
+            weather_data.weather_temp_max.text = data.tempMax;
+            weather_data.weather_temp_min.text = data.tempMin;
+            weather_data.weather_wind_speed.text = data.windSpeed;
+            if (data.messageError.length > 0) {
+                weather_data.weather_error.text = data.messageError;
                 weather_data.weather_error.visible = true;
             } else {
                 weather_data.weather_error.text = "";

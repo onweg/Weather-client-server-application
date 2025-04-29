@@ -47,30 +47,39 @@ PKGCONFIG += \
 SOURCES += \
     src/ClientController/ClientController.cpp \
     src/ClientController/WeatherUpdater.cpp \
+    src/Config/AppConfig.cpp \
     src/DatabaseManager/DatabaseManager.cpp \
     src/DatabaseManager/DatabaseCreator.cpp \
     src/Manager/CacheCleaner.cpp \
-    src/Utils/WeatherJsonConverter.cpp \
     src/Manager/WeatherApiClient.cpp \
     src/Manager/WeatherCache.cpp \
     src/Manager/WeatherManager.cpp \
+    src/Models/WeatherModeList.cpp \
+    src/Models/WeatherModel.cpp \
+    src/Models/WeekWeatherModel.cpp \
+    src/Utils/WeatherJsonConverter.cpp \
     src/main.cpp
 
 HEADERS += \
     src/ClientController/ClientController.h \
     src/ClientController/WeatherUpdater.h \
+    src/Config/AppConfig.h \
     src/DatabaseManager/DatabaseManager.h \
     src/DatabaseManager/DatabaseCreator.h \
     src/Manager/CacheCleaner.h \
-    src/Utils/WeatherJsonConverter.h \
     src/Manager/WeatherApiClient.h \
     src/Manager/WeatherCache.h \
     src/Manager/WeatherManager.h \
-    src/Models/ApiReply.h \
-    src/Models/AuthorizationReply.h \
-    src/Models/ServerHost.h \
-    src/Models/WeatherData.h \
-    src/Models/WeekWeatherData.h
+    src/Models/WeatherModeList.h \
+    src/Models/WeatherModel.h \
+    src/Models/WeekWeatherModel.h \
+    src/Types/ApiConfig.h \
+    src/Types/ApiReply.h \
+    src/Types/AuthorizationReply.h \
+    src/Types/ServerHostConfig.h \
+    src/Types/WeatherData.h \
+    src/Types/WeekWeatherData.h \
+    src/Utils/WeatherJsonConverter.h
 
 DISTFILES += \
     qml/components/DateAndButtons.qml \

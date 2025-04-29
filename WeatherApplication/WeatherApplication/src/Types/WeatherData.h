@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDate>
+#include <QtMath> // Для qFuzzyCompare
 
 struct WeatherData
 {
@@ -18,9 +19,25 @@ struct WeatherData
     double wind_speed = 0.0;
     int humidity = 0;
     int pressure = 0;
-	QString messageError;
+    QString messageError;
+
+    bool operator==(const WeatherData &other) const;
+    bool operator!=(const WeatherData &other) const;
 };
 
-Q_DECLARE_METATYPE(WeatherData);
+inline bool WeatherData::operator==(const WeatherData &other) const {
+    return city == other.city &&
+           date == other.date &&
+           description == other.description &&
+           qFuzzyCompare(temp, other.temp) &&
+           qFuzzyCompare(feels_like, other.feels_like) &&
+           qFuzzyCompare(wind_speed, other.wind_speed) &&
+           humidity == other.humidity &&
+           pressure == other.pressure;
+}
+
+inline bool WeatherData::operator!=(const WeatherData &other) const {
+    return !(*this == other);
+}
 
 #endif // WEATHERDATA_H

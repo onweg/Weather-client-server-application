@@ -1,10 +1,6 @@
 #ifndef WEATHERCACHE_H
 #define WEATHERCACHE_H
 
-// хранит данные о погоде
-// если данные хрнаятся больше 1 час, то чистим
-
-
 #include <QObject>
 #include <QDate>
 #include <QDateTime>
@@ -12,7 +8,8 @@
 #include <QString>
 #include <QDebug>
 
-#include "../Models/WeekWeatherData.h"
+#include "../Types/WeatherData.h"
+#include "../Types/WeekWeatherData.h"
 
 class WeatherCache : public QObject
 {

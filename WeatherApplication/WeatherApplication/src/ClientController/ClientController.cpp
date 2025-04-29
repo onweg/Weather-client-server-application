@@ -10,6 +10,9 @@ ClientController::ClientController(QObject *parent) : QObject(parent)
     updater_->moveToThread(updaterThread_.data());
     updaterThread_->start();
 
+    weatherModel_ = new WeatherModel(this);
+    weekWeatherModel_ = new WeekWeatherModel(this);
+
 }
 
 ClientController::~ClientController()
@@ -49,26 +52,24 @@ void ClientController::sendAuthorizationData(const QString &command, const QStri
     emit sendAuthorizationDataToManager(command, login, password);
 }
 
-QVariantMap ClientController::getWeatherDataFromOneDay()
-{
-    return weatherData_.toVariantMap();
-}
-
-QVariantMap ClientController::getWeatherDataFromWeek()
-{
-    return weekWeatherData_.toVariantMap();
-}
-
 void ClientController::slotWeatherDataArrived(const WeatherData &data)
 {
+    if (weatherData_ == data) {
+        return;
+    }
     weatherData_ = data;
-    emit dataUpdated();
+    weatherModel_->setData(weatherData_);
+    emit weatherDataUpdated();
 }
 
 void ClientController::slotWeekWeatherDataArrived(const WeekWeatherData &data)
 {
+    if (weekWeatherData_ == data) {
+        return;
+    }
     weekWeatherData_ = data;
-    emit weekDataUpdated();
+    weekWeatherModel_->setData(weekWeatherData_);
+    emit weekWeatherDataUpdated();
 }
 
 void ClientController::slotRecivedAuthorizationData(const AuthorizationReply &authorizationReply)
@@ -110,5 +111,16 @@ void ClientController::setPrevDay()
     }
     return;
 }
+
+WeatherModel* ClientController::getWeatherModel()
+{
+    return weatherModel_;
+}
+
+WeekWeatherModel* ClientController::getWeekWeatherModel()
+{
+    return weekWeatherModel_;
+}
+
 
 
