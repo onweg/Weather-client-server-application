@@ -23,6 +23,7 @@
 #include "../Types/ApiConfig.h"
 #include "../Types/ServerHostConfig.h"
 #include "../Config/AppConfig.h"
+#include "../Types/WeatherHistoryItem.h"
 
 
 class WeatherManager : public QObject
@@ -46,6 +47,8 @@ private:
     QScopedPointer<QThread> cleanerThread_;
     CacheCleaner *cacheCleaner_;
 
+    void addDataToDatabase();
+
 public slots:
     void slotFindWeatherData(const QString &city, const QDate &date);
     void slotRecivedWeatherDataFromAPI(const ApiReply &jsonObj);
@@ -58,7 +61,7 @@ private slots:
 signals:
     void sendWeatherDataToController(const WeatherData &data);
     void sendWeekWeatherDataToController(const WeekWeatherData &data);
-    void submitCompletedWeatherDataSearchRequest(const QString &user, const QString &city, const QDate &date);
+    void submitCompletedWeatherDataSearchRequest(const WeatherHistoryItem &item);
     void sendAuthorizationResult(const AuthorizationReply &data);
 
 };

@@ -39,7 +39,7 @@ void WeatherManager::slotFindWeatherData(const QString &city, const QDate &date)
     } else if (status == 1 || status == 3){
         api_->findWeatherDataInAPI(desiredCity_);
     }
-
+    addDataToDatabase();
 }
 
 void WeatherManager::slotRecivedWeatherDataFromAPI(const ApiReply &response)
@@ -53,9 +53,7 @@ void WeatherManager::slotRecivedWeatherDataFromAPI(const ApiReply &response)
         cache_.addData(desiredCity_, weatherData);
         WeatherData dataResult = cache_.getWeatherData(desiredCity_, desiredDate_);
         emit sendWeatherDataToController(dataResult);
-        emit submitCompletedWeatherDataSearchRequest(user_, dataResult.city, desiredDate_);
     }
-
 }
 
 
@@ -111,6 +109,15 @@ bool WeatherManager::loadConfig()
         return false;
     }
     return true;
+}
+
+void WeatherManager::addDataToDatabase()
+{
+    WeatherHistoryItem weatherHistoryItem;
+    weatherHistoryItem.city = desiredCity_;
+    weatherHistoryItem.date = desiredDate_;
+    weatherHistoryItem.username = user_;
+    submitCompletedWeatherDataSearchRequest(weatherHistoryItem);
 }
 
 void WeatherManager::onReplyFinished(QNetworkReply *reply)

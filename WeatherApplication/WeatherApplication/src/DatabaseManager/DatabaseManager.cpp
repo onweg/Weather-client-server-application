@@ -29,14 +29,14 @@ QList<WeatherHistoryItem> DatabaseManager::getAllWeatherData()
     return results;
 }
 
-void DatabaseManager::insertWeatherData(const QString &username, const QString &city, const QString &date)
+void DatabaseManager::insertWeatherData(const WeatherHistoryItem &item)
 {
     QSqlQuery query;
     query.prepare("INSERT INTO weather_data (username, city, date) "
                   "VALUES (:username, :city, :date)");
-    query.bindValue(":username", username);
-    query.bindValue(":city", city);
-    query.bindValue(":date", date);
+    query.bindValue(":username", item.username);
+    query.bindValue(":city", item.city);
+    query.bindValue(":date", item.date);
 
     if (!query.exec()) {
         qDebug() << "Ошибка при вставке данных:" << query.lastError();
@@ -45,7 +45,7 @@ void DatabaseManager::insertWeatherData(const QString &username, const QString &
     }
 }
 
-void DatabaseManager::slotSubmitCompletedWeatherDataSearchRequest(const QString &username, const QString &city, const QDate &date)
+void DatabaseManager::slotSubmitCompletedWeatherDataSearchRequest(const WeatherHistoryItem &item)
 {
-    insertWeatherData(username, city, date.toString("yyyy-MM-dd"));
+    insertWeatherData(item);
 }
