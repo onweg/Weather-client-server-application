@@ -57,23 +57,14 @@ void WeatherManager::slotRecivedWeatherDataFromAPI(const ApiReply &response)
 }
 
 
-void WeatherManager::sloRecivedAuthorizationData(const QString &command, const QString &login, const QString &password)
+void WeatherManager::sloRecivedAuthorizationData(const AuthorizationInfo &info)
 {
-    user_ = login;
+    user_ = info.login;
     QString urlStr = "http://" + serverHostConfig_.ip + ":" + serverHostConfig_.port;
     QUrl url(urlStr);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    QJsonObject json;
-    json["command"] = command;
-    json["login"] = login;
-    json["password"] = password;
-
-    QJsonDocument doc(json);
-    qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
-    QByteArray data = doc.toJson();
-
+    QByteArray data = AuthorizationInfoJsonConverter::toJsonDocument(info).toJson();
     networkManager_->post(request, data);
 }
 
@@ -117,7 +108,7 @@ void WeatherManager::addDataToDatabase()
     weatherHistoryItem.city = desiredCity_;
     weatherHistoryItem.date = desiredDate_;
     weatherHistoryItem.username = user_;
-    submitCompletedWeatherDataSearchRequest(weatherHistoryItem);
+    emit submitCompletedWeatherDataSearchRequest(weatherHistoryItem);
 }
 
 void WeatherManager::onReplyFinished(QNetworkReply *reply)
@@ -125,7 +116,7 @@ void WeatherManager::onReplyFinished(QNetworkReply *reply)
     QByteArray responseData = reply->readAll();
     QJsonDocument doc = QJsonDocument::fromJson(responseData);
     QJsonObject jsonObj = doc.object();
-    AuthorizationReply authorizationReply = WeatherJsonConverter::parseAuthorizationReply(jsonObj);
+    AuthorizationReply authorizationReply = AuthorizationReplyJsonConverter::parseAuthorizationReply(jsonObj);
      emit sendAuthorizationResult(authorizationReply);
 
 }

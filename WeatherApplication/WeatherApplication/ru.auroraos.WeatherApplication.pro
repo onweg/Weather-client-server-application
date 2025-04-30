@@ -57,6 +57,8 @@ SOURCES += \
     src/Models/WeatherModeList.cpp \
     src/Models/WeatherModel.cpp \
     src/Models/WeekWeatherModel.cpp \
+    src/Utils/AuthorizationInfoJsonConverter.cpp \
+    src/Utils/AuthorizationReplyJsonConverter.cpp \
     src/Utils/WeatherJsonConverter.cpp \
     src/main.cpp
 
@@ -75,11 +77,14 @@ HEADERS += \
     src/Models/WeekWeatherModel.h \
     src/Types/ApiConfig.h \
     src/Types/ApiReply.h \
+    src/Types/AuthorizationInfo.h \
     src/Types/AuthorizationReply.h \
     src/Types/ServerHostConfig.h \
     src/Types/WeatherData.h \
     src/Types/WeatherHistoryItem.h \
     src/Types/WeekWeatherData.h \
+    src/Utils/AuthorizationInfoJsonConverter.h \
+    src/Utils/AuthorizationReplyJsonConverter.h \
     src/Utils/WeatherJsonConverter.h
 
 DISTFILES += \

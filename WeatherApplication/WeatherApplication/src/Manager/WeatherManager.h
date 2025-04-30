@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QDate>
-#include <QJsonObject>
 #include <QDebug>
 #include <QDateTime>
 #include <QNetworkAccessManager>
@@ -24,6 +23,9 @@
 #include "../Types/ServerHostConfig.h"
 #include "../Config/AppConfig.h"
 #include "../Types/WeatherHistoryItem.h"
+#include "../Types/AuthorizationInfo.h"
+#include "../Utils/AuthorizationInfoJsonConverter.h"
+#include "../Utils/AuthorizationReplyJsonConverter.h"
 
 
 class WeatherManager : public QObject
@@ -52,7 +54,7 @@ private:
 public slots:
     void slotFindWeatherData(const QString &city, const QDate &date);
     void slotRecivedWeatherDataFromAPI(const ApiReply &jsonObj);
-    void sloRecivedAuthorizationData(const QString &command, const QString &login, const QString &password);
+    void sloRecivedAuthorizationData(const AuthorizationInfo &data);
     void slotFindWeekWeatherData();
 
 private slots:

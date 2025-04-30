@@ -41,7 +41,7 @@ void DatabaseManager::insertWeatherData(const WeatherHistoryItem &item)
     if (!query.exec()) {
         qDebug() << "Ошибка при вставке данных:" << query.lastError();
     } else {
-        qDebug() << "Данные успешно добавлены в базу данных";
+        // qDebug() << "Данные успешно добавлены в базу данных";
     }
 }
 

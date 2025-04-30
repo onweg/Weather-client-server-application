@@ -49,7 +49,8 @@ void ClientController::clickWeekWeatherDataButton()
 
 void ClientController::sendAuthorizationData(const QString &command, const QString &login, const QString &password)
 {
-    emit sendAuthorizationDataToManager(command, login, password);
+    AuthorizationInfo data = {command, login, password};
+    emit sendAuthorizationDataToManager(data);
 }
 
 void ClientController::slotWeatherDataArrived(const WeatherData &data)

@@ -15,6 +15,7 @@
 #include "../Types/ApiReply.h"
 #include "../Types/WeatherData.h"
 #include "../Types/WeekWeatherData.h"
+#include "../Types/AuthorizationInfo.h"
 
 #define NUMBEROFDAYS 5
 
@@ -61,7 +62,7 @@ signals:
     void weatherDataUpdated();
     void weekWeatherDataUpdated();
 
-    void sendAuthorizationDataToManager(const QString &command, const QString &login, const QString &password);
+    void sendAuthorizationDataToManager(const AuthorizationInfo &data);
     void authorizationCompleted();
     void authorizationFailed(const QString &message);
 };
