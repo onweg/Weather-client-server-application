@@ -78,6 +78,7 @@ HEADERS += \
     src/Types/AuthorizationReply.h \
     src/Types/ServerHostConfig.h \
     src/Types/WeatherData.h \
+    src/Types/WeatherHistoryItem.h \
     src/Types/WeekWeatherData.h \
     src/Utils/WeatherJsonConverter.h
 

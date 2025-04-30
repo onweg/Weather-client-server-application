@@ -8,17 +8,19 @@
 #include <QString>
 #include <QDate>
 #include <QVariantList>
+#include <QList>
+#include "../Types/WeatherHistoryItem.h"
 
 class DatabaseManager : public QObject
 {
     Q_OBJECT
 public:
     explicit DatabaseManager(QObject *parent = nullptr);
-    QVariantList getAllWeatherData();
-    void insertWeatherData(const QString &username, const QString &city, const QString &date);
+    QList<WeatherHistoryItem> getAllWeatherData();
+    void insertWeatherData(const WeatherHistoryItem &item);
 
 public slots:
-    void slotSubmitCompletedWeatherDataSearchRequest(const QString &username, const QString &city, const QDate &date);
+    void slotSubmitCompletedWeatherDataSearchRequest(const WeatherHistoryItem &item);
 
 private:
     QSqlDatabase db;
