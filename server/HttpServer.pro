@@ -7,11 +7,11 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/httpserver.cpp \
-    main.cpp
+    src/HttpServer/HttpServer.cpp \
+    src/main.cpp
 
 HEADERS += \
-    src/httpserver.h
+    src/HttpServer/HttpServer.h
 
 
 # Default rules for deployment.

@@ -1,4 +1,4 @@
-#include "src/HttpServer.h"
+#include "HttpServer/HttpServer.h"
 
 #include <QCoreApplication>
 

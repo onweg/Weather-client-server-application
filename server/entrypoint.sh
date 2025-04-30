@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Генерация db_config.json..."
-cat <<EOF > server/db_config.json
+cat <<EOF > Server/db_config.json
 {
   "host": "postgres_db",
   "port": 5432,
@@ -12,9 +12,9 @@ cat <<EOF > server/db_config.json
 EOF
 
 echo "Сборка сервера..."
-cd server
-qmake HttpServer2.pro
+cd Server
+qmake HttpServer.pro
 make
 
 echo "Запуск сервера..."
-./HttpServer2
+./HttpServer

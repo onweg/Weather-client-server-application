@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
 
 
 # Копируем проект внутрь контейнера
-WORKDIR /app/server
+WORKDIR /app/Server
 COPY . .
 
 # Копируем скрипт запуска
