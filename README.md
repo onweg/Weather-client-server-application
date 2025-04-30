@@ -13,7 +13,7 @@ cd Weather-client-server-application
 
 ### 2. Запуск без использования Docker
 
-Создайте файл `db_config.json` в папке `server` со следующим содержимым:
+Создайте файл `db_config.json` в папке `Server` со следующим содержимым:
 
 ```json
 {
@@ -30,12 +30,12 @@ cd Weather-client-server-application
 - Данные для подключения можно запросить у создателя репозитория.
 - Либо можно развернуть локальный экземпляр PostgreSQL, создать базу данных и таблицу `users` с полями `id`, `username`, `password_hash`.
 
-Сборка и запуск сервера:
+Сборка и запуск сервера на MacOS:
 
 ```bash
-qmake HttpServer2.pro
+qmake HttpServer.pro
 make
-./HttpServer2.app/Contents/MacOS/HttpServer2
+./HttpServer.app/Contents/MacOS/HttpServer
 ```
 
 ---
