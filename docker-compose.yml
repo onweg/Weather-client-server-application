@@ -3,8 +3,8 @@ version: "3.8"
 services:
   db:
     build:
-      context: .
-      dockerfile: docker/Dockerfile.db
+      context: ./db
+      dockerfile: Dockerfile.db
     container_name: postgres_db
     ports:
       - "5432:5432"
