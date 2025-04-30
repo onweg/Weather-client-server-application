@@ -5,7 +5,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QMap>
-#include "../Types/WeekWeatherData.h"
+#include "../Models/WeekWeatherData.h"
 
 class WeatherJsonConverter : public QObject
 {

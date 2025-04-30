@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QJsonObject>
-#include "../Types/AuthorizationReply.h"
+#include "../Models/AuthorizationReply.h"
 
 class AuthorizationReplyJsonConverter : public QObject
 {

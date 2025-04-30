@@ -3,8 +3,8 @@
 
 #include <QString>
 #include <QJsonObject>
-#include "../Types/ApiConfig.h"
-#include "../Types/ServerHostConfig.h"
+#include "../Models/ApiConfig.h"
+#include "../Models/ServerHostConfig.h"
 
 class AppConfig
 {

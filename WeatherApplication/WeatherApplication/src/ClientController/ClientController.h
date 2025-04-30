@@ -11,11 +11,11 @@
 #include "WeatherUpdater.h"
 #include "../Models/WeekWeatherModel.h"
 #include "../Models/WeatherModel.h"
-#include "../Types/AuthorizationReply.h"
-#include "../Types/ApiReply.h"
-#include "../Types/WeatherData.h"
-#include "../Types/WeekWeatherData.h"
-#include "../Types/AuthorizationInfo.h"
+#include "../Models/AuthorizationReply.h"
+#include "../Models/ApiReply.h"
+#include "../Models/WeatherData.h"
+#include "../Models/WeekWeatherData.h"
+#include "../Models/AuthorizationInfo.h"
 
 #define NUMBEROFDAYS 5
 

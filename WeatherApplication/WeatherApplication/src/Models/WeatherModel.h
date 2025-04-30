@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QDate>
-#include "../Types/WeatherData.h"
+#include "../Models/WeatherData.h"
 
 class WeatherModel : public QObject
 {

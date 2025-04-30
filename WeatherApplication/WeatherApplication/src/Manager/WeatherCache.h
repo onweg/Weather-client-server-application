@@ -8,8 +8,8 @@
 #include <QString>
 #include <QDebug>
 
-#include "../Types/WeatherData.h"
-#include "../Types/WeekWeatherData.h"
+#include "../Models/WeatherData.h"
+#include "../Models/WeekWeatherData.h"
 
 class WeatherCache : public QObject
 {

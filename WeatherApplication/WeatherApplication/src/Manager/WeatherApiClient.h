@@ -13,8 +13,8 @@
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonArray>
-#include "../Types/ApiReply.h"
-#include "../Types/ApiConfig.h"
+#include "../Models/ApiReply.h"
+#include "../Models/ApiConfig.h"
 
 class WeatherApiClient : public QObject
 {

@@ -9,7 +9,7 @@
 #include <QDate>
 #include <QVariantList>
 #include <QList>
-#include "../Types/WeatherHistoryItem.h"
+#include "../Models/WeatherHistoryItem.h"
 
 class DatabaseManager : public QObject
 {

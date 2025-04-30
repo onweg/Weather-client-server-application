@@ -7,7 +7,7 @@
 #include <QDebug>
 #include "WeatherModel.h"
 #include "WeatherModeList.h"
-#include "../Types/WeekWeatherData.h"
+#include "../Models/WeekWeatherData.h"
 
 
 class WeekWeatherModel : public QObject

@@ -75,14 +75,14 @@ HEADERS += \
     src/Models/WeatherModeList.h \
     src/Models/WeatherModel.h \
     src/Models/WeekWeatherModel.h \
-    src/Types/ApiConfig.h \
-    src/Types/ApiReply.h \
-    src/Types/AuthorizationInfo.h \
-    src/Types/AuthorizationReply.h \
-    src/Types/ServerHostConfig.h \
-    src/Types/WeatherData.h \
-    src/Types/WeatherHistoryItem.h \
-    src/Types/WeekWeatherData.h \
+    src/Models/ApiConfig.h \
+    src/Models/ApiReply.h \
+    src/Models/AuthorizationInfo.h \
+    src/Models/AuthorizationReply.h \
+    src/Models/ServerHostConfig.h \
+    src/Models/WeatherData.h \
+    src/Models/WeatherHistoryItem.h \
+    src/Models/WeekWeatherData.h \
     src/Utils/AuthorizationInfoJsonConverter.h \
     src/Utils/AuthorizationReplyJsonConverter.h \
     src/Utils/WeatherJsonConverter.h
