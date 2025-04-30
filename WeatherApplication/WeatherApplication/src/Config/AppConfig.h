@@ -13,6 +13,10 @@ public:
     ApiConfig rawApiConfig;
 
     static bool fromJson(const QJsonObject& obj, AppConfig& config);
+
+private:
+    static bool parseServerHostConfig(const QJsonObject& obj, ServerHostConfig& config);
+    static bool parseApiConfig(const QJsonObject& obj, ApiConfig& config);
 };
 
 #endif // APPCONFIG_H

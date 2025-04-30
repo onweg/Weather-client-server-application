@@ -1,23 +1,41 @@
 #include "AppConfig.h"
-#include <QJsonArray>
 
 bool AppConfig::fromJson(const QJsonObject &obj, AppConfig &config)
 {
-    if (!obj.contains("server host")) return false;
-    QJsonObject serverHostObj = obj["server host"].toObject();
-    if (!serverHostObj.contains("ip") || !serverHostObj.contains("port")) return false;
-    config.serverHostConfig.ip = serverHostObj["ip"].toString();
-    config.serverHostConfig.port = serverHostObj["port"].toString();
-    if (!obj.contains("api")) return false;
-    QJsonObject apiObj = obj["api"].toObject();
-    if (!apiObj.contains("urlFindCityByName") ||
-        !apiObj.contains("urlFindWeatherByCoordinates") ||
-        !apiObj.contains("key")) 
-    {
+    if (!parseServerHostConfig(obj, config.serverHostConfig)) {
         return false;
     }
-    config.rawApiConfig.urlFindCityByName = apiObj["urlFindCityByName"].toString();
-    config.rawApiConfig.urlFindWeatherByCoordinates = apiObj["urlFindWeatherByCoordinates"].toString();
-    config.rawApiConfig.key = apiObj["key"].toString();
+    if (!parseApiConfig(obj, config.rawApiConfig)) {
+        return false;
+    }
+    return true;
+}
+
+bool AppConfig::parseServerHostConfig(const QJsonObject &obj, ServerHostConfig &config)
+{
+    if (!obj.contains("server host") || !obj["server host"].isObject()) {
+        return false;
+    }
+    QJsonObject serverHostObj = obj["server host"].toObject();
+    if (!serverHostObj.contains("ip") || !serverHostObj.contains("port")) {
+        return false;
+    }
+    config.ip = serverHostObj["ip"].toString();
+    config.port = serverHostObj["port"].toString();
+    return true;
+}
+
+bool AppConfig::parseApiConfig(const QJsonObject &obj, ApiConfig &config)
+{
+    if (!obj.contains("api") || !obj["api"].isObject()) {
+        return false;
+    }
+    QJsonObject apiObj = obj["api"].toObject();
+    if (!apiObj.contains("urlFindCityByName") || !apiObj.contains("urlFindWeatherByCoordinates") || !apiObj.contains("key")) {
+        return false;
+    }
+    config.urlFindCityByName = apiObj["urlFindCityByName"].toString();
+    config.urlFindWeatherByCoordinates = apiObj["urlFindWeatherByCoordinates"].toString();
+    config.key = apiObj["key"].toString();
     return true;
 }
