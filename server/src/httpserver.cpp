@@ -1,4 +1,4 @@
-#include "httpserver.h"
+#include "HttpServer.h"
 #include <QCryptographicHash>
 #include <QCoreApplication>
 #include <QString>
