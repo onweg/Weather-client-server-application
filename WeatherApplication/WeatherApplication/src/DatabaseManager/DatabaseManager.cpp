@@ -8,23 +8,22 @@ DatabaseManager::DatabaseManager(QObject *parent) : QObject(parent)
     }
 }
 
-QVariantList DatabaseManager::getAllWeatherData()
+QList<WeatherHistoryItem> DatabaseManager::getAllWeatherData()
 {
-    QVariantList results;
+    QList<WeatherHistoryItem> results;
     QSqlQuery query("SELECT id, username, timestamp, city, date FROM weather_data");
-
     if (!query.exec()) {
         qDebug() << "Ошибка при получении данных:" << query.lastError();
         return results;
     }
 
     while (query.next()) {
-        QVariantMap row;
-        row["id"] = query.value("id");
-        row["username"] = query.value("username");
-        row["timestamp"] = query.value("timestamp");
-        row["city"] = query.value("city");
-        row["date"] = query.value("date");
+        WeatherHistoryItem row;
+        row.id = query.value("id").toInt();
+        row.username = query.value("username").toString();
+        row.timestamp = query.value("timestamp").toDateTime();
+        row.city = query.value("city").toString();
+        row.date = query.value("date").toDate();
         results.append(row);
     }
     return results;
