@@ -45,6 +45,4 @@ private:
     WeatherData m_data;
 };
 
-Q_DECLARE_METATYPE(WeatherModel*)
-
 #endif // WEATHERMODEL_H

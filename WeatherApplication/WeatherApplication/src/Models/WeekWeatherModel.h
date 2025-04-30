@@ -36,6 +36,4 @@ private:
     QList<WeatherModel*> m_dailyWeather;
 };
 
-Q_DECLARE_METATYPE(WeekWeatherModel*)
-
 #endif // WEEKWEATHERMODEL_H

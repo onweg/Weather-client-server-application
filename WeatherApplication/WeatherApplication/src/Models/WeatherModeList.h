@@ -20,6 +20,4 @@ private:
     QList<WeatherModel*> m_list;
 };
 
-Q_DECLARE_METATYPE(WeatherModelList*)
-
 #endif // WEATHERMODELLIST_H
