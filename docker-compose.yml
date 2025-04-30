@@ -15,8 +15,8 @@ services:
 
   server:
     build:
-      context: .
-      dockerfile: docker/Dockerfile.server
+      context: ./server
+      dockerfile: Dockerfile.server
     container_name: qt_server
     depends_on:
       - db

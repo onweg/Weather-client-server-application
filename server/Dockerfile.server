@@ -12,11 +12,11 @@ RUN apt-get update && apt-get install -y \
 
 # Копируем проект внутрь контейнера
 WORKDIR /app/server
-COPY ../server .
+COPY . .
 
 # Копируем скрипт запуска
 WORKDIR /app
-COPY docker/entrypoint.sh .
+COPY entrypoint.sh .
 
 RUN chmod +x entrypoint.sh
 
