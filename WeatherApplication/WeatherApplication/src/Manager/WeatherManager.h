@@ -14,18 +14,19 @@
 #include "WeatherApiClient.h"
 #include "WeatherCache.h"
 #include "CacheCleaner.h"
-#include "../Utils/WeatherJsonConverter.h"
 #include "../Models/WeekWeatherData.h"
 #include "../Models/WeatherData.h"
 #include "../Models/AuthorizationReply.h"
 #include "../Models/ApiReply.h"
 #include "../Models/ApiConfig.h"
 #include "../Models/ServerHostConfig.h"
-#include "../Config/AppConfig.h"
+#include "../Models/AppConfig.h"
 #include "../Models/WeatherHistoryItem.h"
 #include "../Models/AuthorizationInfo.h"
+#include "../Utils/WeatherJsonConverter.h"
 #include "../Utils/AuthorizationInfoJsonConverter.h"
 #include "../Utils/AuthorizationReplyJsonConverter.h"
+#include "../Utils/AppConfigJsonConverter.h"
 
 
 class WeatherManager : public QObject

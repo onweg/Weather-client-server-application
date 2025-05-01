@@ -89,9 +89,8 @@ bool WeatherManager::loadConfig()
         qDebug() << "Ошибка парсинга json файла";
         return false;
     }
-    QJsonObject configJson = doc.object();
     AppConfig appConfig;
-    if (AppConfig::fromJson(configJson, appConfig) == false) {
+    if (AppConfigJsonConverter::fromJson(doc.object(), appConfig) == false) {
         return false;
     }
     serverHostConfig_ = appConfig.serverHostConfig;

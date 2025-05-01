@@ -47,7 +47,6 @@ PKGCONFIG += \
 SOURCES += \
     src/ClientController/ClientController.cpp \
     src/ClientController/WeatherUpdater.cpp \
-    src/Config/AppConfig.cpp \
     src/DatabaseManager/DatabaseManager.cpp \
     src/DatabaseManager/DatabaseCreator.cpp \
     src/Manager/CacheCleaner.cpp \
@@ -60,12 +59,13 @@ SOURCES += \
     src/Utils/AuthorizationInfoJsonConverter.cpp \
     src/Utils/AuthorizationReplyJsonConverter.cpp \
     src/Utils/WeatherJsonConverter.cpp \
+    src/Utils/AppConfigJsonConverter.cpp \
     src/main.cpp
 
 HEADERS += \
     src/ClientController/ClientController.h \
     src/ClientController/WeatherUpdater.h \
-    src/Config/AppConfig.h \
+    src/Models/AppConfig.h \
     src/DatabaseManager/DatabaseManager.h \
     src/DatabaseManager/DatabaseCreator.h \
     src/Manager/CacheCleaner.h \
@@ -85,6 +85,7 @@ HEADERS += \
     src/Models/WeekWeatherData.h \
     src/Utils/AuthorizationInfoJsonConverter.h \
     src/Utils/AuthorizationReplyJsonConverter.h \
+    src/Utils/AppConfigJsonConverter.h \
     src/Utils/WeatherJsonConverter.h
 
 DISTFILES += \
