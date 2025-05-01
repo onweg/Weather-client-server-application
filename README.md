@@ -5,7 +5,7 @@
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://github.com/yourusername/your-repo.git
+git clone git@github.com:onweg/Weather-client-server-application.git
 cd Weather-client-server-application
 ```
 
