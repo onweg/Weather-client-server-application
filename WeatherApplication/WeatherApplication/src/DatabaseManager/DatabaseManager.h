@@ -7,7 +7,6 @@
 #include <QDebug>
 #include <QString>
 #include <QDate>
-#include <QVariantList>
 #include <QList>
 #include "../Models/WeatherHistoryItem.h"
 
