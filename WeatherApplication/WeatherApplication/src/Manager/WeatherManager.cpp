@@ -94,7 +94,7 @@ bool WeatherManager::loadConfig()
         return false;
     }
     serverHostConfig_ = appConfig.serverHostConfig;
-    ApiConfig apiConfig = appConfig.rawApiConfig;
+    ApiConfig apiConfig = appConfig.apiConfig;
     if (api_->loadConfig(apiConfig) == false) {
         return false;
     }
