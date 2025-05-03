@@ -40,7 +40,8 @@ QT += network core sql
 TARGET = ru.auroraos.WeatherApplication
 
 CONFIG += \
-    auroraapp
+    auroraapp \
+    c++17
 
 PKGCONFIG += \
 
@@ -60,11 +61,21 @@ SOURCES += \
     src/Utils/AuthorizationReplyJsonConverter.cpp \
     src/Utils/WeatherJsonConverter.cpp \
     src/Utils/AppConfigJsonConverter.cpp \
+    src/Presentation/ViewModel/AuthViewModel.cpp \
+    src/Domain/UseCases/AuthenticateUserUseCase.cpp \
+    src/Domain/UseCases/RegisterUserUseCase.cpp \
+    src/Domain/Utils/Result.cpp \
+    src/Data/Api/UserRepository.cpp \
+    src/Data/Config/ConfigProvider.cpp \
+    src/Data/Config/ConfigLoader.cpp \
     src/main.cpp
 
 HEADERS += \
     src/ClientController/ClientController.h \
     src/ClientController/WeatherUpdater.h \
+    src/Domain/Repositories/IConfigLoader.h \
+    src/Domain/Repositories/IConfigProvider.h \
+    src/Domain/Utils/SimpleOptional.h \
     src/Models/AppConfig.h \
     src/DatabaseManager/DatabaseManager.h \
     src/DatabaseManager/DatabaseCreator.h \
@@ -86,7 +97,19 @@ HEADERS += \
     src/Utils/AuthorizationInfoJsonConverter.h \
     src/Utils/AuthorizationReplyJsonConverter.h \
     src/Utils/AppConfigJsonConverter.h \
-    src/Utils/WeatherJsonConverter.h
+    src/Utils/WeatherJsonConverter.h \
+    src/Presentation/ViewModel/AuthViewModel.h \
+    src/Domain/UseCases/AuthenticateUserUseCase.h \
+    src/Domain/UseCases/RegisterUserUseCase.h \
+    src/Domain/Repositories/IUserRepository.h \
+    src/Domain/Models/User.h \
+    src/Domain/Models/ApiConfig.h \
+    src/Domain/Models/ServerHostConfig.h \
+    src/Domain/Models/AppConfig.h \
+    src/Domain/Utils/Result.h \
+    src/Data/Api/UserRepository.h \
+    src/Data/Config/ConfigProvider.h \
+    src/Data/Config/ConfigLoader.h
 
 DISTFILES += \
     qml/components/DateAndButtons.qml \

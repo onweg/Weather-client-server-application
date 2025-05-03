@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include "../Models/AuthorizationInfo.h"
+#include "../Domain/Models/User.h"
 
 class AuthorizationInfoJsonConverter : public QObject
 {
@@ -12,8 +12,11 @@ class AuthorizationInfoJsonConverter : public QObject
 public:
     explicit AuthorizationInfoJsonConverter(QObject *parent = nullptr);
 
-    static QJsonObject toJsonObject(const AuthorizationInfo &data);
-    static QJsonDocument toJsonDocument(const AuthorizationInfo &data);
+    static QJsonObject loginUserToJsonObject(const User &user);
+    static QJsonObject registerUserToJsonObject(const User &user);
+    static QJsonDocument loginUserToJsonDocument(const User &user);
+    static QJsonDocument registerUserToJsonDocument(const User &user);
+
 
 signals:
 

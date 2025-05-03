@@ -1,8 +1,8 @@
 #ifndef APPCONFIG_H
 #define APPCONFIG_H
 
-#include "../Models/ApiConfig.h"
-#include "../Models/ServerHostConfig.h"
+#include "ApiConfig.h"
+#include "ServerHostConfig.h"
 
 struct AppConfig
 {

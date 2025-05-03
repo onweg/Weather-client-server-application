@@ -24,13 +24,13 @@ Item {
             Button {
                 text: "Log In"
                 onClicked: {
-                    controller.sendAuthorizationData("LOGIN", loginField.text, passwordField.text)
+                    authViewModel.login(loginField.text, passwordField.text)
                 }
             }
             Button {
                 text: "Sign Up"
                 onClicked: {
-                    controller.sendAuthorizationData("REGISTER", loginField.text, passwordField.text)
+                    authViewModel.register(loginField.text, passwordField.text)
                 }
             }
         }
@@ -42,11 +42,11 @@ Item {
         }
     }
     Connections {
-        target: controller
-        onAuthorizationCompleted: {
+        target: authViewModel
+        onAuthSucceeded: {
             pageStack.push(Qt.resolvedUrl("../pages/WeatherPage.qml"));
         }
-        onAuthorizationFailed: {
+        onAuthFailed: {
             resultText.text = message;
         }
     }

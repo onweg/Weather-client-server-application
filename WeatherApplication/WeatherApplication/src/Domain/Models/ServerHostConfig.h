@@ -1,11 +1,11 @@
 #ifndef SERVERHOSTCONFIG_H
 #define SERVERHOSTCONFIG_H
 
-#include <QString>
+#include <string>
 
 struct ServerHostConfig {
-    QString ip;
-    QString port;
+    std::string ip;
+    std::string port;
 };
 
 #endif // SERVERHOSTCONFIG_H

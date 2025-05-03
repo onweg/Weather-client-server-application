@@ -1,12 +1,12 @@
 #ifndef APICONFIG_H
 #define APICONFIG_H
 
-#include <QString>
+#include <string>
 
 struct ApiConfig {
-    QString urlFindCityByName;
-    QString urlFindWeatherByCoordinates;
-    QString key;
+    std::string urlFindCityByName;
+    std::string urlFindWeatherByCoordinates;
+    std::string key;
 };
 
 #endif // APICONFIG_H

@@ -5,17 +5,32 @@ AuthorizationInfoJsonConverter::AuthorizationInfoJsonConverter(QObject *parent) 
 
 }
 
-QJsonObject AuthorizationInfoJsonConverter::toJsonObject(const AuthorizationInfo &data)
+QJsonObject AuthorizationInfoJsonConverter::loginUserToJsonObject(const User &user)
 {
     QJsonObject obj;
-    obj["command"] = data.command;
-    obj["login"] = data.login;
-    obj["password"] = data.password;
+    obj["command"] = "LOGIN";
+    obj["login"] = QString::fromStdString(user.username);
+    obj["password"] = QString::fromStdString(user.passwordHash);
     return obj;
 }
 
-QJsonDocument AuthorizationInfoJsonConverter::toJsonDocument(const AuthorizationInfo &data)
+QJsonObject AuthorizationInfoJsonConverter::registerUserToJsonObject(const User &user)
 {
-    QJsonDocument doc(toJsonObject(data));
+    QJsonObject obj;
+    obj["command"] = "REGISTER";
+    obj["login"] = QString::fromStdString(user.username);
+    obj["password"] = QString::fromStdString(user.passwordHash);
+    return obj;
+}
+
+QJsonDocument AuthorizationInfoJsonConverter::loginUserToJsonDocument(const User &user)
+{
+    QJsonDocument doc(loginUserToJsonObject(user));
+    return doc;
+}
+
+QJsonDocument AuthorizationInfoJsonConverter::registerUserToJsonDocument(const User &user)
+{
+    QJsonDocument doc(registerUserToJsonObject(user));
     return doc;
 }

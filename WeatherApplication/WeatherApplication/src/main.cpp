@@ -44,6 +44,11 @@
 #include "DatabaseManager/DatabaseCreator.h"
 #include "Models/WeekWeatherModel.h"
 #include "Models/WeatherModel.h"
+#include "Presentation/ViewModel/AuthViewModel.h"
+#include "Domain/UseCases/AuthenticateUserUseCase.h"
+#include "Data/Api/UserRepository.h"
+#include "Data/Config/ConfigProvider.h"
+#include "Data/Config/ConfigLoader.h"
 
 int main(int argc, char *argv[])
 {
@@ -53,28 +58,35 @@ int main(int argc, char *argv[])
 
     QScopedPointer<QQuickView> view(Aurora::Application::createView());
 
-    WeatherManager manager;
-    if (!manager.loadConfig()) {
-       return 0;
-    }
+//    WeatherManager manager;
+//    if (!manager.loadConfig()) {
+//       return 0;
+//    }
 
-    ClientController controller;
-    DatabaseManager dbManager;
-    DatabaseCreator dbCreator;
+//    ClientController controller;
+//    DatabaseManager dbManager;
+//    DatabaseCreator dbCreator;
 
-    QObject::connect(&controller, &ClientController::findWeatherData, &manager, &WeatherManager::slotFindWeatherData);
-    QObject::connect(&controller, &ClientController::findWeekWeatherData, &manager, &WeatherManager::slotFindWeekWeatherData);
-    QObject::connect(&manager, &WeatherManager::sendWeatherDataToController, &controller, &ClientController::slotWeatherDataArrived);
-    QObject::connect(&manager, &WeatherManager::sendWeekWeatherDataToController, &controller, &ClientController::slotWeekWeatherDataArrived);
-    QObject::connect(&manager, &WeatherManager::submitCompletedWeatherDataSearchRequest, &dbManager, &DatabaseManager::slotSubmitCompletedWeatherDataSearchRequest);
-    QObject::connect(&controller, &ClientController::sendAuthorizationDataToManager, &manager, &WeatherManager::sloRecivedAuthorizationData);
-    QObject::connect(&manager, &WeatherManager::sendAuthorizationResult, &controller, &ClientController::slotRecivedAuthorizationData);
+//    QObject::connect(&controller, &ClientController::findWeatherData, &manager, &WeatherManager::slotFindWeatherData);
+//    QObject::connect(&controller, &ClientController::findWeekWeatherData, &manager, &WeatherManager::slotFindWeekWeatherData);
+//    QObject::connect(&manager, &WeatherManager::sendWeatherDataToController, &controller, &ClientController::slotWeatherDataArrived);
+//    QObject::connect(&manager, &WeatherManager::sendWeekWeatherDataToController, &controller, &ClientController::slotWeekWeatherDataArrived);
+//    QObject::connect(&manager, &WeatherManager::submitCompletedWeatherDataSearchRequest, &dbManager, &DatabaseManager::slotSubmitCompletedWeatherDataSearchRequest);
+//    QObject::connect(&controller, &ClientController::sendAuthorizationDataToManager, &manager, &WeatherManager::sloRecivedAuthorizationData);
+//    QObject::connect(&manager, &WeatherManager::sendAuthorizationResult, &controller, &ClientController::slotRecivedAuthorizationData);
+
 
     qmlRegisterType<WeatherModel>("ru.auroraos.weather", 1, 0, "WeatherModel");
     qmlRegisterUncreatableType<WeatherModelList>("ru.auroraos.weather", 1, 0, "WeatherModelList", "Cannot create in QML");
     qmlRegisterUncreatableType<WeekWeatherModel>("ru.auroraos.weather", 1, 0, "WeekWeatherModel", "Use controller.weekWeatherModel");
 
-    view->rootContext()->setContextProperty("controller", &controller);
+    ConfigLoader* configLoader = new ConfigLoader();
+    ConfigProvider* configProvider = new ConfigProvider(configLoader);
+    UserRepository* userRepository = new UserRepository(configProvider);
+    AuthenticateUserUseCase* authUseCase = new AuthenticateUserUseCase(userRepository);
+    AuthViewModel* authViewModel = new AuthViewModel(authUseCase);
+
+    view->rootContext()->setContextProperty("authViewModel", authViewModel);
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));
     view->show();
 

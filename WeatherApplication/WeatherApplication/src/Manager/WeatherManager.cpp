@@ -64,8 +64,8 @@ void WeatherManager::sloRecivedAuthorizationData(const AuthorizationInfo &info)
     QUrl url(urlStr);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    QByteArray data = AuthorizationInfoJsonConverter::toJsonDocument(info).toJson();
-    networkManager_->post(request, data);
+    // QByteArray data = AuthorizationInfoJsonConverter::toJsonDocument(info).toJson();
+    // networkManager_->post(request, data);
 }
 
 void WeatherManager::slotFindWeekWeatherData()
