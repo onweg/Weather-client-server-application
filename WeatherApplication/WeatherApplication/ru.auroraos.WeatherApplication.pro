@@ -58,11 +58,23 @@ SOURCES += \
 #    src/Models/WeatherModel.cpp \
 #    src/Models/WeekWeatherModel.cpp \
     src/Data/Mappers/UserMapper.cpp \
+#    src/Presentation/Coordinator/AppCoordinator.cpp \
+    src/Data/Mappers/WeatherDataMapper.cpp \
+    src/Data/Mappers/WeekWeatherDataMapper.cpp \
+    src/Data/Repositories/SharedState/SharedState.cpp \
+#    src/Presentation/ViewModels/WeatherViewModel.cpp \
+    src/Presentation/Mappers/WeatherUIMapper.cpp \
+    src/Presentation/Mappers/WeekwWeatherUIMapper.cpp \
+    src/Presentation/UIModels/WeatherUIModel.cpp \
+    src/Presentation/UIModels/WeekWeatherUIModel.cpp \
+    src/Presentation/ViewModels/WeatherViewModel.cpp \
     src/Utils/AuthorizationInfoJsonConverter.cpp \
     src/Utils/AuthorizationReplyJsonConverter.cpp \
     src/Utils/WeatherJsonConverter.cpp \
     src/Utils/AppConfigJsonConverter.cpp \
-    src/Presentation/ViewModel/AuthViewModel.cpp \
+    src/Presentation/ViewModels/AuthViewModel.cpp \
+#    src/Presentation/ViewModels/WeatherViewModel.cpp \
+#    src/Presentation/ViewModels/WeekWeatherViewModel.cpp \
     src/Domain/UseCases/AuthenticateUserUseCase.cpp \
     src/Domain/UseCases/RegisterUserUseCase.cpp \
     src/Data/Repositories/Api/UserRepository.cpp \
@@ -75,15 +87,24 @@ HEADERS += \
 #    src/ClientController/ClientController.h \
 #    src/ClientController/WeatherUpdater.h \
     src/Data/DtoModels/UserDto.h \
+    src/Data/DtoModels/WeatherDataDto.h \
+    src/Data/DtoModels/WeekWeatherDataDto.h \
     src/Data/Mappers/UserMapper.h \
+    src/Data/Mappers/WeatherDataMapper.h \
+    src/Data/Mappers/WeekWeatherDataMapper.h \
+    src/Data/Repositories/SharedState/SharedState.h \
     src/Domain/Entities/AuthorizationReply.h \
     src/Domain/Entities/User.h \
     src/Domain/Entities/ApiConfig.h \
     src/Domain/Entities/ServerHostConfig.h \
     src/Domain/Entities/AppConfig.h \
+    src/Domain/Entities/WeatherData.h \
+    src/Domain/Entities/WeekWeatherData.h \
+    src/Domain/Interfaces/Api/IWeatherRepository.h \
     src/Domain/Interfaces/Config/IConfigLoader.h \
     src/Domain/Interfaces/Config/IConfigProvider.h \
     src/Domain/Interfaces/Api/IUserRepository.h \
+    src/Domain/Interfaces/SharedState/ISharedState.h \
     src/Domain/Utils/SimpleOptional.h \
 #    src/Models/AppConfig.h \
 #    src/DatabaseManager/DatabaseManager.h \
@@ -103,11 +124,20 @@ HEADERS += \
 #    src/Models/WeatherData.h \
 #    src/Models/WeatherHistoryItem.h \
 #    src/Models/WeekWeatherData.h \
+#    src/Presentation/Coordinator/AppCoordinator.h \
+#    src/Presentation/ViewModels/WeatherViewModel.h \
+    src/Presentation/Mappers/WeatherUIMapper.h \
+    src/Presentation/Mappers/WeekWeatherUIMapper.h \
+    src/Presentation/UIModels/WeatherUIModel.h \
+    src/Presentation/UIModels/WeekWeatherUIModel.h \
+    src/Presentation/ViewModels/WeatherViewModel.h \
     src/Utils/AuthorizationInfoJsonConverter.h \
     src/Utils/AuthorizationReplyJsonConverter.h \
     src/Utils/AppConfigJsonConverter.h \
     src/Utils/WeatherJsonConverter.h \
-    src/Presentation/ViewModel/AuthViewModel.h \
+    src/Presentation/ViewModels/AuthViewModel.h \
+#    src/Presentation/ViewModels/WeatherViewModel.h \
+#    src/Presentation/ViewModels/WeekWeatherViewModel.h \
     src/Domain/UseCases/AuthenticateUserUseCase.h \
     src/Domain/UseCases/RegisterUserUseCase.h \
     src/Domain/Utils/Result.h \

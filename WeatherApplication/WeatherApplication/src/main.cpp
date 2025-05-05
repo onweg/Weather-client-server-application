@@ -83,6 +83,9 @@ int main(int argc, char *argv[])
 //    qmlRegisterUncreatableType<WeatherModelList>("ru.auroraos.weather", 1, 0, "WeatherModelList", "Cannot create in QML");
 //    qmlRegisterUncreatableType<WeekWeatherModel>("ru.auroraos.weather", 1, 0, "WeekWeatherModel", "Use controller.weekWeatherModel");
 
+//    qmlRegisterType<WeatherUiModel>("App.Models", 1, 0, "WeatherUiModel"); // ЧИСТАЯ АРХИТЕКТУРА
+//    qmlRegisterType<WeekWeatherUiModel>("App.Models", 1, 0, "WeekWeatherUiModel"); // ЧИСТАЯ АРХИТЕКТУРА
+
     // ConfigLoader* configLoader = new ConfigLoader();
     // ConfigProvider* configProvider = new ConfigProvider(configLoader);
     // UserRepository* userRepository = new UserRepository(configProvider);

@@ -3,16 +3,19 @@
 #include "../Data/Repositories/Config/ConfigLoader.h"
 #include "../Data/Repositories/Config/ConfigProvider.h"
 #include "../Data/Repositories/Api/UserRepository.h"
+#include "../Data/Repositories/SharedState/SharedState.h"
 
 
 DependencyContainer::DependencyContainer(QObject *qmlRoot)
     : qmlRoot_(qmlRoot)
 {
+    auto sharedStateImpl = std::make_shared<SharedState>();
+    sharedStateInterface_ = sharedStateImpl;
     auto configLoaderImpl = std::make_shared<ConfigLoader>();
     configLoaderInterface_ = configLoaderImpl;
     auto configProviderImpl = std::make_shared<ConfigProvider>(configLoaderInterface_);
     configProviderInterface_ = configProviderImpl;
-    auto* userRepositoryImpl = new UserRepository(configProviderInterface_, qmlRoot_);
+    auto* userRepositoryImpl = new UserRepository(configProviderInterface_, sharedStateInterface_, qmlRoot_);
     userRepositoryInterface_ = userRepositoryImpl;
 
     authUseCase_ = std::make_shared<AuthenticateUserUseCase>(userRepositoryInterface_);

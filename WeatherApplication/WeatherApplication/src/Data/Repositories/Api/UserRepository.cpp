@@ -10,8 +10,8 @@
 #include <QDebug>
 
 
-UserRepository::UserRepository(std::shared_ptr<IConfigProvider> config, QObject *parent)
-    : QObject(parent), configProvider_(std::move(config))
+UserRepository::UserRepository(std::shared_ptr<IConfigProvider> config,  std::shared_ptr<ISharedState> state, QObject *parent)
+    : QObject(parent), configProvider_(std::move(config)), sharedState_(std::move(state))
 {
     if (configProvider_) {
         serverHostConfig_ = configProvider_->getServerHostConfig();
@@ -50,7 +50,7 @@ void UserRepository::sendRequest(const User &user, std::function<void (Result<Us
         }
         QNetworkReply* reply = networkManager_->post(request, data);
 
-        QObject::connect(reply, &QNetworkReply::finished, this, [reply, user, callback]() {
+        QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, user, callback]() {
             Result<User> result;
 
             QByteArray response = reply->readAll();
@@ -65,6 +65,7 @@ void UserRepository::sendRequest(const User &user, std::function<void (Result<Us
                 } else {
                     AuthorizationReply authorizationReply = AuthorizationReplyJsonConverter::parseAuthorizationReply(doc.object());
                     if (authorizationReply.success) {
+                        sharedState_->setUsername(user.username);
                         result = Result<User>::success(user);
                     } else {
                         result = Result<User>::failure(authorizationReply.message);
