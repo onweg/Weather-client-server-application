@@ -4,7 +4,7 @@
 #include <QJsonParseError>
 #include <QDebug>
 
-#include "../../Utils/AppConfigJsonConverter.h"
+#include "../../../Utils/AppConfigJsonConverter.h"
 
 ConfigLoader::ConfigLoader()
 {

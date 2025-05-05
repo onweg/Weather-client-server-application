@@ -1,6 +1,6 @@
 #include "UserRepository.h"
-#include "../../Utils/AuthorizationInfoJsonConverter.h"
-#include "../../Utils/AuthorizationReplyJsonConverter.h"
+#include "../../../Utils/AuthorizationInfoJsonConverter.h"
+#include "../../../Utils/AuthorizationReplyJsonConverter.h"
 
 
 #include <QString>
@@ -24,14 +24,30 @@ UserRepository::UserRepository(std::shared_ptr<IConfigProvider> config, QObject 
 
 void UserRepository::findUser(const User &user, std::function<void (Result<User>)> callback)
 {
-    qDebug() << "UserRepository::findUser";
+    sendRequest(user, std::move(callback), "LOGIN");
+}
+
+void UserRepository::registerUser(const User &user, std::function<void (Result<User>)> callback)
+{
+    sendRequest(user, std::move(callback), "REGISTER");
+}
+
+void UserRepository::sendRequest(const User &user, std::function<void (Result<User>)> callback, const QString command)
+{
     if (serverHostConfig_.isSuccess()) {
-        qDebug() << "serverHostConfig_.isSuccess()";
         QString urlStr = "http://" + QString::fromStdString(serverHostConfig_.value().ip) + ":" + QString::fromStdString(serverHostConfig_.value().port);
         QUrl url(urlStr);
         QNetworkRequest request(url);
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-        QByteArray data = AuthorizationInfoJsonConverter::loginUserToJsonDocument(user).toJson();
+        QByteArray data;
+        if (command == "LOGIN") {
+            data = AuthorizationInfoJsonConverter::loginUserToJsonDocument(user).toJson();
+        } else if (command == "REGISTER") {
+            data = AuthorizationInfoJsonConverter::registerUserToJsonDocument(user).toJson();
+        } else {
+            qDebug() << "Нет такой команды: " << command;
+            return;
+        }
         QNetworkReply* reply = networkManager_->post(request, data);
 
         QObject::connect(reply, &QNetworkReply::finished, this, [reply, user, callback]() {
@@ -61,8 +77,4 @@ void UserRepository::findUser(const User &user, std::function<void (Result<User>
     }
 }
 
-//void UserRepository::registerUser(const User &user)
-//{
-
-//}
 

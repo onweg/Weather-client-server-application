@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "../../Domain/Repositories/IConfigProvider.h"
-#include "../../Domain/Repositories/IConfigLoader.h"
+#include "../../../Domain/Interfaces/Config/IConfigProvider.h"
+#include "../../../Domain/Interfaces/Config/IConfigLoader.h"
 
 class ConfigProvider : public IConfigProvider {
 public:

@@ -4,8 +4,8 @@
 #include <memory>
 #include <functional>
 
-#include "../Repositories/IUserRepository.h"
-#include "../Models/User.h"
+#include "../Interfaces/Api/IUserRepository.h"
+#include "../Entities/User.h"
 #include "../Utils/Result.h"
 
 class  AuthenticateUserUseCase {

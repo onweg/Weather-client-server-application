@@ -1,8 +1,8 @@
 #ifndef ICONFIGLOADER_H
 #define ICONFIGLOADER_H
 
-#include "../Models/AppConfig.h"
-#include "../Utils/Result.h"
+#include "../../Entities/AppConfig.h"
+#include "../../Utils/Result.h"
 
 class IConfigLoader {
 public:

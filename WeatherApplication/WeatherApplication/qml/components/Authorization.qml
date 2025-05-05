@@ -24,13 +24,13 @@ Item {
             Button {
                 text: "Log In"
                 onClicked: {
-                    authViewModel.login(loginField.text, passwordField.text)
+                    authViewModel.loginUser(loginField.text, passwordField.text)
                 }
             }
             Button {
                 text: "Sign Up"
                 onClicked: {
-                    authViewModel.register(loginField.text, passwordField.text)
+                    authViewModel.registerUser(loginField.text, passwordField.text)
                 }
             }
         }

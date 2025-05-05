@@ -1,7 +1,7 @@
 #ifndef CONFIGLOADER_H
 #define CONFIGLOADER_H
 
-#include "../../Domain/Repositories/IConfigLoader.h"
+#include "../../../Domain/Interfaces/Config/IConfigLoader.h"
 
 #define FILE_PATH "/usr/share/ru.auroraos.WeatherApplication/config/config.json"
 

@@ -3,11 +3,12 @@
 
 #include <memory>
 
-#include "../Domain/UseCases/AuthenticateUserUseCase.h"
 #include "../Presentation/ViewModel/AuthViewModel.h"
-#include "../Domain/Repositories/IConfigLoader.h"
-#include "../Domain/Repositories/IUserRepository.h"
-#include "../Domain/Repositories/IConfigProvider.h"
+#include "../Domain/UseCases/AuthenticateUserUseCase.h"
+#include "../Domain/UseCases/RegisterUserUseCase.h"
+#include "../Domain/Interfaces/Config/IConfigLoader.h"
+#include "../Domain/Interfaces/Config/IConfigProvider.h"
+#include "../Domain/Interfaces/Api/IUserRepository.h"
 
 class DependencyContainer {
 public:
@@ -20,6 +21,7 @@ private:
     IUserRepository* userRepositoryInterface_;
 
     std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
+    std::shared_ptr<RegisterUserUseCase> regUseCase_;
 
     AuthViewModel* authViewModel_ = nullptr;
     QObject* qmlRoot_;

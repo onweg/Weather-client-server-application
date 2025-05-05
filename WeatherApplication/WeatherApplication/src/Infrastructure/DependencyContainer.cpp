@@ -1,8 +1,8 @@
 #include "DependencyContainer.h"
 
-#include "../Data/Config/ConfigLoader.h"
-#include "../Data/Config/ConfigProvider.h"
-#include "../Data/Api/UserRepository.h"
+#include "../Data/Repositories/Config/ConfigLoader.h"
+#include "../Data/Repositories/Config/ConfigProvider.h"
+#include "../Data/Repositories/Api/UserRepository.h"
 
 
 DependencyContainer::DependencyContainer(QObject *qmlRoot)
@@ -16,8 +16,9 @@ DependencyContainer::DependencyContainer(QObject *qmlRoot)
     userRepositoryInterface_ = userRepositoryImpl;
 
     authUseCase_ = std::make_shared<AuthenticateUserUseCase>(userRepositoryInterface_);
+    regUseCase_ = std::make_shared<RegisterUserUseCase>(userRepositoryInterface_);
 
-    authViewModel_ = new AuthViewModel(authUseCase_, qmlRoot_);
+    authViewModel_ = new AuthViewModel(authUseCase_, regUseCase_, qmlRoot_);
 }
 
 AuthViewModel* DependencyContainer::getAuthViewModel() {

@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include "../Domain/Models/User.h"
+#include "../Domain/Entities/User.h"
 
 class AuthorizationInfoJsonConverter : public QObject
 {

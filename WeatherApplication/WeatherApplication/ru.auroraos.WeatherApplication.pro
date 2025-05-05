@@ -46,17 +46,18 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
-    src/ClientController/ClientController.cpp \
-    src/ClientController/WeatherUpdater.cpp \
-    src/DatabaseManager/DatabaseManager.cpp \
-    src/DatabaseManager/DatabaseCreator.cpp \
-    src/Manager/CacheCleaner.cpp \
-    src/Manager/WeatherApiClient.cpp \
-    src/Manager/WeatherCache.cpp \
-    src/Manager/WeatherManager.cpp \
+#    src/ClientController/ClientController.cpp \
+#    src/ClientController/WeatherUpdater.cpp \
+#    src/DatabaseManager/DatabaseManager.cpp \
+#    src/DatabaseManager/DatabaseCreator.cpp \
+#    src/Manager/CacheCleaner.cpp \
+#    src/Manager/WeatherApiClient.cpp \
+#    src/Manager/WeatherCache.cpp \
+#    src/Manager/WeatherManager.cpp \
 #    src/Models/WeatherModeList.cpp \
 #    src/Models/WeatherModel.cpp \
 #    src/Models/WeekWeatherModel.cpp \
+    src/Data/Mappers/UserMapper.cpp \
     src/Utils/AuthorizationInfoJsonConverter.cpp \
     src/Utils/AuthorizationReplyJsonConverter.cpp \
     src/Utils/WeatherJsonConverter.cpp \
@@ -64,27 +65,33 @@ SOURCES += \
     src/Presentation/ViewModel/AuthViewModel.cpp \
     src/Domain/UseCases/AuthenticateUserUseCase.cpp \
     src/Domain/UseCases/RegisterUserUseCase.cpp \
-    src/Domain/Utils/Result.cpp \
-    src/Data/Api/UserRepository.cpp \
-    src/Data/Config/ConfigProvider.cpp \
-    src/Data/Config/ConfigLoader.cpp \
+    src/Data/Repositories/Api/UserRepository.cpp \
+    src/Data/Repositories/Config/ConfigProvider.cpp \
+    src/Data/Repositories/Config/ConfigLoader.cpp \
     src/Infrastructure/DependencyContainer.cpp\
     src/main.cpp
 
 HEADERS += \
-    src/ClientController/ClientController.h \
-    src/ClientController/WeatherUpdater.h \
-    src/Domain/Models/AuthorizationReply.h \
-    src/Domain/Repositories/IConfigLoader.h \
-    src/Domain/Repositories/IConfigProvider.h \
+#    src/ClientController/ClientController.h \
+#    src/ClientController/WeatherUpdater.h \
+    src/Data/DtoModels/UserDto.h \
+    src/Data/Mappers/UserMapper.h \
+    src/Domain/Entities/AuthorizationReply.h \
+    src/Domain/Entities/User.h \
+    src/Domain/Entities/ApiConfig.h \
+    src/Domain/Entities/ServerHostConfig.h \
+    src/Domain/Entities/AppConfig.h \
+    src/Domain/Interfaces/Config/IConfigLoader.h \
+    src/Domain/Interfaces/Config/IConfigProvider.h \
+    src/Domain/Interfaces/Api/IUserRepository.h \
     src/Domain/Utils/SimpleOptional.h \
 #    src/Models/AppConfig.h \
-    src/DatabaseManager/DatabaseManager.h \
-    src/DatabaseManager/DatabaseCreator.h \
-    src/Manager/CacheCleaner.h \
-    src/Manager/WeatherApiClient.h \
-    src/Manager/WeatherCache.h \
-    src/Manager/WeatherManager.h \
+#    src/DatabaseManager/DatabaseManager.h \
+#    src/DatabaseManager/DatabaseCreator.h \
+#    src/Manager/CacheCleaner.h \
+#    src/Manager/WeatherApiClient.h \
+#    src/Manager/WeatherCache.h \
+#    src/Manager/WeatherManager.h \
 #    src/Models/WeatherModeList.h \
 #    src/Models/WeatherModel.h \
 #    src/Models/WeekWeatherModel.h \
@@ -103,15 +110,10 @@ HEADERS += \
     src/Presentation/ViewModel/AuthViewModel.h \
     src/Domain/UseCases/AuthenticateUserUseCase.h \
     src/Domain/UseCases/RegisterUserUseCase.h \
-    src/Domain/Repositories/IUserRepository.h \
-    src/Domain/Models/User.h \
-    src/Domain/Models/ApiConfig.h \
-    src/Domain/Models/ServerHostConfig.h \
-    src/Domain/Models/AppConfig.h \
     src/Domain/Utils/Result.h \
-    src/Data/Api/UserRepository.h \
-    src/Data/Config/ConfigProvider.h \
-    src/Data/Config/ConfigLoader.h \
+    src/Data/Repositories/Api/UserRepository.h \
+    src/Data/Repositories/Config/ConfigProvider.h \
+    src/Data/Repositories/Config/ConfigLoader.h \
     src/Infrastructure/DependencyContainer.h\
 
 DISTFILES += \

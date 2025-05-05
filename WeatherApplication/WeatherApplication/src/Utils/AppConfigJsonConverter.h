@@ -4,9 +4,9 @@
 #include <QObject>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include "../Domain/Models/AppConfig.h"
-#include "../Domain/Models/ApiConfig.h"
-#include "../Domain/Models/ServerHostConfig.h"
+#include "../Domain/Entities/AppConfig.h"
+#include "../Domain/Entities/ApiConfig.h"
+#include "../Domain/Entities/ServerHostConfig.h"
 
 class AppConfigJsonConverter
 {
