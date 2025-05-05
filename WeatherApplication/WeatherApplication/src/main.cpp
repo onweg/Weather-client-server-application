@@ -79,9 +79,9 @@ int main(int argc, char *argv[])
     auto* rootView = view.data();
     DependencyContainer container(rootView);
 
-    qmlRegisterType<WeatherModel>("ru.auroraos.weather", 1, 0, "WeatherModel");
-    qmlRegisterUncreatableType<WeatherModelList>("ru.auroraos.weather", 1, 0, "WeatherModelList", "Cannot create in QML");
-    qmlRegisterUncreatableType<WeekWeatherModel>("ru.auroraos.weather", 1, 0, "WeekWeatherModel", "Use controller.weekWeatherModel");
+//    qmlRegisterType<WeatherModel>("ru.auroraos.weather", 1, 0, "WeatherModel");
+//    qmlRegisterUncreatableType<WeatherModelList>("ru.auroraos.weather", 1, 0, "WeatherModelList", "Cannot create in QML");
+//    qmlRegisterUncreatableType<WeekWeatherModel>("ru.auroraos.weather", 1, 0, "WeekWeatherModel", "Use controller.weekWeatherModel");
 
     // ConfigLoader* configLoader = new ConfigLoader();
     // ConfigProvider* configProvider = new ConfigProvider(configLoader);

@@ -19,9 +19,8 @@ void AuthViewModel::login(const QString &username, const QString &password)
 
     User user(username.toStdString(), password.toStdString());
 
-    authUseCase_->execute(user, [this](Result<User> result){
+    authUseCase_->execute(user, [this](Result<User> result) {
         if (result.isSuccess()) {
-            // для Weather я на этом этапе должен буду поменять значения у Модели, которая выводтся на экран, на новые значения,(у моедли Property которые вызовутс при изменении, тем самым картинка обновится без сигнала, так как мне не надо менять никакую модель, то просто вызову сигнал)
             emit authSucceeded();
         } else {
             emit authFailed(QString::fromStdString(result.errorMessage()));

@@ -4,15 +4,14 @@
 #include <QObject>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include "../Models/AppConfig.h"
-#include "../Models/ApiConfig.h"
-#include "../Models/ServerHostConfig.h"
+#include "../Domain/Models/AppConfig.h"
+#include "../Domain/Models/ApiConfig.h"
+#include "../Domain/Models/ServerHostConfig.h"
 
-class AppConfigJsonConverter : public QObject
+class AppConfigJsonConverter
 {
-    Q_OBJECT
 public:
-    explicit AppConfigJsonConverter(QObject *parent = nullptr);
+    explicit AppConfigJsonConverter();
     static bool fromJson(const QJsonObject& jsonObject, AppConfig& config);
 
 private:

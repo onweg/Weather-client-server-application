@@ -1,5 +1,6 @@
 #include "UserRepository.h"
 #include "../../Utils/AuthorizationInfoJsonConverter.h"
+#include "../../Utils/AuthorizationReplyJsonConverter.h"
 
 
 #include <QString>
@@ -9,14 +10,16 @@
 #include <QDebug>
 
 
-UserRepository::UserRepository(IConfigProvider *config, QObject *parent)
-    : QObject(parent), configProvider_(config)
+UserRepository::UserRepository(std::shared_ptr<IConfigProvider> config, QObject *parent)
+    : QObject(parent), configProvider_(std::move(config))
 {
-    qDebug() << 1;
-    serverHostConfig_ = config->getServerHostConfig();
-    qDebug() << 2;
+    if (configProvider_) {
+        serverHostConfig_ = configProvider_->getServerHostConfig();
+    } else {
+        serverHostConfig_ = Result<ServerHostConfig>::failure("Ну удалось получить IConfigProvider");
+        qWarning() << "Ну удалось получить IConfigProvider";
+    }
     networkManager_ = new QNetworkAccessManager(this);
-    qDebug() << 3;
 }
 
 void UserRepository::findUser(const User &user, std::function<void (Result<User>)> callback)
@@ -29,17 +32,31 @@ void UserRepository::findUser(const User &user, std::function<void (Result<User>
         QNetworkRequest request(url);
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
         QByteArray data = AuthorizationInfoJsonConverter::loginUserToJsonDocument(user).toJson();
-        networkManager_->post(request, data);
+        QNetworkReply* reply = networkManager_->post(request, data);
 
-        QObject::connect(networkManager_, &QNetworkAccessManager::finished, this, [callback, &user](QNetworkReply* reply) {
+        QObject::connect(reply, &QNetworkReply::finished, this, [reply, user, callback]() {
             Result<User> result;
-            if (reply->error() == QNetworkReply::NoError) {
-                qDebug() << "Result<User>::success(user);";
-                result = Result<User>::success(user);
+
+            QByteArray response = reply->readAll();
+
+            QJsonParseError error;
+            QJsonDocument doc = QJsonDocument::fromJson(response, &error);
+            if (error.error != QJsonParseError::NoError) {
+                result = Result<User>::failure("Ошибка парсинга JSON:" + error.errorString().toStdString());
             } else {
-                qDebug() << "Result<User>::failure(reply->errorString().toStdString()";
-                result = Result<User>::failure(reply->errorString().toStdString());
+                if (!doc.isObject()) {
+                    result = Result<User>::failure("JSON не является объектом");
+                } else {
+                    AuthorizationReply authorizationReply = AuthorizationReplyJsonConverter::parseAuthorizationReply(doc.object());
+                    if (authorizationReply.success) {
+                        result = Result<User>::success(user);
+                    } else {
+                        result = Result<User>::failure(authorizationReply.message);
+                    }
+                }
             }
+            callback(result);
+            reply->deleteLater();
         });
     }
 }

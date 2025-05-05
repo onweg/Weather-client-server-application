@@ -3,13 +3,12 @@
 
 #include <QObject>
 #include <QJsonObject>
-#include "../Models/AuthorizationReply.h"
+#include "../Domain/Models/AuthorizationReply.h"
 
-class AuthorizationReplyJsonConverter : public QObject
+class AuthorizationReplyJsonConverter
 {
-    Q_OBJECT
 public:
-    explicit AuthorizationReplyJsonConverter(QObject *parent = nullptr);
+    explicit AuthorizationReplyJsonConverter();
 
     static AuthorizationReply parseAuthorizationReply(const QJsonObject &jsonObj);
 

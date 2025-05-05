@@ -1,8 +1,8 @@
 #include "ConfigProvider.h"
 #include <QDebug>
 
-ConfigProvider::ConfigProvider(IConfigLoader *configLoader)
-    :configLoader_(configLoader)
+ConfigProvider::ConfigProvider(std::shared_ptr<IConfigLoader> configLoader)
+    :configLoader_(std::move(configLoader))
 {
     appConfig_ = configLoader_->load();
 }

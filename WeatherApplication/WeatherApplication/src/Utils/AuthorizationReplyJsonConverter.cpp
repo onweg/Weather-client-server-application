@@ -1,6 +1,6 @@
 #include "AuthorizationReplyJsonConverter.h"
 
-AuthorizationReplyJsonConverter::AuthorizationReplyJsonConverter(QObject *parent) : QObject(parent)
+AuthorizationReplyJsonConverter::AuthorizationReplyJsonConverter()
 {
 
 }
@@ -28,7 +28,7 @@ AuthorizationReply AuthorizationReplyJsonConverter::parseAuthorizationReply(cons
         return reply;
     }
 
-    reply.message = jsonObj["message"].toString();
+    reply.message = jsonObj["message"].toString().toStdString();
 
     return reply;
 }

@@ -4,7 +4,10 @@
 #include <memory>
 
 #include "../Domain/UseCases/AuthenticateUserUseCase.h"
-#include "../Presentation/ViewModels/AuthViewModel.h"
+#include "../Presentation/ViewModel/AuthViewModel.h"
+#include "../Domain/Repositories/IConfigLoader.h"
+#include "../Domain/Repositories/IUserRepository.h"
+#include "../Domain/Repositories/IConfigProvider.h"
 
 class DependencyContainer {
 public:

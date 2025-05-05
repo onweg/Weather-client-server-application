@@ -54,9 +54,9 @@ SOURCES += \
     src/Manager/WeatherApiClient.cpp \
     src/Manager/WeatherCache.cpp \
     src/Manager/WeatherManager.cpp \
-    src/Models/WeatherModeList.cpp \
-    src/Models/WeatherModel.cpp \
-    src/Models/WeekWeatherModel.cpp \
+#    src/Models/WeatherModeList.cpp \
+#    src/Models/WeatherModel.cpp \
+#    src/Models/WeekWeatherModel.cpp \
     src/Utils/AuthorizationInfoJsonConverter.cpp \
     src/Utils/AuthorizationReplyJsonConverter.cpp \
     src/Utils/WeatherJsonConverter.cpp \
@@ -68,32 +68,34 @@ SOURCES += \
     src/Data/Api/UserRepository.cpp \
     src/Data/Config/ConfigProvider.cpp \
     src/Data/Config/ConfigLoader.cpp \
+    src/Infrastructure/DependencyContainer.cpp\
     src/main.cpp
 
 HEADERS += \
     src/ClientController/ClientController.h \
     src/ClientController/WeatherUpdater.h \
+    src/Domain/Models/AuthorizationReply.h \
     src/Domain/Repositories/IConfigLoader.h \
     src/Domain/Repositories/IConfigProvider.h \
     src/Domain/Utils/SimpleOptional.h \
-    src/Models/AppConfig.h \
+#    src/Models/AppConfig.h \
     src/DatabaseManager/DatabaseManager.h \
     src/DatabaseManager/DatabaseCreator.h \
     src/Manager/CacheCleaner.h \
     src/Manager/WeatherApiClient.h \
     src/Manager/WeatherCache.h \
     src/Manager/WeatherManager.h \
-    src/Models/WeatherModeList.h \
-    src/Models/WeatherModel.h \
-    src/Models/WeekWeatherModel.h \
-    src/Models/ApiConfig.h \
-    src/Models/ApiReply.h \
-    src/Models/AuthorizationInfo.h \
-    src/Models/AuthorizationReply.h \
-    src/Models/ServerHostConfig.h \
-    src/Models/WeatherData.h \
-    src/Models/WeatherHistoryItem.h \
-    src/Models/WeekWeatherData.h \
+#    src/Models/WeatherModeList.h \
+#    src/Models/WeatherModel.h \
+#    src/Models/WeekWeatherModel.h \
+#    src/Models/ApiConfig.h \
+#    src/Models/ApiReply.h \
+#    src/Models/AuthorizationInfo.h \
+#    src/Models/AuthorizationReply.h \
+#    src/Models/ServerHostConfig.h \
+#    src/Models/WeatherData.h \
+#    src/Models/WeatherHistoryItem.h \
+#    src/Models/WeekWeatherData.h \
     src/Utils/AuthorizationInfoJsonConverter.h \
     src/Utils/AuthorizationReplyJsonConverter.h \
     src/Utils/AppConfigJsonConverter.h \
@@ -109,7 +111,8 @@ HEADERS += \
     src/Domain/Utils/Result.h \
     src/Data/Api/UserRepository.h \
     src/Data/Config/ConfigProvider.h \
-    src/Data/Config/ConfigLoader.h
+    src/Data/Config/ConfigLoader.h \
+    src/Infrastructure/DependencyContainer.h\
 
 DISTFILES += \
     qml/components/DateAndButtons.qml \

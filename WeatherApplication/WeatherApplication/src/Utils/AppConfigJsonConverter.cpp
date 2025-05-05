@@ -1,7 +1,6 @@
 #include "AppConfigJsonConverter.h"
 
-AppConfigJsonConverter::AppConfigJsonConverter(QObject *parent)
-    : QObject(parent)
+AppConfigJsonConverter::AppConfigJsonConverter()
 {
 }
 
@@ -10,9 +9,11 @@ bool AppConfigJsonConverter::fromJson(const QJsonObject& jsonObject, AppConfig& 
     if (!parseServerHostConfig(jsonObject, config.serverHostConfig)) {
         return false;
     }
+
     if (!parseApiConfig(jsonObject, config.apiConfig)) {
         return false;
     }
+
     return true;
 }
 
@@ -21,7 +22,6 @@ bool AppConfigJsonConverter::parseServerHostConfig(const QJsonObject& jsonObject
     if (!jsonObject.contains("server host") || !jsonObject["server host"].isObject()) {
         return false;
     }
-
     QJsonObject serverHostObj = jsonObject["server host"].toObject();
     if (!serverHostObj.contains("ip") || !serverHostObj["ip"].isString()) {
         return false;
@@ -29,9 +29,8 @@ bool AppConfigJsonConverter::parseServerHostConfig(const QJsonObject& jsonObject
     if (!serverHostObj.contains("port") || !serverHostObj["port"].isString()) {
         return false;
     }
-
-    config.ip = serverHostObj["ip"].toString();
-    config.port = serverHostObj["port"].toString();
+    config.ip = serverHostObj["ip"].toString().toStdString();
+    config.port = serverHostObj["port"].toString().toStdString();
     return true;
 }
 
@@ -52,8 +51,8 @@ bool AppConfigJsonConverter::parseApiConfig(const QJsonObject& jsonObject, ApiCo
         return false;
     }
 
-    config.urlFindCityByName = apiObj["urlFindCityByName"].toString();
-    config.urlFindWeatherByCoordinates = apiObj["urlFindWeatherByCoordinates"].toString();
-    config.key = apiObj["key"].toString();
+    config.urlFindCityByName = apiObj["urlFindCityByName"].toString().toStdString();;
+    config.urlFindWeatherByCoordinates = apiObj["urlFindWeatherByCoordinates"].toString().toStdString();;
+    config.key = apiObj["key"].toString().toStdString();;
     return true;
 }

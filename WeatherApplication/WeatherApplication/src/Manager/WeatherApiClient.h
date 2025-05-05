@@ -1,47 +1,47 @@
-#ifndef WEATHERAPICLIENT_H
-#define WEATHERAPICLIENT_H
+//#ifndef WEATHERAPICLIENT_H
+//#define WEATHERAPICLIENT_H
 
-#include <QObject>
-#include <QString>
-#include <QDebug>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QUrl>
-#include <QByteArray>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QJsonParseError>
-#include <QJsonArray>
-#include "../Models/ApiReply.h"
-#include "../Models/ApiConfig.h"
+//#include <QObject>
+//#include <QString>
+//#include <QDebug>
+//#include <QNetworkAccessManager>
+//#include <QNetworkRequest>
+//#include <QNetworkReply>
+//#include <QUrl>
+//#include <QByteArray>
+//#include <QJsonObject>
+//#include <QJsonDocument>
+//#include <QJsonParseError>
+//#include <QJsonArray>
+//#include "../Models/ApiReply.h"
+//#include "../Models/ApiConfig.h"
 
-class WeatherApiClient : public QObject
-{
-    Q_OBJECT
-public:
-    explicit WeatherApiClient(QObject *parent = nullptr);
-    void findWeatherDataInAPI(const QString &city);
-    bool loadConfig(const ApiConfig &config);
+//class WeatherApiClient : public QObject
+//{
+//    Q_OBJECT
+//public:
+//    explicit WeatherApiClient(QObject *parent = nullptr);
+//    void findWeatherDataInAPI(const QString &city);
+//    bool loadConfig(const ApiConfig &config);
 
-private slots:
-    void onSlotFindCity();
-    void onSlotFindWeatherData();
+//private slots:
+//    void onSlotFindCity();
+//    void onSlotFindWeatherData();
 
-private:
-    ApiConfig apiConfig_;
+//private:
+//    ApiConfig apiConfig_;
 
-    QNetworkAccessManager *manager_;
-    QNetworkReply *replyCity_;
-    QNetworkReply *replyWeather_;
+//    QNetworkAccessManager *manager_;
+//    QNetworkReply *replyCity_;
+//    QNetworkReply *replyWeather_;
 
-    ApiReply createErroneousResponse(const QString &message);
+//    ApiReply createErroneousResponse(const QString &message);
 
-    void findWeatherData(const QString &lat, const QString &lon);
+//    void findWeatherData(const QString &lat, const QString &lon);
 
-signals:
-    void sendRecivedWeatherDataFromAPI(const ApiReply &data);
-};
+//signals:
+//    void sendRecivedWeatherDataFromAPI(const ApiReply &data);
+//};
 
-#endif // WEATHERAPICLIENT_H
+//#endif // WEATHERAPICLIENT_H
 
