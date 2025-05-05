@@ -1,8 +1,8 @@
 #include "AuthenticateUserUseCase.h"
 #include <QDebug>
 
-AuthenticateUserUseCase::AuthenticateUserUseCase(IUserRepository* repo)
-    : repository_(repo)
+AuthenticateUserUseCase::AuthenticateUserUseCase(std::shared_ptr<IUserRepository> repo)
+    : repository_(std::move(repo))
 {
 
 }

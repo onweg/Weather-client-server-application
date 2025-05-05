@@ -4,8 +4,8 @@
 #include <QDebug>
 
 
-AuthViewModel::AuthViewModel(AuthenticateUserUseCase* authUseCase, QObject *parent)
-    :QObject(parent), authUseCase_(authUseCase)
+AuthViewModel::AuthViewModel(std::shared_ptr<AuthenticateUserUseCase> authUseCase, QObject *parent)
+    :QObject(parent), authUseCase_(std::move(authUseCase))
 {
 
 }

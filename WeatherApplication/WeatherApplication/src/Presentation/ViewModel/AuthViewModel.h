@@ -10,7 +10,7 @@ class AuthViewModel : public QObject {
     Q_OBJECT
 
 public:
-    explicit AuthViewModel(AuthenticateUserUseCase* authUseCase, QObject* parent = nullptr);
+    explicit AuthViewModel(std::shared_ptr<AuthenticateUserUseCase> authUseCase, QObject* parent = nullptr);
 
     Q_INVOKABLE void login(const QString& username, const QString& password);
     Q_INVOKABLE void registerUser(const QString& username, const QString& password);

@@ -36,19 +36,20 @@
 *******************************************************************************/
 
 #include <auroraapp.h>
-#include <QtQuick>
-#include <QObject>
-#include "Manager/WeatherManager.h"
-#include "ClientController/ClientController.h"
-#include "DatabaseManager/DatabaseManager.h"
-#include "DatabaseManager/DatabaseCreator.h"
-#include "Models/WeekWeatherModel.h"
-#include "Models/WeatherModel.h"
-#include "Presentation/ViewModel/AuthViewModel.h"
-#include "Domain/UseCases/AuthenticateUserUseCase.h"
-#include "Data/Api/UserRepository.h"
-#include "Data/Config/ConfigProvider.h"
-#include "Data/Config/ConfigLoader.h"
+#include "Infrastructure/DependencyContainer.h"
+// #include <QtQuick>
+// #include <QObject>
+// #include "Manager/WeatherManager.h"
+// #include "ClientController/ClientController.h"
+// #include "DatabaseManager/DatabaseManager.h"
+// #include "DatabaseManager/DatabaseCreator.h"
+// #include "Models/WeekWeatherModel.h"
+// #include "Models/WeatherModel.h"
+// #include "Presentation/ViewModel/AuthViewModel.h"
+// #include "Domain/UseCases/AuthenticateUserUseCase.h"
+// #include "Data/Api/UserRepository.h"
+// #include "Data/Config/ConfigProvider.h"
+// #include "Data/Config/ConfigLoader.h"
 
 int main(int argc, char *argv[])
 {
@@ -75,18 +76,20 @@ int main(int argc, char *argv[])
 //    QObject::connect(&controller, &ClientController::sendAuthorizationDataToManager, &manager, &WeatherManager::sloRecivedAuthorizationData);
 //    QObject::connect(&manager, &WeatherManager::sendAuthorizationResult, &controller, &ClientController::slotRecivedAuthorizationData);
 
+    auto* rootView = view.data();
+    DependencyContainer container(rootView);
 
     qmlRegisterType<WeatherModel>("ru.auroraos.weather", 1, 0, "WeatherModel");
     qmlRegisterUncreatableType<WeatherModelList>("ru.auroraos.weather", 1, 0, "WeatherModelList", "Cannot create in QML");
     qmlRegisterUncreatableType<WeekWeatherModel>("ru.auroraos.weather", 1, 0, "WeekWeatherModel", "Use controller.weekWeatherModel");
 
-    ConfigLoader* configLoader = new ConfigLoader();
-    ConfigProvider* configProvider = new ConfigProvider(configLoader);
-    UserRepository* userRepository = new UserRepository(configProvider);
-    AuthenticateUserUseCase* authUseCase = new AuthenticateUserUseCase(userRepository);
-    AuthViewModel* authViewModel = new AuthViewModel(authUseCase);
+    // ConfigLoader* configLoader = new ConfigLoader();
+    // ConfigProvider* configProvider = new ConfigProvider(configLoader);
+    // UserRepository* userRepository = new UserRepository(configProvider);
+    // AuthenticateUserUseCase* authUseCase = new AuthenticateUserUseCase(userRepository);
+    // AuthViewModel* authViewModel = new AuthViewModel(authUseCase);
 
-    view->rootContext()->setContextProperty("authViewModel", authViewModel);
+    view->rootContext()->setContextProperty("authViewModel", container.getAuthViewModel());
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));
     view->show();
 

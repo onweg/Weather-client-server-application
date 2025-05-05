@@ -9,10 +9,10 @@
 
 class  AuthenticateUserUseCase {
 public:
-    explicit AuthenticateUserUseCase(IUserRepository* repo);
+    explicit AuthenticateUserUseCase(std::shared_ptr<IUserRepository> repo);
     void execute(const User& user, std::function<void(Result<User>)> callback);
 private:
-    IUserRepository* repository_;
+    std::shared_ptr<IUserRepository> repository_;
 };
 
 #endif
