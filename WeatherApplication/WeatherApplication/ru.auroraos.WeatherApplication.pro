@@ -77,9 +77,13 @@ SOURCES += \
 #    src/Presentation/ViewModels/WeekWeatherViewModel.cpp \
     src/Domain/UseCases/AuthenticateUserUseCase.cpp \
     src/Domain/UseCases/RegisterUserUseCase.cpp \
+    src/Domain/UseCases/GetDailyWeatherUseCase.cpp \
+    src/Domain/UseCases/GetWeeklyWeatherUseCase.cpp \
     src/Data/Repositories/Api/UserRepository.cpp \
+    src/Data/Repositories/Api/WeatherApiSource.cpp \
     src/Data/Repositories/Config/ConfigProvider.cpp \
     src/Data/Repositories/Config/ConfigLoader.cpp \
+    src/Data/Repositories/Cache/WeatherCache.cpp \
     src/Infrastructure/DependencyContainer.cpp\
     src/main.cpp
 
@@ -104,6 +108,9 @@ HEADERS += \
     src/Domain/Interfaces/Config/IConfigLoader.h \
     src/Domain/Interfaces/Config/IConfigProvider.h \
     src/Domain/Interfaces/Api/IUserRepository.h \
+    src/Domain/Interfaces/Api/IApiWeatherSource.h \
+    src/Domain/Interfaces/Cache/IWeatherDayCacheDataSource.h \
+    src/Domain/Interfaces/Cache/IWeatherWeekCacheDataSource.h \
     src/Domain/Interfaces/SharedState/ISharedState.h \
     src/Domain/Utils/SimpleOptional.h \
 #    src/Models/AppConfig.h \
@@ -140,10 +147,14 @@ HEADERS += \
 #    src/Presentation/ViewModels/WeekWeatherViewModel.h \
     src/Domain/UseCases/AuthenticateUserUseCase.h \
     src/Domain/UseCases/RegisterUserUseCase.h \
+    src/Domain/UseCases/GetDailyWeatherUseCase.h \
+    src/Domain/UseCases/GetWeeklyWeatherUseCase.h \
     src/Domain/Utils/Result.h \
     src/Data/Repositories/Api/UserRepository.h \
+    src/Data/Repositories/Api/WeatherApiSource.h \
     src/Data/Repositories/Config/ConfigProvider.h \
     src/Data/Repositories/Config/ConfigLoader.h \
+    src/Data/Repositories/Cache/WeatherCache.h \
     src/Infrastructure/DependencyContainer.h\
 
 DISTFILES += \
