@@ -3,10 +3,9 @@
 
 #include <QObject>
 #include <memory>
+#include "../UIModels/UserModel.h"
 #include "../../Domain/UseCases/AuthenticateUserUseCase.h"
 #include "../../Domain/UseCases/RegisterUserUseCase.h"
-
-#include "../../Data/DtoModels/UserDto.h"
 
 class AuthViewModel : public QObject {
     Q_OBJECT
@@ -22,6 +21,8 @@ signals:
     void authFailed(const QString& message);
 
 private:
+    UserModel *user = nullptr;
+
     std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
     std::shared_ptr<RegisterUserUseCase> regUseCase_;
 };

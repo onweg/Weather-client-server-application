@@ -19,7 +19,7 @@ Item {
             anchors.left: search_city.right
             anchors.verticalCenter: search_city.verticalCenter
             onClicked: {
-                controller.clickSearchCityButton(search_city.city);
+                weatherViewModel.clickSearchCityButton(search_city.city);
             }
         }
     }

@@ -63,8 +63,10 @@ SOURCES += \
     src/Data/Mappers/WeekWeatherDataMapper.cpp \
     src/Data/Repositories/SharedState/SharedState.cpp \
 #    src/Presentation/ViewModels/WeatherViewModel.cpp \
+    src/Presentation/Mappers/UserModelMapper.cpp \
     src/Presentation/Mappers/WeatherUIMapper.cpp \
-    src/Presentation/Mappers/WeekwWeatherUIMapper.cpp \
+    src/Presentation/Mappers/WeekWeatherUIMapper.cpp \
+    src/Presentation/UIModels/UserModel.cpp \
     src/Presentation/UIModels/WeatherUIModel.cpp \
     src/Presentation/UIModels/WeekWeatherUIModel.cpp \
     src/Presentation/ViewModels/WeatherViewModel.cpp \
@@ -105,12 +107,11 @@ HEADERS += \
     src/Domain/Entities/WeatherData.h \
     src/Domain/Entities/WeekWeatherData.h \
     src/Domain/Interfaces/Api/IWeatherRepository.h \
+    src/Domain/Interfaces/Cache/IWeatherCacheSource.h \
     src/Domain/Interfaces/Config/IConfigLoader.h \
     src/Domain/Interfaces/Config/IConfigProvider.h \
     src/Domain/Interfaces/Api/IUserRepository.h \
     src/Domain/Interfaces/Api/IApiWeatherSource.h \
-    src/Domain/Interfaces/Cache/IWeatherDayCacheDataSource.h \
-    src/Domain/Interfaces/Cache/IWeatherWeekCacheDataSource.h \
     src/Domain/Interfaces/SharedState/ISharedState.h \
     src/Domain/Utils/SimpleOptional.h \
 #    src/Models/AppConfig.h \
@@ -133,8 +134,10 @@ HEADERS += \
 #    src/Models/WeekWeatherData.h \
 #    src/Presentation/Coordinator/AppCoordinator.h \
 #    src/Presentation/ViewModels/WeatherViewModel.h \
+    src/Presentation/Mappers/UserModelMapper.h \
     src/Presentation/Mappers/WeatherUIMapper.h \
     src/Presentation/Mappers/WeekWeatherUIMapper.h \
+    src/Presentation/UIModels/UserModel.h \
     src/Presentation/UIModels/WeatherUIModel.h \
     src/Presentation/UIModels/WeekWeatherUIModel.h \
     src/Presentation/ViewModels/WeatherViewModel.h \

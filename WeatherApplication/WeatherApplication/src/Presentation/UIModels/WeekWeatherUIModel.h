@@ -13,43 +13,16 @@ class WeekWeatherUiModel : public QObject {
     Q_PROPERTY(QList<QObject*> dailyWeather READ dailyWeather NOTIFY dailyWeatherChanged)
 
 public:
-    explicit WeekWeatherUiModel(QObject* parent = nullptr) : QObject(parent) {}
+    explicit WeekWeatherUiModel(QObject* parent = nullptr);
 
-    // === Getters ===
-    QString city() const { return m_city; }
-    QString messageError() const { return m_messageError; }
-    QList<QObject*> dailyWeather() const { return m_dailyWeather; }
-
-    // === Setters ===
-    void setCity(const QString& val) {
-        if (m_city != val) {
-            m_city = val;
-            emit cityChanged();
-        }
-    }
-
-    void setMessageError(const QString& val) {
-        if (m_messageError != val) {
-            m_messageError = val;
-            emit messageErrorChanged();
-        }
-    }
-
-    void setDailyWeather(const QList<QObject*>& list) {
-        m_dailyWeather = list;
-        emit dailyWeatherChanged();
-    }
-
-    void clearDailyWeather() {
-        qDeleteAll(m_dailyWeather);
-        m_dailyWeather.clear();
-        emit dailyWeatherChanged();
-    }
-
-    void addWeatherModel(QObject* model) {
-        m_dailyWeather.append(model);
-        emit dailyWeatherChanged();
-    }
+    QString city() const;
+    QString messageError() const;
+    QList<QObject*> dailyWeather() const;
+    void setCity(const QString& val);
+    void setMessageError(const QString& val);
+    void setDailyWeather(const QList<QObject*>& list);
+    void clearDailyWeather();
+    void addWeatherModel(QObject* model);
 
 signals:
     void cityChanged();

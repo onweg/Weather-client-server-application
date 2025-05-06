@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <algorithm> // для std::equal
+#include <algorithm>
 
 #include "WeatherData.h"
 
@@ -11,12 +11,6 @@ struct WeekWeatherData {
     std::string city;
     std::vector<WeatherData> dailyWeather;
     std::string messageError;
-
-    explicit WeekWeatherData(
-        const std::string& city_ = "",
-        const std::vector<WeatherData>& weather_ = {},
-        const std::string& error_ = ""
-    ) : city(city_), dailyWeather(weather_), messageError(error_) {}
 
     bool operator==(const WeekWeatherData &other) const;
     bool operator!=(const WeekWeatherData &other) const;

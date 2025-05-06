@@ -93,11 +93,14 @@ int main(int argc, char *argv[])
     // AuthViewModel* authViewModel = new AuthViewModel(authUseCase);
 
     view->rootContext()->setContextProperty("authViewModel", container.getAuthViewModel());
+    view->rootContext()->setContextProperty("weatherViewModel", container.getWeatherViewModel());
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));
     view->show();
 
 
     return application->exec();
+    // поменять UserDto на std::string
+    // проверить чтоб все названия соответствовали классам (ui модели и мапперы особенно проверить)
 }
 
 

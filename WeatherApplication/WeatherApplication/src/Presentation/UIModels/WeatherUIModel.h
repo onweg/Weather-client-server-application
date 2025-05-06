@@ -20,37 +20,35 @@ class WeatherUiModel : public QObject {
     Q_PROPERTY(QString messageError READ messageError WRITE setMessageError NOTIFY messageErrorChanged)
 
 public:
-    explicit WeatherUiModel(QObject* parent = nullptr) : QObject(parent) {}
+    explicit WeatherUiModel(QObject* parent = nullptr);
 
-    // Getters
-    QString city() const { return m_city; }
-    QString date() const { return m_date; }
-    QString description() const { return m_description; }
-    double lat() const { return m_lat; }
-    double lon() const { return m_lon; }
-    double temp() const { return m_temp; }
-    double feelsLike() const { return m_feelsLike; }
-    double tempMax() const { return m_tempMax; }
-    double tempMin() const { return m_tempMin; }
-    double windSpeed() const { return m_windSpeed; }
-    int humidity() const { return m_humidity; }
-    int pressure() const { return m_pressure; }
-    QString messageError() const { return m_messageError; }
+    QString city() const;
+    QString date() const;
+    QString description() const;
+    double lat() const;
+    double lon() const;
+    double temp() const;
+    double feelsLike() const;
+    double tempMax() const;
+    double tempMin() const;
+    double windSpeed() const;
+    int humidity() const;
+    int pressure() const;
+    QString messageError() const;
 
-    // Setters
-    void setCity(const QString& val) { if (m_city != val) { m_city = val; emit cityChanged(); }}
-    void setDate(const QString& val) { if (m_date != val) { m_date = val; emit dateChanged(); }}
-    void setDescription(const QString& val) { if (m_description != val) { m_description = val; emit descriptionChanged(); }}
-    void setLat(double val) { if (!qFuzzyCompare(m_lat, val)) { m_lat = val; emit latChanged(); }}
-    void setLon(double val) { if (!qFuzzyCompare(m_lon, val)) { m_lon = val; emit lonChanged(); }}
-    void setTemp(double val) { if (!qFuzzyCompare(m_temp, val)) { m_temp = val; emit tempChanged(); }}
-    void setFeelsLike(double val) { if (!qFuzzyCompare(m_feelsLike, val)) { m_feelsLike = val; emit feelsLikeChanged(); }}
-    void setTempMax(double val) { if (!qFuzzyCompare(m_tempMax, val)) { m_tempMax = val; emit tempMaxChanged(); }}
-    void setTempMin(double val) { if (!qFuzzyCompare(m_tempMin, val)) { m_tempMin = val; emit tempMinChanged(); }}
-    void setWindSpeed(double val) { if (!qFuzzyCompare(m_windSpeed, val)) { m_windSpeed = val; emit windSpeedChanged(); }}
-    void setHumidity(int val) { if (m_humidity != val) { m_humidity = val; emit humidityChanged(); }}
-    void setPressure(int val) { if (m_pressure != val) { m_pressure = val; emit pressureChanged(); }}
-    void setMessageError(const QString& val) { if (m_messageError != val) { m_messageError = val; emit messageErrorChanged(); }}
+    void setCity(const QString& val);
+    void setDate(const QString& val);
+    void setDescription(const QString& val);
+    void setLat(double val);
+    void setLon(double val);
+    void setTemp(double val);
+    void setFeelsLike(double val);
+    void setTempMax(double val);
+    void setTempMin(double val);
+    void setWindSpeed(double val);
+    void setHumidity(int val);
+    void setPressure(int val);
+    void setMessageError(const QString& val);
 
 signals:
     void cityChanged();

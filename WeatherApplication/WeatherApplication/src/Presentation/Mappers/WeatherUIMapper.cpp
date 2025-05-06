@@ -1,6 +1,6 @@
 #include "WeatherUIMapper.h"
 
-void WeatherUiMapper::toUiModel(const WeatherDataDto& dto, WeatherUiModel* uiModel) {
+void WeatherUiMapper::toUiModel(const WeatherData& dto, WeatherUiModel* uiModel) {
     if (!uiModel) return;
 
     uiModel->setCity(QString::fromStdString(dto.city));
@@ -18,10 +18,10 @@ void WeatherUiMapper::toUiModel(const WeatherDataDto& dto, WeatherUiModel* uiMod
     uiModel->setMessageError(QString::fromStdString(dto.messageError));
 }
 
-WeatherDataDto WeatherUiMapper::fromUiModel(const WeatherUiModel* uiModel) {
+WeatherData WeatherUiMapper::fromUiModel(const WeatherUiModel* uiModel) {
     if (!uiModel) return {};
 
-    return WeatherDataDto{
+    return WeatherData{
         uiModel->lat(),
         uiModel->lon(),
         uiModel->city().toStdString(),

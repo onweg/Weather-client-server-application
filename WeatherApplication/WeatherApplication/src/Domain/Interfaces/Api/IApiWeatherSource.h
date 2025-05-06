@@ -3,17 +3,14 @@
 
 #include <string>
 #include <functional>
-
-#include "../../Entities/WeatherData.h"
-#include "../../Entities/WeekWeatherData.h
+#include "../../Entities/WeekWeatherData.h"
 #include "../../Utils/Result.h"
 
 class IApiWeatherSource {
 public:
     virtual ~IApiWeatherSource() = default;
-    virtual void findWeatherDataB(const std::string city, std::function<void(Result<WeekWeatherData>)> callback) = 0;
 
-
+    virtual void findWeatherDataByCity(const std::string city, std::function<void(Result<WeekWeatherData>)> callback) = 0;
 };
 
 #endif // IAPIWEATHERSOURCE_H

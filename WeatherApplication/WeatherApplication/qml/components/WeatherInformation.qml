@@ -14,7 +14,7 @@ Item {
     Text{
         id: weather_city
         font.pointSize: 40
-        text: "..."
+        text: weatherViewModel.weatherModel.city
         anchors.top: text_info.bottom
         anchors.topMargin: 10
         anchors.horizontalCenter: text_info.horizontalCenter
@@ -22,37 +22,24 @@ Item {
     DateAndButtons {
         id: date
         width: root_info.width
+        date.text: weatherViewModel.weatherModel.date
         anchors.top: weather_city.bottom
         anchors.topMargin: 50
     }
     WeatherData {
         id: weather_data
-        // height: 460
         anchors.top: date.bottom
         anchors.topMargin: 80
-    }
-    Connections {
-        target: controller
-        onWeatherDataUpdated: {
-            var data = controller.weatherModel;
-            weather_city.text = data.city;
-            date.date.text = data.date;
-            weather_data.weather_description.text = data.description;
-            weather_data.weather_feels_like.text = data.feelsLike;
-            weather_data.weather_humidity.text = data.humidity;
-            weather_data.weather_pressure.text = data.pressure;
-            weather_data.weather_temp.text = data.temp;
-            weather_data.weather_temp_max.text = data.tempMax;
-            weather_data.weather_temp_min.text = data.tempMin;
-            weather_data.weather_wind_speed.text = data.windSpeed;
-            if (data.messageError.length > 0) {
-                weather_data.weather_error.text = data.messageError;
-                weather_data.weather_error.visible = true;
-            } else {
-                weather_data.weather_error.text = "";
-                weather_data.weather_error.visible = false;
-            }
-        }
+        weather_description.text: weatherViewModel.weatherModel.description
+        weather_temp.text: weatherViewModel.weatherModel.temp
+        weather_feels_like.text: weatherViewModel.weatherModel.feelsLike
+        weather_temp_max.text: weatherViewModel.weatherModel.tempMax
+        weather_temp_min.text: weatherViewModel.weatherModel.tempMin
+        weather_wind_speed.text: weatherViewModel.weatherModel.windSpeed
+        weather_humidity.text: weatherViewModel.weatherModel.humidity
+        weather_pressure.text: weatherViewModel.weatherModel.pressure
+        weather_error.text: weatherViewModel.weatherModel.messageError
+        weather_error.visible: weatherViewModel.weatherModel.messageError.length > 0
     }
 }
 

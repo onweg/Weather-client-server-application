@@ -6,7 +6,6 @@
 
 #include "../Interfaces/Api/IUserRepository.h"
 #include "../Entities/User.h"
-#include "../Utils/Result.h"
 
 class  RegisterUserUseCase {
 public:

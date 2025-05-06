@@ -7,10 +7,10 @@ UserMapper::UserMapper()
 
 User UserMapper::fromDro(const UserDto &userDto)
 {
-    return User(userDto.username.toStdString(), userDto.passwordHash.toStdString());
+    return User{userDto.username, userDto.passwordHash};
 }
 
 UserDto UserMapper::toDro(const User &user)
 {
-    return UserDto(QString::fromStdString(user.username), QString::fromStdString(user.passwordHash));
+    return UserDto{user.username, user.passwordHash};
 }

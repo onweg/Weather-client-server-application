@@ -1,110 +1,114 @@
 #include "WeatherApiSource.h"
+#include "../../../Utils/WeatherJsonConverter.h"
+#include <QDebug>
 
-WeatherApiSource::WeatherApiSource(QObject* parent)
-    : QObject(parent), manager_(new QNetworkAccessManager(this)) {}
 
-void WeatherApiSource::setConfig(const ApiConfig& config) {
-    apiConfig_ = config;
+WeatherApiSource::WeatherApiSource(std::shared_ptr<IConfigProvider> config,
+                                   QObject *parent)
+    : QObject(parent), configProvider_(std::move(config)) {
+    if (configProvider_) {
+        apiConfig_ = configProvider_->getApiConfig();
+    } else {
+        apiConfig_ = Result<ApiConfig>::failure("Не удалось получить конфигурацию API");
+        qWarning() << "Не удалось получить IConfigProvider";
+    }
+    networkManager_ = new QNetworkAccessManager(this);
 }
 
-void WeatherApiSource::findWeatherByCity(const std::string city, const std::string date,
-                                         std::function<void(Result<WeatherData>)> callback) {
-    dayCallback_ = callback;
-    requestedDate_ = date;
-    requestedCity_ = city;
-
-    QString url = apiConfig_.urlFindCityByName.arg(QString::fromStdString(city)).arg(apiConfig_.key);
-    QNetworkRequest request(QUrl(url));
-    replyCity_ = manager_->get(request);
-    connect(replyCity_, &QNetworkReply::finished, this, &WeatherApiSource::onCityFound);
-}
-
-void WeatherApiSource::findWeekWeatherByCity(const std::string city,
-                                             std::function<void(Result<WeekWeatherData>)> callback) {
-    weekCallback_ = callback;
-    requestedCity_ = city;
-
-    QString url = apiConfig_.urlFindCityByName.arg(QString::fromStdString(city)).arg(apiConfig_.key);
-    QNetworkRequest request(QUrl(url));
-    replyCity_ = manager_->get(request);
-    connect(replyCity_, &QNetworkReply::finished, this, &WeatherApiSource::onCityFound);
-}
-
-void WeatherApiSource::onCityFound() {
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-    if (!reply) return;
-
-    QByteArray data = reply->readAll();
-    reply->deleteLater();
-
-    QJsonParseError jsonError;
-    QJsonDocument doc = QJsonDocument::fromJson(data, &jsonError);
-    if (jsonError.error != QJsonParseError::NoError || !doc.isArray() || doc.array().isEmpty()) {
-        if (dayCallback_) dayCallback_(Result<WeatherData>::Error("City not found or invalid JSON"));
-        if (weekCallback_) weekCallback_(Result<WeekWeatherData>::Error("City not found or invalid JSON"));
+void WeatherApiSource::findWeatherDataByCity(const std::string city,
+                                                                 std::function<void(Result<WeekWeatherData>)> callback) {
+    Result<WeekWeatherData> result;
+    if (!apiConfig_.isSuccess()) {
+        callback(Result<WeekWeatherData>::failure("Конфигурация API недоступна"));
         return;
     }
 
-    QJsonObject cityObj = doc.array().at(0).toObject();
-    QString lat = QString::number(cityObj["lat"].toDouble());
-    QString lon = QString::number(cityObj["lon"].toDouble());
+    QString cityName = QString::fromStdString(city);
+    QString urlTemplate = QString::fromStdString(apiConfig_.value().urlFindCityByName);
+    QString url = urlTemplate.arg(cityName, QString::fromStdString(apiConfig_.value().key));
 
-    requestWeatherByCoords(lat, lon);
-}
+    QUrl qurl(url);
+    QNetworkRequest request(qurl);
+    QNetworkReply* reply = networkManager_->get(request);
 
-void WeatherApiSource::requestWeatherByCoords(const QString& lat, const QString& lon) {
-    QString url = apiConfig_.urlFindWeatherByCoordinates.arg(lat).arg(lon).arg(apiConfig_.key);
-    QNetworkRequest request(QUrl(url));
-    replyWeather_ = manager_->get(request);
-    connect(replyWeather_, &QNetworkReply::finished, this, &WeatherApiSource::onWeatherReceived);
-}
+    connect(reply, &QNetworkReply::finished, this, [this, reply, callback, city]() {
+        if (reply->error() != QNetworkReply::NoError) {
+            callback(Result<WeekWeatherData>::failure(reply->errorString().toStdString()));
+            reply->deleteLater();
+            return;
+        }
 
-void WeatherApiSource::onWeatherReceived() {
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-    if (!reply) return;
+        QByteArray responseData = reply->readAll();
+        QJsonParseError error;
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData, &error);
+        if (error.error != QJsonParseError::NoError) {
+            callback(Result<WeekWeatherData>::failure("Ошибка парсинга JSON: " + error.errorString().toStdString()));
+            reply->deleteLater();
+            return;
+        }
 
-    QByteArray data = reply->readAll();
-    reply->deleteLater();
+        if (!jsonDocument.isArray()) {
+            callback(Result<WeekWeatherData>::failure("Ожидался массив JSON"));
+            reply->deleteLater();
+            return;
+        }
 
-    QJsonParseError jsonError;
-    QJsonDocument doc = QJsonDocument::fromJson(data, &jsonError);
-    if (jsonError.error != QJsonParseError::NoError || !doc.isObject()) {
-        if (dayCallback_) dayCallback_(Result<WeatherData>::Error("Invalid weather JSON"));
-        if (weekCallback_) weekCallback_(Result<WeekWeatherData>::Error("Invalid weather JSON"));
-        return;
-    }
+        QJsonArray jsonArray = jsonDocument.array();
+        if (jsonArray.isEmpty()) {
+            callback(Result<WeekWeatherData>::failure("Город не найден"));
+            reply->deleteLater();
+            return;
+        }
 
-    QJsonObject rootObj = doc.object();
+        QJsonObject cityData = jsonArray[0].toObject();
+        QString lat = QString::number(cityData["lat"].toDouble());
+        QString lon = QString::number(cityData["lon"].toDouble());
 
-    if (dayCallback_) {
-        Result<WeatherData> result = parseDayWeather(rootObj, requestedDate_);
-        dayCallback_(result);
-    }
+        QString weatherTemplate = QString::fromStdString(apiConfig_.value().urlFindWeatherByCoordinates);
+        QString weatherUrl = weatherTemplate.arg(lat, lon, QString::fromStdString(apiConfig_.value().key));
 
-    if (weekCallback_) {
-        Result<WeekWeatherData> result = parseWeekWeather(rootObj);
-        weekCallback_(result);
-    }
-}
+        QUrl weatherQurl(weatherUrl);
+        QNetworkRequest weatherRequest(weatherQurl);
+        QNetworkReply* weatherReply = networkManager_->get(weatherRequest);
 
-Result<WeatherData> WeatherApiSource::parseDayWeather(const QJsonObject& json, const std::string& date) {
-    // TODO: parse actual data and convert it to WeatherData
-    WeatherData data;
-    data.cityName = requestedCity_;
-    data.date = date;
-    data.temperature = json["current"]["temp"].toDouble();
-    return Result<WeatherData>::Success(data);
-}
+        connect(weatherReply, &QNetworkReply::finished, this, [weatherReply, callback]() {
+            if (weatherReply->error() != QNetworkReply::NoError) {
+                callback(Result<WeekWeatherData>::failure(weatherReply->errorString().toStdString()));
+                weatherReply->deleteLater();
+                return;
+            }
 
-Result<WeekWeatherData> WeatherApiSource::parseWeekWeather(const QJsonObject& json) {
-    // TODO: parse actual data and convert it to WeekWeatherData
-    WeekWeatherData data;
-    data.cityName = requestedCity_;
-    const QJsonArray& daily = json["daily"].toArray();
-    for (const auto& item : daily) {
-        WeatherData day;
-        day.temperature = item.toObject()["temp"].toObject()["day"].toDouble();
-        data.days.push_back(day);
-    }
-    return Result<WeekWeatherData>::Success(data);
+            QByteArray weatherData = weatherReply->readAll();
+            QJsonParseError error;
+            QJsonDocument weatherDoc = QJsonDocument::fromJson(weatherData, &error);
+            if (error.error != QJsonParseError::NoError) {
+                callback(Result<WeekWeatherData>::failure("Ошибка парсинга JSON с погодой: " + error.errorString().toStdString()));
+                weatherReply->deleteLater();
+                return;
+            }
+
+            if (!weatherDoc.isObject()) {
+                callback(Result<WeekWeatherData>::failure("JSON с погодой не является объектом"));
+                weatherReply->deleteLater();
+                return;
+            }
+
+            QJsonObject json = weatherDoc.object();
+            WeekWeatherData tmpResult = WeatherJsonConverter::parseWeekWeather(json);
+            Result<WeekWeatherData> result;
+            if (tmpResult.messageError.empty()) {
+                result = Result<WeekWeatherData>::success(tmpResult);
+            } else {
+                result = Result<WeekWeatherData>::failure(tmpResult.messageError);
+            }
+
+            callback(result);
+
+            weatherReply->deleteLater();
+        });
+
+        reply->deleteLater();
+    });
+
+    return ;
 }

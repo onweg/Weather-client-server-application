@@ -9,7 +9,7 @@ Item {
         width: 70
         text: "<-"
         onClicked: {
-            controller.clickPrevDayButton();
+            weatherViewModel.clickPrevDayButton();
         }
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
@@ -26,7 +26,7 @@ Item {
         width: 70
         text: "->"
         onClicked: {
-            controller.clickNextDayButton();
+            weatherViewModel.clickNextDayButton();
         }
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter

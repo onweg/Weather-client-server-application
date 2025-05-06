@@ -10,47 +10,26 @@
 #include <QJsonArray>
 #include <QJsonParseError>
 #include <QString>
-#include <QDebug>
+#include <memory>
+#include <functional>
 
-#include "IApiWeatherSource.h"
-#include "../../Models/ApiConfig.h"
-#include "../../Utils/Result.h"
-#include "../../Entities/WeatherData.h"
-#include "../../Entities/WeekWeatherData.h"
+#include "../../../Domain/Interfaces/Api/IApiWeatherSource.h"
+#include "../../../Domain/Interfaces/Config/IConfigProvider.h"
+#include "../../../Domain/Interfaces/SharedState/ISharedState.h"
 
 class WeatherApiSource : public QObject, public IApiWeatherSource {
     Q_OBJECT
 public:
-    explicit WeatherApiSource(QObject* parent = nullptr);
+    explicit WeatherApiSource(std::shared_ptr<IConfigProvider> config,
+                              QObject* parent = nullptr);
 
-    void findWeatherByCity(const std::string city, const std::string date,
-                           std::function<void(Result<WeatherData>)> callback) override;
-
-    void findWeekWeatherByCity(const std::string city,
-                               std::function<void(Result<WeekWeatherData>)> callback) override;
-
-    void setConfig(const ApiConfig& config);
-
-private slots:
-    void onCityFound();
-    void onWeatherReceived();
+    void findWeatherDataByCity(const std::string city,
+                                                  std::function<void(Result<WeekWeatherData>)> callback) override;
 
 private:
-    QNetworkAccessManager* manager_;
-    ApiConfig apiConfig_;
-
-    QNetworkReply* replyCity_ = nullptr;
-    QNetworkReply* replyWeather_ = nullptr;
-
-    std::function<void(Result<WeatherData>)> dayCallback_;
-    std::function<void(Result<WeekWeatherData>)> weekCallback_;
-
-    std::string requestedDate_;
-    std::string requestedCity_;
-
-    void requestWeatherByCoords(const QString& lat, const QString& lon);
-    Result<WeatherData> parseDayWeather(const QJsonObject& json, const std::string& date);
-    Result<WeekWeatherData> parseWeekWeather(const QJsonObject& json);
+    std::shared_ptr<IConfigProvider> configProvider_;
+    Result<ApiConfig> apiConfig_;
+    QNetworkAccessManager* networkManager_;
 };
 
 #endif // WEATHERAPISOURCE_H

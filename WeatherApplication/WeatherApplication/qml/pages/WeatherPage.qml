@@ -20,7 +20,7 @@ Page {
         anchors.horizontalCenter: info.horizontalCenter
         onClicked: {
             pageStack.push(Qt.resolvedUrl("WeekWeatherPage.qml"));
-            controller.clickWeekWeatherDataButton()
+            weatherViewModel.clickWeekWeatherDataButton()
         }
     }
 }
