@@ -18,7 +18,6 @@ Result<ApiConfig> ConfigProvider::getApiConfig()
 
 Result<ServerHostConfig> ConfigProvider::getServerHostConfig()
 {
-    qDebug() << "ConfigProvider::getServerHostConfig()";
     if (appConfig_.isSuccess()) {
         return Result<ServerHostConfig>::success(appConfig_.value().serverHostConfig);
     } else {

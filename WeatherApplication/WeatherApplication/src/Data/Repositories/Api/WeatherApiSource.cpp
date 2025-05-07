@@ -1,7 +1,13 @@
 #include "WeatherApiSource.h"
 #include "../../../Utils/WeatherJsonConverter.h"
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonParseError>
+#include <QString>
 #include <QDebug>
-
 
 WeatherApiSource::WeatherApiSource(std::shared_ptr<IConfigProvider> config,
                                    QObject *parent)

@@ -21,7 +21,7 @@ signals:
     void authFailed(const QString& message);
 
 private:
-    UserModel *user = nullptr;
+    UserModel *user_ = nullptr;
 
     std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
     std::shared_ptr<RegisterUserUseCase> regUseCase_;

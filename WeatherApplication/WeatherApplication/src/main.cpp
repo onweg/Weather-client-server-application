@@ -37,19 +37,6 @@
 
 #include <auroraapp.h>
 #include "Infrastructure/DependencyContainer.h"
-// #include <QtQuick>
-// #include <QObject>
-// #include "Manager/WeatherManager.h"
-// #include "ClientController/ClientController.h"
-// #include "DatabaseManager/DatabaseManager.h"
-// #include "DatabaseManager/DatabaseCreator.h"
-// #include "Models/WeekWeatherModel.h"
-// #include "Models/WeatherModel.h"
-// #include "Presentation/ViewModel/AuthViewModel.h"
-// #include "Domain/UseCases/AuthenticateUserUseCase.h"
-// #include "Data/Api/UserRepository.h"
-// #include "Data/Config/ConfigProvider.h"
-// #include "Data/Config/ConfigLoader.h"
 
 int main(int argc, char *argv[])
 {
@@ -58,39 +45,9 @@ int main(int argc, char *argv[])
     application->setApplicationName(QStringLiteral("WeatherApplication"));
 
     QScopedPointer<QQuickView> view(Aurora::Application::createView());
-
-//    WeatherManager manager;
-//    if (!manager.loadConfig()) {
-//       return 0;
-//    }
-
-//    ClientController controller;
-//    DatabaseManager dbManager;
-//    DatabaseCreator dbCreator;
-
-//    QObject::connect(&controller, &ClientController::findWeatherData, &manager, &WeatherManager::slotFindWeatherData);
-//    QObject::connect(&controller, &ClientController::findWeekWeatherData, &manager, &WeatherManager::slotFindWeekWeatherData);
-//    QObject::connect(&manager, &WeatherManager::sendWeatherDataToController, &controller, &ClientController::slotWeatherDataArrived);
-//    QObject::connect(&manager, &WeatherManager::sendWeekWeatherDataToController, &controller, &ClientController::slotWeekWeatherDataArrived);
-//    QObject::connect(&manager, &WeatherManager::submitCompletedWeatherDataSearchRequest, &dbManager, &DatabaseManager::slotSubmitCompletedWeatherDataSearchRequest);
-//    QObject::connect(&controller, &ClientController::sendAuthorizationDataToManager, &manager, &WeatherManager::sloRecivedAuthorizationData);
-//    QObject::connect(&manager, &WeatherManager::sendAuthorizationResult, &controller, &ClientController::slotRecivedAuthorizationData);
-
     auto* rootView = view.data();
+
     DependencyContainer container(rootView);
-
-//    qmlRegisterType<WeatherModel>("ru.auroraos.weather", 1, 0, "WeatherModel");
-//    qmlRegisterUncreatableType<WeatherModelList>("ru.auroraos.weather", 1, 0, "WeatherModelList", "Cannot create in QML");
-//    qmlRegisterUncreatableType<WeekWeatherModel>("ru.auroraos.weather", 1, 0, "WeekWeatherModel", "Use controller.weekWeatherModel");
-
-//    qmlRegisterType<WeatherUiModel>("App.Models", 1, 0, "WeatherUiModel"); // ЧИСТАЯ АРХИТЕКТУРА
-//    qmlRegisterType<WeekWeatherUiModel>("App.Models", 1, 0, "WeekWeatherUiModel"); // ЧИСТАЯ АРХИТЕКТУРА
-
-    // ConfigLoader* configLoader = new ConfigLoader();
-    // ConfigProvider* configProvider = new ConfigProvider(configLoader);
-    // UserRepository* userRepository = new UserRepository(configProvider);
-    // AuthenticateUserUseCase* authUseCase = new AuthenticateUserUseCase(userRepository);
-    // AuthViewModel* authViewModel = new AuthViewModel(authUseCase);
 
     view->rootContext()->setContextProperty("authViewModel", container.getAuthViewModel());
     view->rootContext()->setContextProperty("weatherViewModel", container.getWeatherViewModel());
@@ -99,8 +56,6 @@ int main(int argc, char *argv[])
 
 
     return application->exec();
-    // поменять UserDto на std::string
-    // проверить чтоб все названия соответствовали классам (ui модели и мапперы особенно проверить)
 }
 
 

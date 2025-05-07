@@ -8,13 +8,13 @@
 AuthViewModel::AuthViewModel(std::shared_ptr<AuthenticateUserUseCase> authUseCase, std::shared_ptr<RegisterUserUseCase> regUseCase, QObject *parent)
     :QObject(parent), authUseCase_(std::move(authUseCase)), regUseCase_(std::move(regUseCase))
 {
-    user = new UserModel(this);
+    user_ = new UserModel(this);
 }
 
 void AuthViewModel::loginUser(const QString &username, const QString &password){
-    user->setUsername(username);
-    user->setPassword(password);
-    authUseCase_->execute(UserModelMapper::fromUiModel(user), [this](Result<User> result) {
+    user_->setUsername(username);
+    user_->setPassword(password);
+    authUseCase_->execute(UserModelMapper::fromUiModel(user_), [this](Result<User> result) {
         if (result.isSuccess()) {
             emit authSucceeded();
         } else {
@@ -25,9 +25,9 @@ void AuthViewModel::loginUser(const QString &username, const QString &password){
 
 void AuthViewModel::registerUser(const QString &username, const QString &password)
 {
-    user->setUsername(username);
-    user->setPassword(password);
-    regUseCase_->execute(UserModelMapper::fromUiModel(user), [this](Result<User> result) {
+    user_->setUsername(username);
+    user_->setPassword(password);
+    regUseCase_->execute(UserModelMapper::fromUiModel(user_), [this](Result<User> result) {
         if (result.isSuccess()) {
             emit authSucceeded();
         } else {

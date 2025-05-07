@@ -2,12 +2,12 @@
 #include "../../Domain/Utils/Result.h"
 #include "../../Domain/Entities/WeatherData.h"
 #include "../../Domain/Entities/WeekWeatherData.h"
-#include "../Mappers/WeatherUIMapper.h"
-#include "../Mappers/WeekWeatherUIMapper.h"
+#include "../Mappers/WeatherUiMapper.h"
+#include "../Mappers/WeekWeatherUiMapper.h"
 #include <QDebug>
 
-WeatherViewModel::WeatherViewModel(std::shared_ptr<GetDailyWeatherUseCase> dailyUC, std::shared_ptr<GetWeeklyWeatherUseCase> weeklyUC, QObject *parent)
-    : QObject(parent), dailyUseCase_(std::move(dailyUC)), weeklyUseCase_(std::move(weeklyUC))
+WeatherViewModel::WeatherViewModel(std::shared_ptr<GetDailyWeatherUseCase> dailyUC, std::shared_ptr<GetWeeklyWeatherUseCase> weeklyUC, std::shared_ptr<SaveWeatherHistoryUseCase> saveHistory, QObject *parent)
+    : QObject(parent), dailyUseCase_(std::move(dailyUC)), weeklyUseCase_(std::move(weeklyUC)), saveHistoryUseCase_(std::move(saveHistory))
 {
     weatherModel_ = new WeatherUiModel(this);
     weekWeatherModel_ = new WeekWeatherUiModel(this);
@@ -24,6 +24,7 @@ void WeatherViewModel::clickSearchCityButton(const QString &city)
             WeatherUiMapper::toUiModel({}, weatherModel_);
             weatherModel_->setMessageError(QString::fromStdString(result.errorMessage()));
         }
+        saveHistoryUseCase_->execute(desiredCity_.toStdString(), desiredDate_.toString().toStdString());
     });
 }
 
@@ -42,7 +43,7 @@ void WeatherViewModel::clickNextDayButton()
             WeatherUiMapper::toUiModel({}, weatherModel_);
             weatherModel_->setMessageError(QString::fromStdString(result.errorMessage()));
         }
-
+        saveHistoryUseCase_->execute(desiredCity_.toStdString(), desiredDate_.toString().toStdString());
     });
 }
 
@@ -61,7 +62,7 @@ void WeatherViewModel::clickPrevDayButton()
             WeatherUiMapper::toUiModel({}, weatherModel_);
             weatherModel_->setMessageError(QString::fromStdString(result.errorMessage()));
         }
-
+        saveHistoryUseCase_->execute(desiredCity_.toStdString(), desiredDate_.toString().toStdString());
     });
 }
 

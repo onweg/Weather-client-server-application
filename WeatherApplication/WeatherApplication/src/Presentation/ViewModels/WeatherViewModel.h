@@ -3,15 +3,16 @@
 
 #include <QObject>
 #include <memory>
-#include "../UIModels/WeatherUIModel.h"
-#include "../UIModels/WeekWeatherUIModel.h"
+#include "../UIModels/WeatherUiModel.h"
+#include "../UIModels/WeekWeatherUiModel.h"
 #include "../../Domain/UseCases/GetDailyWeatherUseCase.h"
 #include "../../Domain/UseCases/GetWeeklyWeatherUseCase.h"
+#include "../../Domain/UseCases/SaveWeatherHistoryUseCase.h"
 
 class WeatherViewModel : public QObject  {
      Q_OBJECT
 public:
-    explicit WeatherViewModel(std::shared_ptr<GetDailyWeatherUseCase> dailyUC, std::shared_ptr<GetWeeklyWeatherUseCase> weeklyUC, QObject* parent = nullptr);
+    explicit WeatherViewModel(std::shared_ptr<GetDailyWeatherUseCase> dailyUC, std::shared_ptr<GetWeeklyWeatherUseCase> weeklyUC,  std::shared_ptr<SaveWeatherHistoryUseCase> saveHistory, QObject* parent = nullptr);
     Q_INVOKABLE void clickSearchCityButton(const QString &city);
     Q_INVOKABLE void clickNextDayButton();
     Q_INVOKABLE void clickPrevDayButton();
@@ -33,6 +34,7 @@ private:
 
     std::shared_ptr<GetDailyWeatherUseCase> dailyUseCase_;
     std::shared_ptr<GetWeeklyWeatherUseCase> weeklyUseCase_;
+    std::shared_ptr<SaveWeatherHistoryUseCase> saveHistoryUseCase_;
 
     const int MAX_COUNT_DAYS = 5;
 
