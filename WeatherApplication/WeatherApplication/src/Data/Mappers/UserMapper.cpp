@@ -5,12 +5,12 @@ UserMapper::UserMapper()
 
 }
 
-User UserMapper::fromDro(const UserDto &userDto)
+User UserMapper::fromDto(const UserDto &userDto)
 {
     return User{userDto.username, userDto.passwordHash};
 }
 
-UserDto UserMapper::toDro(const User &user)
+UserDto UserMapper::toDto(const User &user)
 {
     return UserDto{user.username, user.passwordHash};
 }
