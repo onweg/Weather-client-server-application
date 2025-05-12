@@ -3,10 +3,9 @@
 
 #include <string>
 
-struct AuthorizationReply
-{
-    bool success = false;
-    std::string message;
+struct AuthorizationReply {
+ bool success = false;
+ std::string message;
 };
 
-#endif // AUTHORIZATIONREPLY_H
+#endif	// AUTHORIZATIONREPLY_H

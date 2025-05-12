@@ -4,10 +4,9 @@
 #include "ApiConfig.h"
 #include "ServerHostConfig.h"
 
-struct AppConfig
-{
-    ServerHostConfig serverHostConfig;
-    ApiConfig apiConfig;
+struct AppConfig {
+ ServerHostConfig serverHostConfig;
+ ApiConfig apiConfig;
 };
 
-#endif // APPCONFIG_H
+#endif	// APPCONFIG_H

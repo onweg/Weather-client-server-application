@@ -6,8 +6,8 @@
 
 class WeekWeatherDomainMapper {
 public:
-    static WeekWeatherDataDto toDto(const WeekWeatherData& domain);
-    static WeekWeatherData fromDto(const WeekWeatherDataDto& dto);
+ static WeekWeatherDataDto toDto(const WeekWeatherData& domain);
+ static WeekWeatherData fromDto(const WeekWeatherDataDto& dto);
 };
 
-#endif // WEEKWEATHERDOMAINMAPPER_H
+#endif	// WEEKWEATHERDOMAINMAPPER_H

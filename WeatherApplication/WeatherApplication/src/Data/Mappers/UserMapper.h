@@ -4,12 +4,11 @@
 #include "../../Domain/Entities/User.h"
 #include "../DtoModels/UserDto.h"
 
-class UserMapper
-{
+class UserMapper {
 public:
-    UserMapper();
-    static User fromDto(const UserDto& userDto);
-    static UserDto toDto(const User& user);
+ UserMapper();
+ static User fromDto(const UserDto& userDto);
+ static UserDto toDto(const User& user);
 };
 
-#endif // USERMAPPER_H
+#endif	// USERMAPPER_H

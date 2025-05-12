@@ -4,9 +4,9 @@
 #include <string>
 
 struct ApiConfig {
-    std::string urlFindCityByName;
-    std::string urlFindWeatherByCoordinates;
-    std::string key;
+ std::string urlFindCityByName;
+ std::string urlFindWeatherByCoordinates;
+ std::string key;
 };
 
-#endif // APICONFIG_H
+#endif	// APICONFIG_H

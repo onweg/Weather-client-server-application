@@ -1,18 +1,13 @@
 #include "SharedState.h"
 
-SharedState::SharedState()
-{
+SharedState::SharedState() {}
 
+std::string SharedState::getUsername() {
+ return username_;
 }
 
-std::string SharedState::getUsername()
-{
-    return username_;
-}
-
-void SharedState::setUsername(const std::string &username)
-{
-    if (username_ != username) {
-        username_ = username;
-    }
+void SharedState::setUsername(const std::string &username) {
+ if (username_ != username) {
+  username_ = username;
+ }
 }

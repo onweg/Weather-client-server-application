@@ -6,9 +6,9 @@
 
 class IWeatherHistoryRepository {
 public:
-    virtual ~IWeatherHistoryRepository() = default;
-    virtual std::vector<WeatherHistoryItem> getAll() = 0;
-    virtual void save(const std::string &city, const std::string &date) = 0;
+ virtual ~IWeatherHistoryRepository() = default;
+ virtual std::vector<WeatherHistoryItem> getAll() = 0;
+ virtual void save(const std::string &city, const std::string &date) = 0;
 };
 
-#endif // IWEATHERHISTORYREPOSITORY_H
+#endif	// IWEATHERHISTORYREPOSITORY_H

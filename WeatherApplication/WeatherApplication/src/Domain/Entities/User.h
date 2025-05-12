@@ -3,9 +3,9 @@
 
 #include <string>
 
-struct User{
-    std::string username;
-    std::string passwordHash;
+struct User {
+ std::string username;
+ std::string passwordHash;
 };
 
-#endif // USER_H
+#endif	// USER_H

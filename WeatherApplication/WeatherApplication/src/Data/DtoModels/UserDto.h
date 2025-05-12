@@ -3,9 +3,9 @@
 
 #include <string>
 
-struct UserDto{
-    std::string username;
-    std::string passwordHash;
+struct UserDto {
+ std::string username;
+ std::string passwordHash;
 };
 
-#endif // USERDTO_H
+#endif	// USERDTO_H

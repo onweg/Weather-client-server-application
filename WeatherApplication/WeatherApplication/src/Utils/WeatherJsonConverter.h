@@ -1,20 +1,18 @@
 #ifndef WEATHERJSONCONVERTER_H
 #define WEATHERJSONCONVERTER_H
 
-#include <QObject>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QMap>
 #include "../Domain/Entities/WeekWeatherData.h"
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QMap>
+#include <QObject>
 
-class WeatherJsonConverter : public QObject
-{
-    Q_OBJECT
+class WeatherJsonConverter : public QObject {
+ Q_OBJECT
 public:
-    explicit WeatherJsonConverter(QObject *parent = nullptr);
+ explicit WeatherJsonConverter(QObject *parent = nullptr);
 
-    static WeekWeatherData parseWeekWeather(const QJsonObject &jsonObj);
-
+ static WeekWeatherData parseWeekWeather(const QJsonObject &jsonObj);
 };
 
-#endif // WEATHERJSONCONVERTER_H
+#endif	// WEATHERJSONCONVERTER_H

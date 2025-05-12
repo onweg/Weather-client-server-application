@@ -6,9 +6,10 @@
 
 class WeatherDatabaseInitializer : public IWeatherDatabaseInitializer {
 public:
-    bool initialize() override;
+ bool initialize() override;
+
 private:
-    const QString DB_PATH = "weather_data_request.db";
+ const QString DB_PATH = "weather_data_request.db";
 };
 
-#endif // WEATHERDATABASEINITIALIZER_H
+#endif	// WEATHERDATABASEINITIALIZER_H

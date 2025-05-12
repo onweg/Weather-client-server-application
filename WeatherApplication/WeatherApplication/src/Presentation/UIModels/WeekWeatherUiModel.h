@@ -1,38 +1,40 @@
 #ifndef WEEKWEATHERUIMODEL_H
 #define WEEKWEATHERUIMODEL_H
 
-#include <QObject>
-#include <QList>
-#include <QString>
 #include "WeatherUiModel.h"
+#include <QList>
+#include <QObject>
+#include <QString>
 
 class WeekWeatherUiModel : public QObject {
-    Q_OBJECT
-    Q_PROPERTY(QString city READ city WRITE setCity NOTIFY cityChanged)
-    Q_PROPERTY(QString messageError READ messageError WRITE setMessageError NOTIFY messageErrorChanged)
-    Q_PROPERTY(QList<QObject*> dailyWeather READ dailyWeather NOTIFY dailyWeatherChanged)
+ Q_OBJECT
+ Q_PROPERTY(QString city READ city WRITE setCity NOTIFY cityChanged)
+ Q_PROPERTY(QString messageError READ messageError WRITE setMessageError NOTIFY
+				messageErrorChanged)
+ Q_PROPERTY(
+	 QList<QObject*> dailyWeather READ dailyWeather NOTIFY dailyWeatherChanged)
 
 public:
-    explicit WeekWeatherUiModel(QObject* parent = nullptr);
+ explicit WeekWeatherUiModel(QObject* parent = nullptr);
 
-    QString city() const;
-    QString messageError() const;
-    QList<QObject*> dailyWeather() const;
-    void setCity(const QString& val);
-    void setMessageError(const QString& val);
-    void setDailyWeather(const QList<QObject*>& list);
-    void clearDailyWeather();
-    void addWeatherModel(QObject* model);
+ QString city() const;
+ QString messageError() const;
+ QList<QObject*> dailyWeather() const;
+ void setCity(const QString& val);
+ void setMessageError(const QString& val);
+ void setDailyWeather(const QList<QObject*>& list);
+ void clearDailyWeather();
+ void addWeatherModel(QObject* model);
 
 signals:
-    void cityChanged();
-    void messageErrorChanged();
-    void dailyWeatherChanged();
+ void cityChanged();
+ void messageErrorChanged();
+ void dailyWeatherChanged();
 
 private:
-    QString city_;
-    QString messageError_;
-    QList<QObject*> dailyWeather_;
+ QString city_;
+ QString messageError_;
+ QList<QObject*> dailyWeather_;
 };
 
-#endif // WEEKWEATHERUIMODEL_H
+#endif	// WEEKWEATHERUIMODEL_H

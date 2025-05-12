@@ -6,8 +6,8 @@
 
 class WeatherDomainMapper {
 public:
-    static WeatherDataDto toDto(const WeatherData& domain);
-    static WeatherData fromDto(const WeatherDataDto& dto);
+ static WeatherDataDto toDto(const WeatherData& domain);
+ static WeatherData fromDto(const WeatherDataDto& dto);
 };
 
-#endif // WEATHERDOMAINMAPPER_H
+#endif	// WEATHERDOMAINMAPPER_H
