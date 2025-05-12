@@ -1,0 +1,21 @@
+BasedOnStyle: Google
+UseTab: Always
+IndentWidth: 1
+TabWidth: 4
+ColumnLimit: 80
+
+IncludeBlocks: Preserve
+IncludeCategories:
+  - Regex:           '^<.*\.h>'
+    Priority:        1
+    SortPriority:    0
+  - Regex:           '^".*\.h"'
+    Priority:        2
+    SortPriority:    0
+SortIncludes: true
+
+AllowShortFunctionsOnASingleLine: Empty
+BreakBeforeBraces: Attach
+SpacesInParentheses: false
+SpaceAfterCStyleCast: true
+PointerAlignment: Left
