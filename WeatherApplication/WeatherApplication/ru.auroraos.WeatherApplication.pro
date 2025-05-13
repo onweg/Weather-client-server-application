@@ -46,7 +46,6 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
-    src/Data/Mappers/UserMapper.cpp \
     src/Data/Mappers/WeatherDomainMapper.cpp \
     src/Data/Mappers/WeekWeatherDomainMapper.cpp \
     src/Data/Repositories/Database/SqliteWeatherHistoryRepository.cpp \
@@ -79,10 +78,8 @@ SOURCES += \
     src/main.cpp
 
 HEADERS += \
-    src/Data/DtoModels/UserDto.h \
     src/Data/DtoModels/WeatherDataDto.h \
     src/Data/DtoModels/WeekWeatherDataDto.h \
-    src/Data/Mappers/UserMapper.h \
     src/Data/Mappers/WeatherDomainMapper.h \
     src/Data/Mappers/WeekWeatherDomainMapper.h \
     src/Data/Repositories/Database/SqliteWeatherHistoryRepository.h \
