@@ -1,17 +1,18 @@
 #ifndef AUTHORIZATIONREPLYJSONCONVERTER_H
 #define AUTHORIZATIONREPLYJSONCONVERTER_H
 
-#include "../Domain/Entities/AuthorizationReply.h"
 #include <QJsonObject>
 #include <QObject>
 
+#include "../Domain/Entities/AuthorizationReply.h"
+
 class AuthorizationReplyJsonConverter {
-public:
- explicit AuthorizationReplyJsonConverter();
+ public:
+  explicit AuthorizationReplyJsonConverter();
 
- static AuthorizationReply parseAuthorizationReply(const QJsonObject &jsonObj);
+  static AuthorizationReply parseAuthorizationReply(const QJsonObject &jsonObj);
 
-signals:
+ signals:
 };
 
-#endif	// AUTHORIZATIONREPLYJSONCONVERTER_H
+#endif  // AUTHORIZATIONREPLYJSONCONVERTER_H

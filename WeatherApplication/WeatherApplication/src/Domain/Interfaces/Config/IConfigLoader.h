@@ -5,9 +5,9 @@
 #include "../../Utils/Result.h"
 
 class IConfigLoader {
-public:
- virtual ~IConfigLoader() = default;
- virtual Result<AppConfig> load() = 0;
+ public:
+  virtual ~IConfigLoader() = default;
+  virtual Result<AppConfig> load() = 0;
 };
 
-#endif	// ICONFIGLOADER_H
+#endif  // ICONFIGLOADER_H

@@ -21,34 +21,34 @@
 #include "../Presentation/ViewModels/WeatherViewModel.h"
 
 class DependencyContainer {
-public:
- explicit DependencyContainer(QObject* qmlRoot);
- AuthViewModel* getAuthViewModel();
- WeatherViewModel* getWeatherViewModel();
+ public:
+  explicit DependencyContainer(QObject* qmlRoot);
+  AuthViewModel* getAuthViewModel();
+  WeatherViewModel* getWeatherViewModel();
 
-private:
- std::shared_ptr<ISharedState> sharedStateInterface_;
- std::shared_ptr<IConfigLoader> configLoaderInterface_;
- std::shared_ptr<IConfigProvider> configProviderInterface_;
- std::shared_ptr<IWeatherCacheSource> cacheSourceInterface_;
- std::shared_ptr<IWeatherDatabaseInitializer> dbInitializerInterface_;
- std::shared_ptr<IWeatherHistoryRepository> dbWeatherHistoryInterface_;
+ private:
+  std::shared_ptr<ISharedState> sharedStateInterface_;
+  std::shared_ptr<IConfigLoader> configLoaderInterface_;
+  std::shared_ptr<IConfigProvider> configProviderInterface_;
+  std::shared_ptr<IWeatherCacheSource> cacheSourceInterface_;
+  std::shared_ptr<IWeatherDatabaseInitializer> dbInitializerInterface_;
+  std::shared_ptr<IWeatherHistoryRepository> dbWeatherHistoryInterface_;
 
- IUserRepository* userRepositoryInterface_ = nullptr;
- IApiWeatherSource* apiWeatherSourceInterface_ = nullptr;
- ;
+  IUserRepository* userRepositoryInterface_ = nullptr;
+  IApiWeatherSource* apiWeatherSourceInterface_ = nullptr;
+  ;
 
- std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
- std::shared_ptr<RegisterUserUseCase> regUseCase_;
- std::shared_ptr<GetDailyWeatherUseCase> dailyWeatherUseCase_;
- std::shared_ptr<GetWeeklyWeatherUseCase> weeklyWeatherUseCase_;
- std::shared_ptr<SaveWeatherHistoryUseCase> saveHistoryUseCase_;
- std::shared_ptr<GetWeatherHistoryUseCase> getHistoryUseCase_;
+  std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
+  std::shared_ptr<RegisterUserUseCase> regUseCase_;
+  std::shared_ptr<GetDailyWeatherUseCase> dailyWeatherUseCase_;
+  std::shared_ptr<GetWeeklyWeatherUseCase> weeklyWeatherUseCase_;
+  std::shared_ptr<SaveWeatherHistoryUseCase> saveHistoryUseCase_;
+  std::shared_ptr<GetWeatherHistoryUseCase> getHistoryUseCase_;
 
- AuthViewModel* authViewModel_ = nullptr;
- WeatherViewModel* weatherViewModel = nullptr;
+  AuthViewModel* authViewModel_ = nullptr;
+  WeatherViewModel* weatherViewModel = nullptr;
 
- QObject* qmlRoot_;
+  QObject* qmlRoot_;
 };
 
-#endif	// DEPENDENCYCONTAINER_H
+#endif  // DEPENDENCYCONTAINER_H

@@ -2,9 +2,9 @@
 #define IWEATHERDATABASEINITIALIZER_H
 
 class IWeatherDatabaseInitializer {
-public:
- virtual ~IWeatherDatabaseInitializer() = default;
- virtual bool initialize() = 0;
+ public:
+  virtual ~IWeatherDatabaseInitializer() = default;
+  virtual bool initialize() = 0;
 };
 
-#endif	// IWEATHERDATABASEINITIALIZER_H
+#endif  // IWEATHERDATABASEINITIALIZER_H

@@ -1,22 +1,23 @@
 #ifndef AUTHORIZATIONINFOJSONCONVERTER_H
 #define AUTHORIZATIONINFOJSONCONVERTER_H
 
-#include "../Domain/Entities/User.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QObject>
 
+#include "../Domain/Entities/User.h"
+
 class AuthorizationInfoJsonConverter : public QObject {
- Q_OBJECT
-public:
- explicit AuthorizationInfoJsonConverter(QObject *parent = nullptr);
+  Q_OBJECT
+ public:
+  explicit AuthorizationInfoJsonConverter(QObject *parent = nullptr);
 
- static QJsonObject loginUserToJsonObject(const User &user);
- static QJsonObject registerUserToJsonObject(const User &user);
- static QJsonDocument loginUserToJsonDocument(const User &user);
- static QJsonDocument registerUserToJsonDocument(const User &user);
+  static QJsonObject loginUserToJsonObject(const User &user);
+  static QJsonObject registerUserToJsonObject(const User &user);
+  static QJsonDocument loginUserToJsonDocument(const User &user);
+  static QJsonDocument registerUserToJsonDocument(const User &user);
 
-signals:
+ signals:
 };
 
-#endif	// AUTHORIZATIONINFOJSONCONVERTER_H
+#endif  // AUTHORIZATIONINFOJSONCONVERTER_H

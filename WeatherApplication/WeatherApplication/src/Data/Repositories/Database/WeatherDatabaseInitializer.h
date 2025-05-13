@@ -1,15 +1,16 @@
 #ifndef WEATHERDATABASEINITIALIZER_H
 #define WEATHERDATABASEINITIALIZER_H
 
-#include "../../../Domain/Interfaces/Database/IWeatherDatabaseInitializer.h"
 #include <QString>
 
-class WeatherDatabaseInitializer : public IWeatherDatabaseInitializer {
-public:
- bool initialize() override;
+#include "../../../Domain/Interfaces/Database/IWeatherDatabaseInitializer.h"
 
-private:
- const QString DB_PATH = "weather_data_request.db";
+class WeatherDatabaseInitializer : public IWeatherDatabaseInitializer {
+ public:
+  bool initialize() override;
+
+ private:
+  const QString DB_PATH = "weather_data_request.db";
 };
 
-#endif	// WEATHERDATABASEINITIALIZER_H
+#endif  // WEATHERDATABASEINITIALIZER_H

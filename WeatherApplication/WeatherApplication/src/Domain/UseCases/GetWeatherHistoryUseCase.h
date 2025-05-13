@@ -1,18 +1,19 @@
 #ifndef GETWEATHERHISTORYUSECASE_H
 #define GETWEATHERHISTORYUSECASE_H
 
-#include "../Interfaces/Database/IWeatherHistoryRepository.h"
 #include <memory>
 
+#include "../Interfaces/Database/IWeatherHistoryRepository.h"
+
 class GetWeatherHistoryUseCase {
-public:
- explicit GetWeatherHistoryUseCase(
-	 std::shared_ptr<IWeatherHistoryRepository> repository);
+ public:
+  explicit GetWeatherHistoryUseCase(
+      std::shared_ptr<IWeatherHistoryRepository> repository);
 
- std::vector<WeatherHistoryItem> execute();
+  std::vector<WeatherHistoryItem> execute();
 
-private:
- std::shared_ptr<IWeatherHistoryRepository> repository_;
+ private:
+  std::shared_ptr<IWeatherHistoryRepository> repository_;
 };
 
-#endif	// GETWEATHERHISTORYUSECASE_H
+#endif  // GETWEATHERHISTORYUSECASE_H

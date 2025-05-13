@@ -6,9 +6,9 @@
 #define FILE_PATH "/usr/share/ru.auroraos.WeatherApplication/config/config.json"
 
 class ConfigLoader : public IConfigLoader {
-public:
- explicit ConfigLoader();
- Result<AppConfig> load() override;
+ public:
+  explicit ConfigLoader();
+  Result<AppConfig> load() override;
 };
 
-#endif	// CONFIGLOADER_H
+#endif  // CONFIGLOADER_H

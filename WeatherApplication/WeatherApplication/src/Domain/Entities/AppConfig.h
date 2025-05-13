@@ -5,8 +5,8 @@
 #include "ServerHostConfig.h"
 
 struct AppConfig {
- ServerHostConfig serverHostConfig;
- ApiConfig apiConfig;
+  ServerHostConfig serverHostConfig;
+  ApiConfig apiConfig;
 };
 
-#endif	// APPCONFIG_H
+#endif  // APPCONFIG_H
