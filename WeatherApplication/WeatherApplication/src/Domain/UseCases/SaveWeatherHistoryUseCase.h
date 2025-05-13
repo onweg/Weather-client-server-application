@@ -6,14 +6,14 @@
 #include "../Interfaces/Database/IWeatherHistoryRepository.h"
 
 class SaveWeatherHistoryUseCase {
- public:
-  explicit SaveWeatherHistoryUseCase(
-      std::shared_ptr<IWeatherHistoryRepository> repository);
+  public:
+    explicit SaveWeatherHistoryUseCase(
+        std::shared_ptr<IWeatherHistoryRepository> repository);
 
-  void execute(const std::string &city, const std::string &date);
+    void execute(const std::string &city, const std::string &date);
 
- private:
-  std::shared_ptr<IWeatherHistoryRepository> repository_;
+  private:
+    std::shared_ptr<IWeatherHistoryRepository> repository_;
 };
 
-#endif  // SAVEWEATHERHISTORYUSECASE_H
+#endif // SAVEWEATHERHISTORYUSECASE_H

@@ -4,8 +4,8 @@
 #include <string>
 
 struct ServerHostConfig {
-  std::string ip;
-  std::string port;
+    std::string ip;
+    std::string port;
 };
 
-#endif  // SERVERHOSTCONFIG_H
+#endif // SERVERHOSTCONFIG_H

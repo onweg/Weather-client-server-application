@@ -8,14 +8,14 @@
 #include "../../Utils/Result.h"
 
 class IWeatherCacheSource {
- public:
-  virtual ~IWeatherCacheSource() = default;
-  virtual Result<WeatherData> getDayWeather(const std::string& city,
-                                            const std::string& date) = 0;
-  virtual Result<WeekWeatherData> getWeekWeather(const std::string& city) = 0;
-  virtual void addWeekWeather(const std::string& city,
-                              const WeekWeatherData& data) = 0;
-  virtual bool hasValidData(const std::string& city) = 0;
+  public:
+    virtual ~IWeatherCacheSource() = default;
+    virtual Result<WeatherData> getDayWeather(const std::string &city,
+        const std::string &date) = 0;
+    virtual Result<WeekWeatherData> getWeekWeather(const std::string &city) = 0;
+    virtual void addWeekWeather(const std::string &city,
+        const WeekWeatherData &data) = 0;
+    virtual bool hasValidData(const std::string &city) = 0;
 };
 
-#endif  // IWEATHERCACHESOURCE_H
+#endif // IWEATHERCACHESOURCE_H

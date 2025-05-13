@@ -9,12 +9,12 @@
 #include "../Utils/Result.h"
 
 class AuthenticateUserUseCase {
- public:
-  explicit AuthenticateUserUseCase(IUserRepository* repo);
-  void execute(const User& user, std::function<void(Result<User>)> callback);
+  public:
+    explicit AuthenticateUserUseCase(IUserRepository *repo);
+    void execute(const User &user, std::function<void(Result<User>)> callback);
 
- private:
-  IUserRepository* repository_;
+  private:
+    IUserRepository *repository_;
 };
 
 #endif

@@ -14,26 +14,27 @@
 #include <QTcpSocket>
 
 class HttpServer : public QTcpServer {
-  Q_OBJECT
- public:
-  HttpServer(QObject *parent = nullptr);
-  bool start(quint16 port);
+    Q_OBJECT
+  public:
+    HttpServer(QObject *parent = nullptr);
+    bool start(quint16 port);
 
- protected:
-  void incomingConnection(qintptr socketDescriptor) override;
+  protected:
+    void incomingConnection(qintptr socketDescriptor) override;
 
- private slots:
-  void handleReadyRead();
-  void handleDisconnected();
+  private slots:
+    void handleReadyRead();
+    void handleDisconnected();
 
- private:
-  QSqlDatabase db;
-  bool connectToDatabase();
-  void processRequest(QTcpSocket *socket, const QByteArray &data);
-  void processLogin(QTcpSocket *socket, const QJsonObject &obj);
-  void processRegister(QTcpSocket *socket, const QJsonObject &obj);
-  void sendHttpResponse(QTcpSocket *socket, const QJsonObject &response,
-                        int statusCode = 200);
+  private:
+    QSqlDatabase db;
+    bool connectToDatabase();
+    void processRequest(QTcpSocket *socket, const QByteArray &data);
+    void processLogin(QTcpSocket *socket, const QJsonObject &obj);
+    void processRegister(QTcpSocket *socket, const QJsonObject &obj);
+    void sendHttpResponse(QTcpSocket *socket,
+        const QJsonObject &response,
+        int statusCode = 200);
 };
 
-#endif  // HTTPSERVER_H
+#endif // HTTPSERVER_H

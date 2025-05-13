@@ -8,12 +8,12 @@
 #include "../Interfaces/Api/IUserRepository.h"
 
 class RegisterUserUseCase {
- public:
-  explicit RegisterUserUseCase(IUserRepository* repo);
-  void execute(const User& user, std::function<void(Result<User>)> callback);
+  public:
+    explicit RegisterUserUseCase(IUserRepository *repo);
+    void execute(const User &user, std::function<void(Result<User>)> callback);
 
- private:
-  IUserRepository* repository_;
+  private:
+    IUserRepository *repository_;
 };
 
-#endif  // REGISTERUSERUSECASE_H
+#endif // REGISTERUSERUSECASE_H

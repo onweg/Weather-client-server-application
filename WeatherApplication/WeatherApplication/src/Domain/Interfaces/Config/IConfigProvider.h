@@ -8,10 +8,10 @@
 #include "../../Utils/Result.h"
 
 class IConfigProvider {
- public:
-  virtual ~IConfigProvider() = default;
-  virtual Result<ApiConfig> getApiConfig() = 0;
-  virtual Result<ServerHostConfig> getServerHostConfig() = 0;
+  public:
+    virtual ~IConfigProvider() = default;
+    virtual Result<ApiConfig> getApiConfig() = 0;
+    virtual Result<ServerHostConfig> getServerHostConfig() = 0;
 };
 
-#endif  // ICONFIGPROVIDER_H
+#endif // ICONFIGPROVIDER_H

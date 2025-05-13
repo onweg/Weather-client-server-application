@@ -11,19 +11,18 @@
 #include "../../../Domain/Interfaces/SharedState/ISharedState.h"
 
 class WeatherApiSource : public QObject, public IApiWeatherSource {
-  Q_OBJECT
- public:
-  explicit WeatherApiSource(std::shared_ptr<IConfigProvider> config,
-                            QObject* parent = nullptr);
+    Q_OBJECT
+  public:
+    explicit WeatherApiSource(std::shared_ptr<IConfigProvider> config,
+        QObject *parent = nullptr);
 
-  void findWeatherDataByCity(
-      const std::string city,
-      std::function<void(Result<WeekWeatherData>)> callback) override;
+    void findWeatherDataByCity(const std::string city,
+        std::function<void(Result<WeekWeatherData>)> callback) override;
 
- private:
-  std::shared_ptr<IConfigProvider> configProvider_;
-  Result<ApiConfig> apiConfig_;
-  QNetworkAccessManager* networkManager_;
+  private:
+    std::shared_ptr<IConfigProvider> configProvider_;
+    Result<ApiConfig> apiConfig_;
+    QNetworkAccessManager *networkManager_;
 };
 
-#endif  // WEATHERAPISOURCE_H
+#endif // WEATHERAPISOURCE_H

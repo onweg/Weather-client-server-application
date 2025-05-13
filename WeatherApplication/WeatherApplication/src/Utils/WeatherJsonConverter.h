@@ -9,11 +9,11 @@
 #include "../Domain/Entities/WeekWeatherData.h"
 
 class WeatherJsonConverter : public QObject {
-  Q_OBJECT
- public:
-  explicit WeatherJsonConverter(QObject *parent = nullptr);
+    Q_OBJECT
+  public:
+    explicit WeatherJsonConverter(QObject *parent = nullptr);
 
-  static WeekWeatherData parseWeekWeather(const QJsonObject &jsonObj);
+    static WeekWeatherData parseWeekWeather(const QJsonObject &jsonObj);
 };
 
-#endif  // WEATHERJSONCONVERTER_H
+#endif // WEATHERJSONCONVERTER_H

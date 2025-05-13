@@ -7,12 +7,13 @@
 #include "../Domain/Entities/AuthorizationReply.h"
 
 class AuthorizationReplyJsonConverter {
- public:
-  explicit AuthorizationReplyJsonConverter();
+  public:
+    explicit AuthorizationReplyJsonConverter();
 
-  static AuthorizationReply parseAuthorizationReply(const QJsonObject &jsonObj);
+    static AuthorizationReply parseAuthorizationReply(
+        const QJsonObject &jsonObj);
 
- signals:
+  signals:
 };
 
-#endif  // AUTHORIZATIONREPLYJSONCONVERTER_H
+#endif // AUTHORIZATIONREPLYJSONCONVERTER_H

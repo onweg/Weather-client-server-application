@@ -10,14 +10,15 @@
 #include "../Domain/Entities/ServerHostConfig.h"
 
 class AppConfigJsonConverter {
- public:
-  explicit AppConfigJsonConverter();
-  static bool fromJson(const QJsonObject& jsonObject, AppConfig& config);
+  public:
+    explicit AppConfigJsonConverter();
+    static bool fromJson(const QJsonObject &jsonObject, AppConfig &config);
 
- private:
-  static bool parseServerHostConfig(const QJsonObject& jsonObject,
-                                    ServerHostConfig& config);
-  static bool parseApiConfig(const QJsonObject& jsonObject, ApiConfig& config);
+  private:
+    static bool parseServerHostConfig(const QJsonObject &jsonObject,
+        ServerHostConfig &config);
+    static bool parseApiConfig(const QJsonObject &jsonObject,
+        ApiConfig &config);
 };
 
-#endif  // APPCONFIGJSONCONVERTER_H
+#endif // APPCONFIGJSONCONVERTER_H

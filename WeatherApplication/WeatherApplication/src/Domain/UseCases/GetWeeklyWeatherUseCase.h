@@ -12,17 +12,16 @@
 #include "../Utils/Result.h"
 
 class GetWeeklyWeatherUseCase {
- public:
-  explicit GetWeeklyWeatherUseCase(
-      IApiWeatherSource* apiRepo,
-      std::shared_ptr<IWeatherCacheSource> cacheRepo);
+  public:
+    explicit GetWeeklyWeatherUseCase(IApiWeatherSource *apiRepo,
+        std::shared_ptr<IWeatherCacheSource> cacheRepo);
 
-  void execute(const std::string& city,
-               std::function<void(Result<WeekWeatherData>)> callback);
+    void execute(const std::string &city,
+        std::function<void(Result<WeekWeatherData>)> callback);
 
- private:
-  IApiWeatherSource* apiRepository_;
-  std::shared_ptr<IWeatherCacheSource> cacheRepository_;
+  private:
+    IApiWeatherSource *apiRepository_;
+    std::shared_ptr<IWeatherCacheSource> cacheRepository_;
 };
 
-#endif  // GETWEEKLYWEATHERUSECASE_H
+#endif // GETWEEKLYWEATHERUSECASE_H

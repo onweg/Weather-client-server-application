@@ -5,9 +5,9 @@
 #include "../DtoModels/WeatherDataDto.h"
 
 class WeatherDomainMapper {
- public:
-  static WeatherDataDto toDto(const WeatherData& domain);
-  static WeatherData fromDto(const WeatherDataDto& dto);
+  public:
+    static WeatherDataDto toDto(const WeatherData &domain);
+    static WeatherData fromDto(const WeatherDataDto &dto);
 };
 
-#endif  // WEATHERDOMAINMAPPER_H
+#endif // WEATHERDOMAINMAPPER_H
