@@ -1,7 +1,7 @@
 #ifndef USERMODELMAPPER_H
 #define USERMODELMAPPER_H
 
-#include "../../Domain/Entities/User.h"
+#include "../../Domain/Entities/AuthorizationRequest.h"
 #include "../UIModels/UserModel.h"
 
 class UserModelMapper

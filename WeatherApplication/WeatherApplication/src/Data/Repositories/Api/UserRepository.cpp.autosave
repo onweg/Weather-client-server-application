@@ -17,7 +17,7 @@ UserRepository::UserRepository(std::shared_ptr<IConfigProvider> config,  std::sh
         serverHostConfig_ = configProvider_->getServerHostConfig();
     } else {
         serverHostConfig_ = Result<ServerHostConfig>::failure("Ну удалось получить IConfigProvider");
-        throw ... // нужно понять как правильно отпарвить исключение которое поймается в ViewModel
+        throw std::runtime_error(|) // нужно понять как правильно отпарвить исключение которое поймается в ViewModel
     }
     networkManager_ = new QNetworkAccessManager(this);
 }

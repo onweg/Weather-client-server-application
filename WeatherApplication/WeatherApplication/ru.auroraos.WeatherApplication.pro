@@ -35,7 +35,7 @@
 ##
 ################################################################################
 
-QT += network core sql
+QT += network core sql concurrent
 
 TARGET = ru.auroraos.WeatherApplication
 
@@ -89,8 +89,8 @@ HEADERS += \
     src/Data/Repositories/Database/WeatherDatabaseInitializer.h \
     src/Data/Repositories/SharedState/SharedState.h \
     src/Domain/Entities/AuthorizationReply.h \
-    src/Domain/Entities/User.h \
     src/Domain/Entities/ApiConfig.h \
+    src/Domain/Entities/AuthorizationRequest.h \
     src/Domain/Entities/ServerHostConfig.h \
     src/Domain/Entities/AppConfig.h \
     src/Domain/Entities/WeatherData.h \

@@ -1,7 +1,7 @@
 #ifndef USERMAPPER_H
 #define USERMAPPER_H
 
-#include "../../Domain/Entities/User.h"
+#include "../../Domain/Entities/AuthorizationRequest.h"
 #include "../DtoModels/UserDto.h"
 
 class UserMapper
