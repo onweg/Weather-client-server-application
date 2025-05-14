@@ -25,29 +25,33 @@ UserRepository::UserRepository(std::shared_ptr<IConfigProvider> config,
     networkManager_ = new QNetworkAccessManager(this);
 }
 
-AuthorizationReply UserRepository::findUser(const AuthorizationRequest& request) {
+std::future<AuthorizationReply> UserRepository::findUser(const AuthorizationRequest& request) {
     AuthorizationCommand command{request, AuthorizationCommand::Type::Login};
-    return sendRequest(command).get();
+    return sendRequest(command);
 }
 
-AuthorizationReply UserRepository::registerUser(const AuthorizationRequest& request) {
+std::future<AuthorizationReply> UserRepository::registerUser(const AuthorizationRequest& request) {
     AuthorizationCommand command{request, AuthorizationCommand::Type::Register};
-    return sendRequest(command).get();
+    return sendRequest(command);
 }
 
 std::future<AuthorizationReply> UserRepository::sendRequest(const AuthorizationCommand& command) {
-    std::promise<AuthorizationReply> promise;
-    std::future<AuthorizationReply> future = promise.get_future();
+    auto promise = std::make_shared<std::promise<AuthorizationReply>>();
+    std::future<AuthorizationReply> future = promise->get_future();
+
     QNetworkRequest request((QUrl(buildUrl())));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     QByteArray data = serializeRequest(command);
+
     QNetworkReply* reply = networkManager_->post(request, data);
-    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, command, p = std::move(promise)]() mutable {
+
+    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, command, promise]() {
         QByteArray responseData = reply->readAll();
         AuthorizationReply replyObj = parseReply(responseData, command.request);
         reply->deleteLater();
-        p.set_value(replyObj);
+        promise->set_value(replyObj);
     });
+
     return future;
 }
 

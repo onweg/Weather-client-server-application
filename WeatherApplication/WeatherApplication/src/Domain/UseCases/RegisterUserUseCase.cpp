@@ -6,7 +6,7 @@ RegisterUserUseCase::RegisterUserUseCase(IUserRepository *repo)
 
 }
 
-AuthorizationReply RegisterUserUseCase::execute(const AuthorizationRequest &request)
+std::future<AuthorizationReply> RegisterUserUseCase::execute(const AuthorizationRequest &request)
 {
     return repository_->registerUser(request);
 }

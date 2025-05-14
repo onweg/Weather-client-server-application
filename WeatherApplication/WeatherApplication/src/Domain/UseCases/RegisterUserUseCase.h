@@ -11,7 +11,7 @@
 class  RegisterUserUseCase {
 public:
     explicit RegisterUserUseCase(IUserRepository* repo);
-    AuthorizationReply execute(const AuthorizationRequest& request);
+    std::future<AuthorizationReply> execute(const AuthorizationRequest& request);
 private:
     IUserRepository* repository_;
 };

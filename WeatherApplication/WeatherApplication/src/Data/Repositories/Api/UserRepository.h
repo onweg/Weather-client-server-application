@@ -19,8 +19,8 @@ public:
                    std::shared_ptr<ISharedState> state,
                    QObject* parent = nullptr);
 
-    AuthorizationReply findUser(const AuthorizationRequest& request) override;
-    AuthorizationReply registerUser(const AuthorizationRequest& request) override;
+    std::future<AuthorizationReply> findUser(const AuthorizationRequest& request) override;
+    std::future<AuthorizationReply> registerUser(const AuthorizationRequest& request) override;
 
 private:
     struct AuthorizationCommand {

@@ -6,7 +6,7 @@ AuthenticateUserUseCase::AuthenticateUserUseCase(IUserRepository* repo)
 
 }
 
-AuthorizationReply AuthenticateUserUseCase::execute(const AuthorizationRequest &request)
+std::future<AuthorizationReply> AuthenticateUserUseCase::execute(const AuthorizationRequest &request)
 {
     return repository_->findUser(request);
 }

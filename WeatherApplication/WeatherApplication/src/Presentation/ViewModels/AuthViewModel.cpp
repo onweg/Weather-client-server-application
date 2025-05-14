@@ -1,7 +1,6 @@
 #include "AuthViewModel.h"
 #include <QCryptographicHash>
 #include <QDebug>
-#include "../Mappers/UserModelMapper.h"
 #include <future>
 #include <QFutureWatcher>
 #include <QFuture>
@@ -18,25 +17,44 @@ AuthViewModel::AuthViewModel(
 {
 }
 
-void AuthViewModel::loginUser(const QString &username, const QString &password)
-{
-    runAsyncOperation([this, username, password]() -> AuthorizationReply {
-        try {
-            return authUseCase_->execute(AuthorizationRequest{username.toStdString(), password.toStdString()});
-        } catch (const std::exception& e) { // тут нужно дорабоать обработку исключения
-            return AuthorizationReply{false, e.what()};
-        }
+void AuthViewModel::loginUser(const QString &username, const QString &password) {
+    emit showLoadingAnimation();
+
+    std::future<AuthorizationReply> future =
+        authUseCase_->execute(AuthorizationRequest{username.toStdString(), password.toStdString()});
+
+    auto *watcher = new QFutureWatcher<AuthorizationReply>(this);
+    watcher->setFuture(std::move(future));
+
+    connect(watcher, &QFutureWatcher<AuthorizationReply>::finished, this, [this, watcher]() {
+        AuthorizationReply reply = watcher->result();
+        emit hideLoadingAnimation();
+        if (reply.success)
+            emit authSucceeded();
+        else
+            emit authFailed(QString::fromStdString(reply.message));
+        watcher->deleteLater();
     });
 }
 
 void AuthViewModel::registerUser(const QString &username, const QString &password)
 {
-    runAsyncOperation([this, username, password]() -> AuthorizationReply {
-        try {
-            return regUseCase_->execute(AuthorizationRequest{username.toStdString(), password.toStdString()});
-        } catch (const std::exception& e) { // тут нужно дорабоать обработку исключения
-            return AuthorizationReply{false, e.what()};
-        }
+    emit showLoadingAnimation();
+
+    std::future<AuthorizationReply> future =
+        regUseCase_->execute(AuthorizationRequest{username.toStdString(), password.toStdString()});
+
+    auto *watcher = new QFutureWatcher<AuthorizationReply>(this);
+    watcher->setFuture(std::move(future));
+
+    connect(watcher, &QFutureWatcher<AuthorizationReply>::finished, this, [this, watcher]() {
+        AuthorizationReply reply = watcher->result();
+        emit hideLoadingAnimation();
+        if (reply.success)
+            emit authSucceeded();
+        else
+            emit authFailed(QString::fromStdString(reply.message));
+        watcher->deleteLater();
     });
 }
 

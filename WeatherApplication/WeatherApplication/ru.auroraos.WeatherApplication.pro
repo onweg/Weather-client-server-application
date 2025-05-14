@@ -46,7 +46,6 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
-    src/Data/Mappers/UserMapper.cpp \
     src/Data/Mappers/WeatherDomainMapper.cpp \
     src/Data/Mappers/WeekWeatherDomainMapper.cpp \
     src/Data/Repositories/Database/SqliteWeatherHistoryRepository.cpp \
@@ -54,10 +53,8 @@ SOURCES += \
     src/Data/Repositories/SharedState/SharedState.cpp \
     src/Domain/UseCases/GetWeatherHistoryUseCase.cpp \
     src/Domain/UseCases/SaveWeatherHistoryUseCase.cpp \
-    src/Presentation/Mappers/UserModelMapper.cpp \
     src/Presentation/Mappers/WeatherUiMapper.cpp \
     src/Presentation/Mappers/WeekWeatherUiMapper.cpp \
-    src/Presentation/UIModels/UserModel.cpp \
     src/Presentation/UIModels/WeatherUiModel.cpp \
     src/Presentation/UIModels/WeekWeatherUiModel.cpp \
     src/Presentation/ViewModels/WeatherViewModel.cpp \
@@ -79,10 +76,8 @@ SOURCES += \
     src/main.cpp
 
 HEADERS += \
-    src/Data/DtoModels/UserDto.h \
     src/Data/DtoModels/WeatherDataDto.h \
     src/Data/DtoModels/WeekWeatherDataDto.h \
-    src/Data/Mappers/UserMapper.h \
     src/Data/Mappers/WeatherDomainMapper.h \
     src/Data/Mappers/WeekWeatherDomainMapper.h \
     src/Data/Repositories/Database/SqliteWeatherHistoryRepository.h \
@@ -108,10 +103,8 @@ HEADERS += \
     src/Domain/UseCases/GetWeatherHistoryUseCase.h \
     src/Domain/UseCases/SaveWeatherHistoryUseCase.h \
     src/Domain/Utils/SimpleOptional.h \
-    src/Presentation/Mappers/UserModelMapper.h \
     src/Presentation/Mappers/WeatherUiMapper.h \
     src/Presentation/Mappers/WeekWeatherUiMapper.h \
-    src/Presentation/UIModels/UserModel.h \
     src/Presentation/UIModels/WeatherUiModel.h \
     src/Presentation/UIModels/WeekWeatherUiModel.h \
     src/Presentation/ViewModels/WeatherViewModel.h \
