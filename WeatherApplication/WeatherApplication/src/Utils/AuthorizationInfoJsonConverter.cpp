@@ -5,7 +5,7 @@ AuthorizationInfoJsonConverter::AuthorizationInfoJsonConverter(QObject *parent) 
 
 }
 
-QJsonObject AuthorizationInfoJsonConverter::loginUserToJsonObject(const User &user)
+QJsonObject AuthorizationInfoJsonConverter::loginUserToJsonObject(const AuthorizationRequest &user)
 {
     QJsonObject obj;
     obj["command"] = "LOGIN";
@@ -14,7 +14,7 @@ QJsonObject AuthorizationInfoJsonConverter::loginUserToJsonObject(const User &us
     return obj;
 }
 
-QJsonObject AuthorizationInfoJsonConverter::registerUserToJsonObject(const User &user)
+QJsonObject AuthorizationInfoJsonConverter::registerUserToJsonObject(const AuthorizationRequest &user)
 {
     QJsonObject obj;
     obj["command"] = "REGISTER";
@@ -23,13 +23,13 @@ QJsonObject AuthorizationInfoJsonConverter::registerUserToJsonObject(const User 
     return obj;
 }
 
-QJsonDocument AuthorizationInfoJsonConverter::loginUserToJsonDocument(const User &user)
+QJsonDocument AuthorizationInfoJsonConverter::loginUserToJsonDocument(const AuthorizationRequest &user)
 {
     QJsonDocument doc(loginUserToJsonObject(user));
     return doc;
 }
 
-QJsonDocument AuthorizationInfoJsonConverter::registerUserToJsonDocument(const User &user)
+QJsonDocument AuthorizationInfoJsonConverter::registerUserToJsonDocument(const AuthorizationRequest &user)
 {
     QJsonDocument doc(registerUserToJsonObject(user));
     return doc;

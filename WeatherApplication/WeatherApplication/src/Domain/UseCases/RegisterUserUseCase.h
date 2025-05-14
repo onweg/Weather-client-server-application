@@ -2,15 +2,16 @@
 #define REGISTERUSERUSECASE_H
 
 #include <memory>
-#include <functional>
+#include <future>
 
 #include "../Interfaces/Api/IUserRepository.h"
-#include "../Entities/User.h"
+#include "../Entities/AuthorizationRequest.h"
+#include "../Entities/AuthorizationReply.h"
 
 class  RegisterUserUseCase {
 public:
     explicit RegisterUserUseCase(IUserRepository* repo);
-    void execute(const User& user, std::function<void(Result<User>)> callback);
+    AuthorizationReply execute(const AuthorizationRequest& request);
 private:
     IUserRepository* repository_;
 };

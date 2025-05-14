@@ -12,10 +12,10 @@ class AuthorizationInfoJsonConverter : public QObject
 public:
     explicit AuthorizationInfoJsonConverter(QObject *parent = nullptr);
 
-    static QJsonObject loginUserToJsonObject(const User &user);
-    static QJsonObject registerUserToJsonObject(const User &user);
-    static QJsonDocument loginUserToJsonDocument(const User &user);
-    static QJsonDocument registerUserToJsonDocument(const User &user);
+    static QJsonObject loginUserToJsonObject(const AuthorizationRequest &user);
+    static QJsonObject registerUserToJsonObject(const AuthorizationRequest &user);
+    static QJsonDocument loginUserToJsonDocument(const AuthorizationRequest &user);
+    static QJsonDocument registerUserToJsonDocument(const AuthorizationRequest &user);
 
 
 signals:

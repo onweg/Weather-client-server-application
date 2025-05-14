@@ -6,11 +6,9 @@ AuthenticateUserUseCase::AuthenticateUserUseCase(IUserRepository* repo)
 
 }
 
-void AuthenticateUserUseCase::execute(const User &user, std::function<void (Result<User>)> callback)
+AuthorizationReply AuthenticateUserUseCase::execute(const AuthorizationRequest &request)
 {
-    repository_->findUser(user, [callback](Result<User> result){
-        callback(result);
-    });
+    return repository_->findUser(request);
 }
 
 

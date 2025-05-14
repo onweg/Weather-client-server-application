@@ -6,9 +6,7 @@ RegisterUserUseCase::RegisterUserUseCase(IUserRepository *repo)
 
 }
 
-void RegisterUserUseCase::execute(const User &user, std::function<void (Result<User>)> callback)
+AuthorizationReply RegisterUserUseCase::execute(const AuthorizationRequest &request)
 {
-    repository_->registerUser(user, [callback](Result<User> result){
-        callback(result);
-    });
+    return repository_->registerUser(request);
 }

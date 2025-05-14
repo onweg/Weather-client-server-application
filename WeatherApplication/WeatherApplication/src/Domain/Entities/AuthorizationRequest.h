@@ -3,7 +3,7 @@
 
 #include <string>
 
-struct User{
+struct AuthorizationRequest{
     std::string username;
     std::string passwordHash;
 };

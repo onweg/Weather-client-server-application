@@ -6,6 +6,7 @@
 #include "../UIModels/UserModel.h"
 #include "../../Domain/UseCases/AuthenticateUserUseCase.h"
 #include "../../Domain/UseCases/RegisterUserUseCase.h"
+#include "../../Domain/Entities/AuthorizationReply.h"
 
 class AuthViewModel : public QObject {
     Q_OBJECT
@@ -20,11 +21,14 @@ signals:
     void authSucceeded();
     void authFailed(const QString& message);
 
-private:
-    UserModel *user_ = nullptr;
+    void showLoadingAnimation();
+    void hideLoadingAnimation();
 
+private:
     std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
     std::shared_ptr<RegisterUserUseCase> regUseCase_;
+
+    void runAsyncOperation(std::function<AuthorizationReply()> operation);
 };
 
 #endif // AUTHVIEWMODEL_H
