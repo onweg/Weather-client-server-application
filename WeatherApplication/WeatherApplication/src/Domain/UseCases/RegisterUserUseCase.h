@@ -10,7 +10,7 @@
 class  RegisterUserUseCase {
 public:
     explicit RegisterUserUseCase(IUserRepository* repo);
-    void execute(const User& user, std::function<void(Result<User>)> callback);
+    QFuture<Result<User>> execute(const User& user);
 private:
     IUserRepository* repository_;
 };

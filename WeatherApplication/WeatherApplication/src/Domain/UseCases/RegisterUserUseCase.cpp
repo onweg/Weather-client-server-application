@@ -6,9 +6,7 @@ RegisterUserUseCase::RegisterUserUseCase(IUserRepository *repo)
 
 }
 
-void RegisterUserUseCase::execute(const User &user, std::function<void (Result<User>)> callback)
+QFuture<Result<User>> RegisterUserUseCase::execute(const User &user)
 {
-    repository_->registerUser(user, [callback](Result<User> result){
-        callback(result);
-    });
+    return repository_->registerUser(user);
 }

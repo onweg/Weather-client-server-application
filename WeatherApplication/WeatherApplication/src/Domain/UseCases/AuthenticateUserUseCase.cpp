@@ -6,11 +6,9 @@ AuthenticateUserUseCase::AuthenticateUserUseCase(IUserRepository* repo)
 
 }
 
-void AuthenticateUserUseCase::execute(const User &user, std::function<void (Result<User>)> callback)
+QFuture<Result<User>> AuthenticateUserUseCase::execute(const User &user)
 {
-    repository_->findUser(user, [callback](Result<User> result){
-        callback(result);
-    });
+    return repository_->findUser(user);
 }
 
 

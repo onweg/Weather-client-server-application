@@ -9,6 +9,9 @@
 #include <QNetworkReply>
 #include <QDebug>
 
+#include <QPromise>
+#include <QFuture>
+
 
 UserRepository::UserRepository(std::shared_ptr<IConfigProvider> config,  std::shared_ptr<ISharedState> state, QObject *parent)
     : QObject(parent), configProvider_(std::move(config)), sharedState_(std::move(state))
@@ -32,50 +35,60 @@ void UserRepository::registerUser(const User &user, std::function<void (Result<U
     sendRequest(user, std::move(callback), "REGISTER");
 }
 
-void UserRepository::sendRequest(const User &user, std::function<void (Result<User>)> callback, const QString command)
-{
-    if (serverHostConfig_.isSuccess()) {
-        QString urlStr = "http://" + QString::fromStdString(serverHostConfig_.value().ip) + ":" + QString::fromStdString(serverHostConfig_.value().port);
-        QUrl url(urlStr);
-        QNetworkRequest request(url);
-        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-        QByteArray data;
-        if (command == "LOGIN") {
-            data = AuthorizationInfoJsonConverter::loginUserToJsonDocument(user).toJson();
-        } else if (command == "REGISTER") {
-            data = AuthorizationInfoJsonConverter::registerUserToJsonDocument(user).toJson();
+QFuture<Result<User>> UserRepository::sendRequest(const User &user, const QString command) {
+    QPromise<Result<User>> promise;
+    auto future = promise.future();
+
+    if (!serverHostConfig_.isSuccess()) {
+        promise.reportFinished();
+        return future; // Можно тут вернуть ошибку сразу
+    }
+
+    QString urlStr = "http://" + QString::fromStdString(serverHostConfig_.value().ip) + ":" + QString::fromStdString(serverHostConfig_.value().port);
+    QUrl url(urlStr);
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    QByteArray data;
+    if (command == "LOGIN") {
+        data = AuthorizationInfoJsonConverter::loginUserToJsonDocument(user).toJson();
+    } else if (command == "REGISTER") {
+        data = AuthorizationInfoJsonConverter::registerUserToJsonDocument(user).toJson();
+    } else {
+        promise.reportFinished();
+        return future; // Ошибка - неизвестная команда
+    }
+
+    QNetworkReply* reply = networkManager_->post(request, data);
+
+    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, user, promise = std::move(promise)]() mutable {
+        Result<User> result;
+
+        QByteArray response = reply->readAll();
+
+        QJsonParseError error;
+        QJsonDocument doc = QJsonDocument::fromJson(response, &error);
+        if (error.error != QJsonParseError::NoError) {
+            result = Result<User>::failure("Ошибка парсинга JSON:" + error.errorString().toStdString());
         } else {
-            qDebug() << "Нет такой команды: " << command;
-            return;
-        }
-        QNetworkReply* reply = networkManager_->post(request, data);
-
-        QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, user, callback]() {
-            Result<User> result;
-
-            QByteArray response = reply->readAll();
-
-            QJsonParseError error;
-            QJsonDocument doc = QJsonDocument::fromJson(response, &error);
-            if (error.error != QJsonParseError::NoError) {
-                result = Result<User>::failure("Ошибка парсинга JSON:" + error.errorString().toStdString());
+            if (!doc.isObject()) {
+                result = Result<User>::failure("JSON не является объектом");
             } else {
-                if (!doc.isObject()) {
-                    result = Result<User>::failure("JSON не является объектом");
+                AuthorizationReply authorizationReply = AuthorizationReplyJsonConverter::parseAuthorizationReply(doc.object());
+                if (authorizationReply.success) {
+                    sharedState_->setUsername(user.username);
+                    result = Result<User>::success(user);
                 } else {
-                    AuthorizationReply authorizationReply = AuthorizationReplyJsonConverter::parseAuthorizationReply(doc.object());
-                    if (authorizationReply.success) {
-                        sharedState_->setUsername(user.username);
-                        result = Result<User>::success(user);
-                    } else {
-                        result = Result<User>::failure(authorizationReply.message);
-                    }
+                    result = Result<User>::failure(authorizationReply.message);
                 }
             }
-            callback(result);
-            reply->deleteLater();
-        });
-    }
+        }
+
+        promise.addResult(result);
+        promise.finish();  // сигнализируем, что результат готов
+        reply->deleteLater();
+    });
+
+    return future;
 }
 
 
