@@ -9,7 +9,7 @@
 #include <QNetworkReply>
 #include <QDebug>
 
-#include <QPromise>
+#include <QFutureInterface>
 #include <QFuture>
 
 
@@ -25,23 +25,24 @@ UserRepository::UserRepository(std::shared_ptr<IConfigProvider> config,  std::sh
     networkManager_ = new QNetworkAccessManager(this);
 }
 
-void UserRepository::findUser(const User &user, std::function<void (Result<User>)> callback)
+QFuture<Result<User>> UserRepository::findUser(const User &user)
 {
-    sendRequest(user, std::move(callback), "LOGIN");
+    return sendRequest(user, "LOGIN");
 }
 
-void UserRepository::registerUser(const User &user, std::function<void (Result<User>)> callback)
+QFuture<Result<User>> UserRepository::registerUser(const User &user)
 {
-    sendRequest(user, std::move(callback), "REGISTER");
+    return sendRequest(user, "REGISTER");
 }
 
 QFuture<Result<User>> UserRepository::sendRequest(const User &user, const QString command) {
-    QPromise<Result<User>> promise;
-    auto future = promise.future();
+    QFutureInterface<Result<User>> futureInterface;
+    futureInterface.reportStarted();
+
 
     if (!serverHostConfig_.isSuccess()) {
-        promise.reportFinished();
-        return future; // Можно тут вернуть ошибку сразу
+        futureInterface.reportFinished();
+        return futureInterface.future();
     }
 
     QString urlStr = "http://" + QString::fromStdString(serverHostConfig_.value().ip) + ":" + QString::fromStdString(serverHostConfig_.value().port);
@@ -54,13 +55,13 @@ QFuture<Result<User>> UserRepository::sendRequest(const User &user, const QStrin
     } else if (command == "REGISTER") {
         data = AuthorizationInfoJsonConverter::registerUserToJsonDocument(user).toJson();
     } else {
-        promise.reportFinished();
-        return future; // Ошибка - неизвестная команда
+        futureInterface.reportFinished();
+        return futureInterface.future(); // Ошибка - неизвестная команда
     }
 
     QNetworkReply* reply = networkManager_->post(request, data);
 
-    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, user, promise = std::move(promise)]() mutable {
+    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, user, futureInterface]() mutable {
         Result<User> result;
 
         QByteArray response = reply->readAll();
@@ -83,12 +84,12 @@ QFuture<Result<User>> UserRepository::sendRequest(const User &user, const QStrin
             }
         }
 
-        promise.addResult(result);
-        promise.finish();  // сигнализируем, что результат готов
+        futureInterface.reportResult(result);
+        futureInterface.reportFinished();  // сигнализируем, что результат готов
         reply->deleteLater();
     });
 
-    return future;
+    return futureInterface.future();
 }
 
 

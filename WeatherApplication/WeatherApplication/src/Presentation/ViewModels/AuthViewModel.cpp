@@ -1,8 +1,9 @@
 #include "AuthViewModel.h"
-#include <QCryptographicHash>
 #include <QDebug>
 #include "../Mappers/UserModelMapper.h"
 #include "../UIModels/UserModel.h"
+
+#include <QFutureWatcher>
 
 
 AuthViewModel::AuthViewModel(std::shared_ptr<AuthenticateUserUseCase> authUseCase, std::shared_ptr<RegisterUserUseCase> regUseCase, QObject *parent)
@@ -17,7 +18,7 @@ void AuthViewModel::loginUser(const QString &username, const QString &password){
 
     QFuture<Result<User>> future = authUseCase_->execute(UserModelMapper::fromUiModel(user_));
 
-    QFutureWatcher<Result<User>>* watcher = new QFutureWatcher<Result<User>>(this);
+    auto* watcher = new QFutureWatcher<Result<User>>(this);
     connect(watcher, &QFutureWatcher<Result<User>>::finished, this, [this, watcher]() {
         Result<User> result = watcher->result();
         if (result.isSuccess()) {
@@ -36,7 +37,7 @@ void AuthViewModel::registerUser(const QString &username, const QString &passwor
 
     QFuture<Result<User>> future = regUseCase_->execute(UserModelMapper::fromUiModel(user_));
 
-    QFutureWatcher<Result<User>>* watcher = new QFutureWatcher<Result<User>>(this);
+    auto* watcher = new QFutureWatcher<Result<User>>(this);
     connect(watcher, &QFutureWatcher<Result<User>>::finished, this, [this, watcher]() {
         Result<User> result = watcher->result();
         if (result.isSuccess()) {

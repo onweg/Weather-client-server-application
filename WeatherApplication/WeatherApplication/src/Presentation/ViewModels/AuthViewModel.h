@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <memory>
+#include <QFuture>
 #include "../UIModels/UserModel.h"
 #include "../../Domain/UseCases/AuthenticateUserUseCase.h"
 #include "../../Domain/UseCases/RegisterUserUseCase.h"
