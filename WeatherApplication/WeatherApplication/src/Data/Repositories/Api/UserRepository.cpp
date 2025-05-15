@@ -36,24 +36,25 @@ std::future<AuthorizationReply> UserRepository::registerUser(const Authorization
 }
 
 std::future<AuthorizationReply> UserRepository::sendRequest(const AuthorizationCommand& command) {
-    auto promise = std::make_shared<std::promise<AuthorizationReply>>();
-    std::future<AuthorizationReply> future = promise->get_future();
+    return std::async(std::launch::async, [this, command]() -> AuthorizationReply {
+        QNetworkRequest request((QUrl(buildUrl())));
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        QByteArray data = serializeRequest(command);
 
-    QNetworkRequest request((QUrl(buildUrl())));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    QByteArray data = serializeRequest(command);
+        QNetworkReply* reply = networkManager_->post(request, data);
 
-    QNetworkReply* reply = networkManager_->post(request, data);
+        // Блокирующее ожидание завершения
+        QEventLoop loop;
+        QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+        loop.exec();
 
-    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, command, promise]() {
         QByteArray responseData = reply->readAll();
         AuthorizationReply replyObj = parseReply(responseData, command.request);
         reply->deleteLater();
-        promise->set_value(replyObj);
+        return replyObj;
     });
-
-    return future;
 }
+
 
 QString UserRepository::buildUrl() const {
     return "http://" + QString::fromStdString(serverHostConfig_.ip) + ":" + QString::fromStdString(serverHostConfig_.port);
