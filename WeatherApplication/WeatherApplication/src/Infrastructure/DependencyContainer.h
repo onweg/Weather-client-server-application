@@ -33,10 +33,8 @@ private:
     std::shared_ptr<IWeatherCacheSource> cacheSourceInterface_;
     std::shared_ptr<IWeatherDatabaseInitializer> dbInitializerInterface_;
     std::shared_ptr<IWeatherHistoryRepository> dbWeatherHistoryInterface_;
-
-
-    IUserRepository* userRepositoryInterface_ = nullptr;
-    IApiWeatherSource* apiWeatherSourceInterface_ = nullptr;;
+    std::shared_ptr<IUserRepository> userRepositoryInterface_;
+    std::shared_ptr<IApiWeatherSource> apiWeatherSourceInterface_;
 
     std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
     std::shared_ptr<RegisterUserUseCase> regUseCase_;

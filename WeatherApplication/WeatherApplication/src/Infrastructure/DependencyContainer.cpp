@@ -8,6 +8,7 @@
 #include "../Data/Repositories/Cache/WeatherCache.h"
 #include "../Data/Repositories/Database/SqliteWeatherHistoryRepository.h"
 #include "../Data/Repositories/Database/WeatherDatabaseInitializer.h"
+#include "ThreadedRepositoryFactory.h"
 
 
 DependencyContainer::DependencyContainer(QObject *qmlRoot)
@@ -25,10 +26,8 @@ DependencyContainer::DependencyContainer(QObject *qmlRoot)
 
     auto configProviderImpl = std::make_shared<ConfigProvider>(configLoaderInterface_);
     configProviderInterface_ = configProviderImpl;
-    auto* userRepositoryImpl = new UserRepository(configProviderInterface_, sharedStateInterface_, qmlRoot_);
-    userRepositoryInterface_ = userRepositoryImpl;
-    auto* weatherApiSourceImpl = new WeatherApiSource(configProviderInterface_, qmlRoot);
-    apiWeatherSourceInterface_ = weatherApiSourceImpl;
+    userRepositoryInterface_ = ThreadedRepositoryFactory::createUserRepository(qmlRoot_);
+    apiWeatherSourceInterface_ = ThreadedRepositoryFactory::createWeatherApiSource(qmlRoot_);
     auto dbWeatherHistoryImpl = std::make_shared<SqliteWeatherHistoryRepository>(dbInitializerInterface_, sharedStateInterface_);
     dbWeatherHistoryInterface_ = dbWeatherHistoryImpl;
 

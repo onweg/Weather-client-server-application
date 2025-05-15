@@ -26,8 +26,6 @@ signals:
 private:
     std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
     std::shared_ptr<RegisterUserUseCase> regUseCase_;
-
-    void runAsyncOperation(std::function<AuthorizationReply()> operation);
 };
 
 #endif // AUTHVIEWMODEL_H

@@ -53,6 +53,7 @@ SOURCES += \
     src/Data/Repositories/SharedState/SharedState.cpp \
     src/Domain/UseCases/GetWeatherHistoryUseCase.cpp \
     src/Domain/UseCases/SaveWeatherHistoryUseCase.cpp \
+    src/Infrastructure/ThreadedRepositoryFactory.cpp \
     src/Presentation/Mappers/WeatherUiMapper.cpp \
     src/Presentation/Mappers/WeekWeatherUiMapper.cpp \
     src/Presentation/UIModels/WeatherUiModel.cpp \
@@ -103,6 +104,7 @@ HEADERS += \
     src/Domain/UseCases/GetWeatherHistoryUseCase.h \
     src/Domain/UseCases/SaveWeatherHistoryUseCase.h \
     src/Domain/Utils/SimpleOptional.h \
+    src/Infrastructure/ThreadedRepositoryFactory.h \
     src/Presentation/Mappers/WeatherUiMapper.h \
     src/Presentation/Mappers/WeekWeatherUiMapper.h \
     src/Presentation/UIModels/WeatherUiModel.h \

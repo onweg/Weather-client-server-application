@@ -11,7 +11,7 @@
 
 WeatherApiSource::WeatherApiSource(std::shared_ptr<IConfigProvider> config,
                                    QObject *parent)
-    : QObject(parent), configProvider_(std::move(config)) {
+    : QObject(nullptr), configProvider_(std::move(config)) {
     if (configProvider_) {
         apiConfig_ = configProvider_->getApiConfig();
     } else {

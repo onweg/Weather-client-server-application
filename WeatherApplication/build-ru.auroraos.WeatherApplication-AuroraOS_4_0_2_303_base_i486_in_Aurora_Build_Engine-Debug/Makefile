@@ -55,6 +55,7 @@ SOURCES       = ../WeatherApplication/src/Data/Mappers/WeatherDomainMapper.cpp \
 		../WeatherApplication/src/Data/Repositories/SharedState/SharedState.cpp \
 		../WeatherApplication/src/Domain/UseCases/GetWeatherHistoryUseCase.cpp \
 		../WeatherApplication/src/Domain/UseCases/SaveWeatherHistoryUseCase.cpp \
+		../WeatherApplication/src/Infrastructure/ThreadedRepositoryFactory.cpp \
 		../WeatherApplication/src/Presentation/Mappers/WeatherUiMapper.cpp \
 		../WeatherApplication/src/Presentation/Mappers/WeekWeatherUiMapper.cpp \
 		../WeatherApplication/src/Presentation/UIModels/WeatherUiModel.cpp \
@@ -75,7 +76,8 @@ SOURCES       = ../WeatherApplication/src/Data/Mappers/WeatherDomainMapper.cpp \
 		../WeatherApplication/src/Data/Repositories/Config/ConfigLoader.cpp \
 		../WeatherApplication/src/Data/Repositories/Cache/WeatherCache.cpp \
 		../WeatherApplication/src/Infrastructure/DependencyContainer.cpp \
-		../WeatherApplication/src/main.cpp moc_WeatherUiModel.cpp \
+		../WeatherApplication/src/main.cpp moc_ThreadedRepositoryFactory.cpp \
+		moc_WeatherUiModel.cpp \
 		moc_WeekWeatherUiModel.cpp \
 		moc_WeatherViewModel.cpp \
 		moc_AuthorizationInfoJsonConverter.cpp \
@@ -90,6 +92,7 @@ OBJECTS       = WeatherDomainMapper.o \
 		SharedState.o \
 		GetWeatherHistoryUseCase.o \
 		SaveWeatherHistoryUseCase.o \
+		ThreadedRepositoryFactory.o \
 		WeatherUiMapper.o \
 		WeekWeatherUiMapper.o \
 		WeatherUiModel.o \
@@ -111,6 +114,7 @@ OBJECTS       = WeatherDomainMapper.o \
 		WeatherCache.o \
 		DependencyContainer.o \
 		main.o \
+		moc_ThreadedRepositoryFactory.o \
 		moc_WeatherUiModel.o \
 		moc_WeekWeatherUiModel.o \
 		moc_WeatherViewModel.o \
@@ -263,6 +267,7 @@ DIST          = ../WeatherApplication/qml/components/DateAndButtons.qml \
 		../WeatherApplication/src/Domain/UseCases/GetWeatherHistoryUseCase.h \
 		../WeatherApplication/src/Domain/UseCases/SaveWeatherHistoryUseCase.h \
 		../WeatherApplication/src/Domain/Utils/SimpleOptional.h \
+		../WeatherApplication/src/Infrastructure/ThreadedRepositoryFactory.h \
 		../WeatherApplication/src/Presentation/Mappers/WeatherUiMapper.h \
 		../WeatherApplication/src/Presentation/Mappers/WeekWeatherUiMapper.h \
 		../WeatherApplication/src/Presentation/UIModels/WeatherUiModel.h \
@@ -290,6 +295,7 @@ DIST          = ../WeatherApplication/qml/components/DateAndButtons.qml \
 		../WeatherApplication/src/Data/Repositories/SharedState/SharedState.cpp \
 		../WeatherApplication/src/Domain/UseCases/GetWeatherHistoryUseCase.cpp \
 		../WeatherApplication/src/Domain/UseCases/SaveWeatherHistoryUseCase.cpp \
+		../WeatherApplication/src/Infrastructure/ThreadedRepositoryFactory.cpp \
 		../WeatherApplication/src/Presentation/Mappers/WeatherUiMapper.cpp \
 		../WeatherApplication/src/Presentation/Mappers/WeekWeatherUiMapper.cpp \
 		../WeatherApplication/src/Presentation/UIModels/WeatherUiModel.cpp \
@@ -551,8 +557,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../WeatherApplication/src/Data/DtoModels/WeatherDataDto.h ../WeatherApplication/src/Data/DtoModels/WeekWeatherDataDto.h ../WeatherApplication/src/Data/Mappers/WeatherDomainMapper.h ../WeatherApplication/src/Data/Mappers/WeekWeatherDomainMapper.h ../WeatherApplication/src/Data/Repositories/Database/SqliteWeatherHistoryRepository.h ../WeatherApplication/src/Data/Repositories/Database/WeatherDatabaseInitializer.h ../WeatherApplication/src/Data/Repositories/SharedState/SharedState.h ../WeatherApplication/src/Domain/Entities/AuthorizationReply.h ../WeatherApplication/src/Domain/Entities/ApiConfig.h ../WeatherApplication/src/Domain/Entities/AuthorizationRequest.h ../WeatherApplication/src/Domain/Entities/ServerHostConfig.h ../WeatherApplication/src/Domain/Entities/AppConfig.h ../WeatherApplication/src/Domain/Entities/WeatherData.h ../WeatherApplication/src/Domain/Entities/WeatherHistoryItem.h ../WeatherApplication/src/Domain/Entities/WeekWeatherData.h src/Domain/Interfaces/Api/IWeatherRepository.h ../WeatherApplication/src/Domain/Interfaces/Cache/IWeatherCacheSource.h ../WeatherApplication/src/Domain/Interfaces/Config/IConfigLoader.h ../WeatherApplication/src/Domain/Interfaces/Config/IConfigProvider.h ../WeatherApplication/src/Domain/Interfaces/Api/IUserRepository.h ../WeatherApplication/src/Domain/Interfaces/Api/IApiWeatherSource.h ../WeatherApplication/src/Domain/Interfaces/Database/IWeatherDatabaseInitializer.h ../WeatherApplication/src/Domain/Interfaces/Database/IWeatherHistoryRepository.h ../WeatherApplication/src/Domain/Interfaces/SharedState/ISharedState.h ../WeatherApplication/src/Domain/UseCases/GetWeatherHistoryUseCase.h ../WeatherApplication/src/Domain/UseCases/SaveWeatherHistoryUseCase.h ../WeatherApplication/src/Domain/Utils/SimpleOptional.h ../WeatherApplication/src/Presentation/Mappers/WeatherUiMapper.h ../WeatherApplication/src/Presentation/Mappers/WeekWeatherUiMapper.h ../WeatherApplication/src/Presentation/UIModels/WeatherUiModel.h ../WeatherApplication/src/Presentation/UIModels/WeekWeatherUiModel.h ../WeatherApplication/src/Presentation/ViewModels/WeatherViewModel.h ../WeatherApplication/src/Utils/AuthorizationInfoJsonConverter.h ../WeatherApplication/src/Utils/AuthorizationReplyJsonConverter.h ../WeatherApplication/src/Utils/AppConfigJsonConverter.h ../WeatherApplication/src/Utils/WeatherJsonConverter.h ../WeatherApplication/src/Presentation/ViewModels/AuthViewModel.h ../WeatherApplication/src/Domain/UseCases/AuthenticateUserUseCase.h ../WeatherApplication/src/Domain/UseCases/RegisterUserUseCase.h ../WeatherApplication/src/Domain/UseCases/GetDailyWeatherUseCase.h ../WeatherApplication/src/Domain/UseCases/GetWeeklyWeatherUseCase.h ../WeatherApplication/src/Domain/Utils/Result.h ../WeatherApplication/src/Data/Repositories/Api/UserRepository.h ../WeatherApplication/src/Data/Repositories/Api/WeatherApiSource.h ../WeatherApplication/src/Data/Repositories/Config/ConfigProvider.h ../WeatherApplication/src/Data/Repositories/Config/ConfigLoader.h ../WeatherApplication/src/Data/Repositories/Cache/WeatherCache.h ../WeatherApplication/src/Infrastructure/DependencyContainer.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../WeatherApplication/src/Data/Mappers/WeatherDomainMapper.cpp ../WeatherApplication/src/Data/Mappers/WeekWeatherDomainMapper.cpp ../WeatherApplication/src/Data/Repositories/Database/SqliteWeatherHistoryRepository.cpp ../WeatherApplication/src/Data/Repositories/Database/WeatherDatabaseInitializer.cpp ../WeatherApplication/src/Data/Repositories/SharedState/SharedState.cpp ../WeatherApplication/src/Domain/UseCases/GetWeatherHistoryUseCase.cpp ../WeatherApplication/src/Domain/UseCases/SaveWeatherHistoryUseCase.cpp ../WeatherApplication/src/Presentation/Mappers/WeatherUiMapper.cpp ../WeatherApplication/src/Presentation/Mappers/WeekWeatherUiMapper.cpp ../WeatherApplication/src/Presentation/UIModels/WeatherUiModel.cpp ../WeatherApplication/src/Presentation/UIModels/WeekWeatherUiModel.cpp ../WeatherApplication/src/Presentation/ViewModels/WeatherViewModel.cpp ../WeatherApplication/src/Utils/AuthorizationInfoJsonConverter.cpp ../WeatherApplication/src/Utils/AuthorizationReplyJsonConverter.cpp ../WeatherApplication/src/Utils/WeatherJsonConverter.cpp ../WeatherApplication/src/Utils/AppConfigJsonConverter.cpp ../WeatherApplication/src/Presentation/ViewModels/AuthViewModel.cpp ../WeatherApplication/src/Domain/UseCases/AuthenticateUserUseCase.cpp ../WeatherApplication/src/Domain/UseCases/RegisterUserUseCase.cpp ../WeatherApplication/src/Domain/UseCases/GetDailyWeatherUseCase.cpp ../WeatherApplication/src/Domain/UseCases/GetWeeklyWeatherUseCase.cpp ../WeatherApplication/src/Data/Repositories/Api/UserRepository.cpp ../WeatherApplication/src/Data/Repositories/Api/WeatherApiSource.cpp ../WeatherApplication/src/Data/Repositories/Config/ConfigProvider.cpp ../WeatherApplication/src/Data/Repositories/Config/ConfigLoader.cpp ../WeatherApplication/src/Data/Repositories/Cache/WeatherCache.cpp ../WeatherApplication/src/Infrastructure/DependencyContainer.cpp ../WeatherApplication/src/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../WeatherApplication/src/Data/DtoModels/WeatherDataDto.h ../WeatherApplication/src/Data/DtoModels/WeekWeatherDataDto.h ../WeatherApplication/src/Data/Mappers/WeatherDomainMapper.h ../WeatherApplication/src/Data/Mappers/WeekWeatherDomainMapper.h ../WeatherApplication/src/Data/Repositories/Database/SqliteWeatherHistoryRepository.h ../WeatherApplication/src/Data/Repositories/Database/WeatherDatabaseInitializer.h ../WeatherApplication/src/Data/Repositories/SharedState/SharedState.h ../WeatherApplication/src/Domain/Entities/AuthorizationReply.h ../WeatherApplication/src/Domain/Entities/ApiConfig.h ../WeatherApplication/src/Domain/Entities/AuthorizationRequest.h ../WeatherApplication/src/Domain/Entities/ServerHostConfig.h ../WeatherApplication/src/Domain/Entities/AppConfig.h ../WeatherApplication/src/Domain/Entities/WeatherData.h ../WeatherApplication/src/Domain/Entities/WeatherHistoryItem.h ../WeatherApplication/src/Domain/Entities/WeekWeatherData.h src/Domain/Interfaces/Api/IWeatherRepository.h ../WeatherApplication/src/Domain/Interfaces/Cache/IWeatherCacheSource.h ../WeatherApplication/src/Domain/Interfaces/Config/IConfigLoader.h ../WeatherApplication/src/Domain/Interfaces/Config/IConfigProvider.h ../WeatherApplication/src/Domain/Interfaces/Api/IUserRepository.h ../WeatherApplication/src/Domain/Interfaces/Api/IApiWeatherSource.h ../WeatherApplication/src/Domain/Interfaces/Database/IWeatherDatabaseInitializer.h ../WeatherApplication/src/Domain/Interfaces/Database/IWeatherHistoryRepository.h ../WeatherApplication/src/Domain/Interfaces/SharedState/ISharedState.h ../WeatherApplication/src/Domain/UseCases/GetWeatherHistoryUseCase.h ../WeatherApplication/src/Domain/UseCases/SaveWeatherHistoryUseCase.h ../WeatherApplication/src/Domain/Utils/SimpleOptional.h ../WeatherApplication/src/Infrastructure/ThreadedRepositoryFactory.h ../WeatherApplication/src/Presentation/Mappers/WeatherUiMapper.h ../WeatherApplication/src/Presentation/Mappers/WeekWeatherUiMapper.h ../WeatherApplication/src/Presentation/UIModels/WeatherUiModel.h ../WeatherApplication/src/Presentation/UIModels/WeekWeatherUiModel.h ../WeatherApplication/src/Presentation/ViewModels/WeatherViewModel.h ../WeatherApplication/src/Utils/AuthorizationInfoJsonConverter.h ../WeatherApplication/src/Utils/AuthorizationReplyJsonConverter.h ../WeatherApplication/src/Utils/AppConfigJsonConverter.h ../WeatherApplication/src/Utils/WeatherJsonConverter.h ../WeatherApplication/src/Presentation/ViewModels/AuthViewModel.h ../WeatherApplication/src/Domain/UseCases/AuthenticateUserUseCase.h ../WeatherApplication/src/Domain/UseCases/RegisterUserUseCase.h ../WeatherApplication/src/Domain/UseCases/GetDailyWeatherUseCase.h ../WeatherApplication/src/Domain/UseCases/GetWeeklyWeatherUseCase.h ../WeatherApplication/src/Domain/Utils/Result.h ../WeatherApplication/src/Data/Repositories/Api/UserRepository.h ../WeatherApplication/src/Data/Repositories/Api/WeatherApiSource.h ../WeatherApplication/src/Data/Repositories/Config/ConfigProvider.h ../WeatherApplication/src/Data/Repositories/Config/ConfigLoader.h ../WeatherApplication/src/Data/Repositories/Cache/WeatherCache.h ../WeatherApplication/src/Infrastructure/DependencyContainer.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../WeatherApplication/src/Data/Mappers/WeatherDomainMapper.cpp ../WeatherApplication/src/Data/Mappers/WeekWeatherDomainMapper.cpp ../WeatherApplication/src/Data/Repositories/Database/SqliteWeatherHistoryRepository.cpp ../WeatherApplication/src/Data/Repositories/Database/WeatherDatabaseInitializer.cpp ../WeatherApplication/src/Data/Repositories/SharedState/SharedState.cpp ../WeatherApplication/src/Domain/UseCases/GetWeatherHistoryUseCase.cpp ../WeatherApplication/src/Domain/UseCases/SaveWeatherHistoryUseCase.cpp ../WeatherApplication/src/Infrastructure/ThreadedRepositoryFactory.cpp ../WeatherApplication/src/Presentation/Mappers/WeatherUiMapper.cpp ../WeatherApplication/src/Presentation/Mappers/WeekWeatherUiMapper.cpp ../WeatherApplication/src/Presentation/UIModels/WeatherUiModel.cpp ../WeatherApplication/src/Presentation/UIModels/WeekWeatherUiModel.cpp ../WeatherApplication/src/Presentation/ViewModels/WeatherViewModel.cpp ../WeatherApplication/src/Utils/AuthorizationInfoJsonConverter.cpp ../WeatherApplication/src/Utils/AuthorizationReplyJsonConverter.cpp ../WeatherApplication/src/Utils/WeatherJsonConverter.cpp ../WeatherApplication/src/Utils/AppConfigJsonConverter.cpp ../WeatherApplication/src/Presentation/ViewModels/AuthViewModel.cpp ../WeatherApplication/src/Domain/UseCases/AuthenticateUserUseCase.cpp ../WeatherApplication/src/Domain/UseCases/RegisterUserUseCase.cpp ../WeatherApplication/src/Domain/UseCases/GetDailyWeatherUseCase.cpp ../WeatherApplication/src/Domain/UseCases/GetWeeklyWeatherUseCase.cpp ../WeatherApplication/src/Data/Repositories/Api/UserRepository.cpp ../WeatherApplication/src/Data/Repositories/Api/WeatherApiSource.cpp ../WeatherApplication/src/Data/Repositories/Config/ConfigProvider.cpp ../WeatherApplication/src/Data/Repositories/Config/ConfigLoader.cpp ../WeatherApplication/src/Data/Repositories/Cache/WeatherCache.cpp ../WeatherApplication/src/Infrastructure/DependencyContainer.cpp ../WeatherApplication/src/main.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents translations/ru.auroraos.WeatherApplication.ts translations/ru.auroraos.WeatherApplication-ru.ts $(DISTDIR)/
 
 
@@ -578,9 +584,20 @@ benchmark: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_WeatherUiModel.cpp moc_WeekWeatherUiModel.cpp moc_WeatherViewModel.cpp moc_AuthorizationInfoJsonConverter.cpp moc_WeatherJsonConverter.cpp moc_AuthViewModel.cpp moc_UserRepository.cpp moc_WeatherApiSource.cpp
+compiler_moc_header_make_all: moc_ThreadedRepositoryFactory.cpp moc_WeatherUiModel.cpp moc_WeekWeatherUiModel.cpp moc_WeatherViewModel.cpp moc_AuthorizationInfoJsonConverter.cpp moc_WeatherJsonConverter.cpp moc_AuthViewModel.cpp moc_UserRepository.cpp moc_WeatherApiSource.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_WeatherUiModel.cpp moc_WeekWeatherUiModel.cpp moc_WeatherViewModel.cpp moc_AuthorizationInfoJsonConverter.cpp moc_WeatherJsonConverter.cpp moc_AuthViewModel.cpp moc_UserRepository.cpp moc_WeatherApiSource.cpp
+	-$(DEL_FILE) moc_ThreadedRepositoryFactory.cpp moc_WeatherUiModel.cpp moc_WeekWeatherUiModel.cpp moc_WeatherViewModel.cpp moc_AuthorizationInfoJsonConverter.cpp moc_WeatherJsonConverter.cpp moc_AuthViewModel.cpp moc_UserRepository.cpp moc_WeatherApiSource.cpp
+moc_ThreadedRepositoryFactory.cpp: ../WeatherApplication/src/Domain/Interfaces/Api/IUserRepository.h \
+		../WeatherApplication/src/Domain/Entities/AuthorizationRequest.h \
+		../WeatherApplication/src/Domain/Entities/AuthorizationReply.h \
+		../WeatherApplication/src/Domain/Utils/Result.h \
+		../WeatherApplication/src/Domain/Utils/SimpleOptional.h \
+		../WeatherApplication/src/Domain/Interfaces/Api/IApiWeatherSource.h \
+		../WeatherApplication/src/Domain/Entities/WeekWeatherData.h \
+		../WeatherApplication/src/Domain/Entities/WeatherData.h \
+		../WeatherApplication/src/Infrastructure/ThreadedRepositoryFactory.h
+	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++-32 -I/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication -I/usr/include/auroraapp -I/usr/include/mdeclarativecache5 -I/usr/include/qt5 -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/8.3.0 -I/usr/include/c++/8.3.0/i486-meego-linux -I/usr/include/c++/8.3.0/backward -I/usr/lib/gcc/i486-meego-linux/8.3.0/include -I/usr/local/include -I/usr/include ../WeatherApplication/src/Infrastructure/ThreadedRepositoryFactory.h -o moc_ThreadedRepositoryFactory.cpp
+
 moc_WeatherUiModel.cpp: ../WeatherApplication/src/Presentation/UIModels/WeatherUiModel.h
 	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++-32 -I/home/arkadiy/Weather-client-server-application/WeatherApplication/WeatherApplication -I/usr/include/auroraapp -I/usr/include/mdeclarativecache5 -I/usr/include/qt5 -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/8.3.0 -I/usr/include/c++/8.3.0/i486-meego-linux -I/usr/include/c++/8.3.0/backward -I/usr/lib/gcc/i486-meego-linux/8.3.0/include -I/usr/local/include -I/usr/include ../WeatherApplication/src/Presentation/UIModels/WeatherUiModel.h -o moc_WeatherUiModel.cpp
 
@@ -696,6 +713,23 @@ SaveWeatherHistoryUseCase.o: ../WeatherApplication/src/Domain/UseCases/SaveWeath
 		../WeatherApplication/src/Domain/Interfaces/Database/IWeatherHistoryRepository.h \
 		../WeatherApplication/src/Domain/Entities/WeatherHistoryItem.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SaveWeatherHistoryUseCase.o ../WeatherApplication/src/Domain/UseCases/SaveWeatherHistoryUseCase.cpp
+
+ThreadedRepositoryFactory.o: ../WeatherApplication/src/Infrastructure/ThreadedRepositoryFactory.cpp ../WeatherApplication/src/Infrastructure/ThreadedRepositoryFactory.h \
+		../WeatherApplication/src/Domain/Interfaces/Api/IUserRepository.h \
+		../WeatherApplication/src/Domain/Entities/AuthorizationRequest.h \
+		../WeatherApplication/src/Domain/Entities/AuthorizationReply.h \
+		../WeatherApplication/src/Domain/Utils/Result.h \
+		../WeatherApplication/src/Domain/Utils/SimpleOptional.h \
+		../WeatherApplication/src/Domain/Interfaces/Api/IApiWeatherSource.h \
+		../WeatherApplication/src/Domain/Entities/WeekWeatherData.h \
+		../WeatherApplication/src/Domain/Entities/WeatherData.h \
+		../WeatherApplication/src/Data/Repositories/Api/UserRepository.h \
+		../WeatherApplication/src/Domain/Interfaces/Config/IConfigProvider.h \
+		../WeatherApplication/src/Domain/Entities/ApiConfig.h \
+		../WeatherApplication/src/Domain/Entities/ServerHostConfig.h \
+		../WeatherApplication/src/Domain/Interfaces/SharedState/ISharedState.h \
+		../WeatherApplication/src/Data/Repositories/Api/WeatherApiSource.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ThreadedRepositoryFactory.o ../WeatherApplication/src/Infrastructure/ThreadedRepositoryFactory.cpp
 
 WeatherUiMapper.o: ../WeatherApplication/src/Presentation/Mappers/WeatherUiMapper.cpp ../WeatherApplication/src/Presentation/Mappers/WeatherUiMapper.h \
 		../WeatherApplication/src/Domain/Entities/WeatherData.h \
@@ -889,7 +923,8 @@ DependencyContainer.o: ../WeatherApplication/src/Infrastructure/DependencyContai
 		../WeatherApplication/src/Data/Repositories/SharedState/SharedState.h \
 		../WeatherApplication/src/Data/Repositories/Cache/WeatherCache.h \
 		../WeatherApplication/src/Data/Repositories/Database/SqliteWeatherHistoryRepository.h \
-		../WeatherApplication/src/Data/Repositories/Database/WeatherDatabaseInitializer.h
+		../WeatherApplication/src/Data/Repositories/Database/WeatherDatabaseInitializer.h \
+		../WeatherApplication/src/Infrastructure/ThreadedRepositoryFactory.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DependencyContainer.o ../WeatherApplication/src/Infrastructure/DependencyContainer.cpp
 
 main.o: ../WeatherApplication/src/main.cpp ../WeatherApplication/src/Infrastructure/DependencyContainer.h \
@@ -922,6 +957,9 @@ main.o: ../WeatherApplication/src/main.cpp ../WeatherApplication/src/Infrastruct
 		../WeatherApplication/src/Domain/Interfaces/SharedState/ISharedState.h \
 		../WeatherApplication/src/Domain/Interfaces/Database/IWeatherDatabaseInitializer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../WeatherApplication/src/main.cpp
+
+moc_ThreadedRepositoryFactory.o: moc_ThreadedRepositoryFactory.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ThreadedRepositoryFactory.o moc_ThreadedRepositoryFactory.cpp
 
 moc_WeatherUiModel.o: moc_WeatherUiModel.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_WeatherUiModel.o moc_WeatherUiModel.cpp
