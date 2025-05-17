@@ -4,8 +4,13 @@
 #include <QObject>
 #include <memory>
 #include <QFuture>
+#include <functional>
+
 #include "../../Domain/UseCases/AuthenticateUserUseCase.h"
 #include "../../Domain/UseCases/RegisterUserUseCase.h"
+
+using AuthFunction = std::function<QFuture<AuthorizationReply>(const AuthorizationRequest&)>;
+
 
 class AuthViewModel : public QObject {
     Q_OBJECT
@@ -23,6 +28,8 @@ signals:
 private:
     std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
     std::shared_ptr<RegisterUserUseCase> regUseCase_;
+
+    void executeAuthOperation(const QString& username, const QString& password, AuthFunction authFunc);
 };
 
 #endif // AUTHVIEWMODEL_H
