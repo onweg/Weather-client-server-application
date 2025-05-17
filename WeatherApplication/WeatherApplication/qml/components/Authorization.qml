@@ -44,6 +44,7 @@ Item {
     Connections {
         target: authViewModel
         onAuthSucceeded: {
+            resultText.text = "";
             pageStack.push(Qt.resolvedUrl("../pages/WeatherPage.qml"));
         }
         onAuthFailed: {
