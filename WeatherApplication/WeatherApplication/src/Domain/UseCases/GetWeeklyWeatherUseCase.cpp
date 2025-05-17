@@ -6,8 +6,8 @@ GetWeeklyWeatherUseCase::GetWeeklyWeatherUseCase(IApiWeatherSource *apiRepo, std
 
 }
 
-void GetWeeklyWeatherUseCase::execute(const std::string& city,std::function<void(Result<WeekWeatherData>)> callback
-) {
+QFuture<Result<WeekWeatherData> > GetWeeklyWeatherUseCase::execute(const std::string &city)
+{
     auto cached = cacheRepository_->getWeekWeather(city);
     if (cached.isSuccess()) {
         callback(cached);
@@ -24,3 +24,4 @@ void GetWeeklyWeatherUseCase::execute(const std::string& city,std::function<void
         callback(apiResult);
     });
 }
+

@@ -54,8 +54,6 @@ int main(int argc, char *argv[])
     view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));
     view->show();
 
-    // сделать отпарвку исключения а не qWarning
-
     return application->exec();
 }
 

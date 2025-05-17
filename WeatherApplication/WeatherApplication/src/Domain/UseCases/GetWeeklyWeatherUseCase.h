@@ -14,7 +14,7 @@ class GetWeeklyWeatherUseCase {
 public:
     explicit GetWeeklyWeatherUseCase(IApiWeatherSource* apiRepo, std::shared_ptr<IWeatherCacheSource> cacheRepo);
 
-    void execute(const std::string& city, std::function<void(Result<WeekWeatherData>)> callback);
+    QFuture<Result<WeekWeatherData>> execute(const std::string& city);
 
 private:
     IApiWeatherSource* apiRepository_;

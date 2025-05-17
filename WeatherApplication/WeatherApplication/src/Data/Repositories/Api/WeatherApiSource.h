@@ -5,6 +5,7 @@
 #include <QNetworkAccessManager>
 #include <memory>
 #include <functional>
+#include <QFutureInterface>
 
 #include "../../../Domain/Interfaces/Api/IApiWeatherSource.h"
 #include "../../../Domain/Interfaces/Config/IConfigProvider.h"
@@ -16,12 +17,23 @@ public:
     explicit WeatherApiSource(std::shared_ptr<IConfigProvider> config,
                               QObject* parent = nullptr);
 
-    void findWeatherDataByCity(const std::string city,
-                                                  std::function<void(Result<WeekWeatherData>)> callback) override;
+    QFuture<Result<WeekWeatherData>> findWeatherDataByCity(const std::string city) override;
 
 private:
+    void initConfig();
+    void handleCityCoordinatesReply(QNetworkReply* reply,
+                                    QFutureInterface<Result<WeekWeatherData>>& futureInterface);
+    void fetchWeatherByCoordinates(const QString& lat,
+                                   const QString& lon,
+                                   QFutureInterface<Result<WeekWeatherData>>& futureInterface);
+    void handleWeatherReply(QNetworkReply* reply,
+                            QFutureInterface<Result<WeekWeatherData>>& futureInterface);
+    void finishWithError(QFutureInterface<Result<WeekWeatherData>>& futureInterface,
+                         const std::string& errorMessage,
+                         QNetworkReply* reply);
+
     std::shared_ptr<IConfigProvider> configProvider_;
-    Result<ApiConfig> apiConfig_;
+    std::shared_ptr<ApiConfig> apiConfig_;
     QNetworkAccessManager* networkManager_;
 };
 

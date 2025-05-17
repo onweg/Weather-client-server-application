@@ -55,7 +55,6 @@ SOURCES += \
     src/Domain/UseCases/SaveWeatherHistoryUseCase.cpp \
     src/Presentation/Mappers/WeatherUiMapper.cpp \
     src/Presentation/Mappers/WeekWeatherUiMapper.cpp \
-    src/Presentation/UIModels/UserModel.cpp \
     src/Presentation/UIModels/WeatherUiModel.cpp \
     src/Presentation/UIModels/WeekWeatherUiModel.cpp \
     src/Presentation/ViewModels/WeatherViewModel.cpp \
@@ -107,7 +106,6 @@ HEADERS += \
     src/Domain/Utils/SimpleOptional.h \
     src/Presentation/Mappers/WeatherUiMapper.h \
     src/Presentation/Mappers/WeekWeatherUiMapper.h \
-    src/Presentation/UIModels/UserModel.h \
     src/Presentation/UIModels/WeatherUiModel.h \
     src/Presentation/UIModels/WeekWeatherUiModel.h \
     src/Presentation/ViewModels/WeatherViewModel.h \

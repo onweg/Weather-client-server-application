@@ -3,6 +3,7 @@
 
 #include <string>
 #include <functional>
+#include <QFuture>
 #include "../../Entities/WeekWeatherData.h"
 #include "../../Utils/Result.h"
 
@@ -10,7 +11,7 @@ class IApiWeatherSource {
 public:
     virtual ~IApiWeatherSource() = default;
 
-    virtual void findWeatherDataByCity(const std::string city, std::function<void(Result<WeekWeatherData>)> callback) = 0;
+    virtual QFuture<Result<WeekWeatherData>> findWeatherDataByCity(const std::string city) = 0;
 };
 
 #endif // IAPIWEATHERSOURCE_H
