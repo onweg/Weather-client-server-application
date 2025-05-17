@@ -4,11 +4,11 @@
 ConfigProvider::ConfigProvider(std::shared_ptr<IConfigLoader> configLoader)
     :configLoader_(std::move(configLoader))
 {
-    appConfig_ = configLoader_->load();
 }
 
 Result<ApiConfig> ConfigProvider::getApiConfig()
 {
+    appConfig_ = configLoader_->load();
     if (appConfig_.isSuccess()) {
         return Result<ApiConfig>::success(appConfig_.value().apiConfig);
     } else {
@@ -18,6 +18,7 @@ Result<ApiConfig> ConfigProvider::getApiConfig()
 
 Result<ServerHostConfig> ConfigProvider::getServerHostConfig()
 {
+    appConfig_ = configLoader_->load();
     if (appConfig_.isSuccess()) {
         return Result<ServerHostConfig>::success(appConfig_.value().serverHostConfig);
     } else {
