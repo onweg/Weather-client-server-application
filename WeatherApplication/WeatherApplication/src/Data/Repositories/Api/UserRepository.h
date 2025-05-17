@@ -14,10 +14,10 @@ class UserRepository : public QObject, public IUserRepository {
     Q_OBJECT
 public:
     UserRepository(std::shared_ptr<IConfigProvider> config,  std::shared_ptr<ISharedState> state, QObject* parent = nullptr);
-    QFuture<Result<User>> findUser(const User& user) override;
-    QFuture<Result<User>> registerUser(const User& user) override;
+    QFuture<AuthorizationReply> findUser(const AuthorizationRequest& request) override;
+    QFuture<AuthorizationReply> registerUser(const AuthorizationRequest& request) override;
 private:
-    QFuture<Result<User>> sendRequest(const User& user, const QString command);
+    QFuture<AuthorizationReply> sendRequest(const AuthorizationRequest& request, const QString command);
     std::shared_ptr<IConfigProvider> configProvider_;
     std::shared_ptr<ISharedState> sharedState_;
     Result<ServerHostConfig> serverHostConfig_;

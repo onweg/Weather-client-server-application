@@ -6,7 +6,7 @@ RegisterUserUseCase::RegisterUserUseCase(IUserRepository *repo)
 
 }
 
-QFuture<Result<User>> RegisterUserUseCase::execute(const User &user)
+QFuture<AuthorizationReply> RegisterUserUseCase::execute(const AuthorizationRequest &request)
 {
-    return repository_->registerUser(user);
+    return repository_->registerUser(request);
 }

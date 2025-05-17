@@ -1,16 +1,16 @@
 #ifndef IUSERREPOSITORY_H
 #define IUSERREPOSITORY_H
 
-#include "../../Entities/User.h"
-#include "../../Utils/Result.h"
-
 #include <QFuture>
+
+#include "../../Entities/AuthorizationReply.h"
+#include "../../Entities/AuthorizationRequest.h"
 
 class IUserRepository {
 public:
     virtual ~IUserRepository() = default;
-    virtual QFuture<Result<User>> findUser(const User& user) = 0;
-    virtual QFuture<Result<User>> registerUser(const User& user) = 0;
+    virtual QFuture<AuthorizationReply> findUser(const AuthorizationRequest& request) = 0;
+    virtual QFuture<AuthorizationReply> registerUser(const AuthorizationRequest& request) = 0;
 };
 
 #endif // IUSERREPOSITORY_H

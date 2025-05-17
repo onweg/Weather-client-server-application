@@ -6,10 +6,11 @@ AuthenticateUserUseCase::AuthenticateUserUseCase(IUserRepository* repo)
 
 }
 
-QFuture<Result<User>> AuthenticateUserUseCase::execute(const User &user)
+QFuture<AuthorizationReply> AuthenticateUserUseCase::execute(const AuthorizationRequest &request)
 {
-    return repository_->findUser(user);
+    return repository_->findUser(request);
 }
+
 
 
 

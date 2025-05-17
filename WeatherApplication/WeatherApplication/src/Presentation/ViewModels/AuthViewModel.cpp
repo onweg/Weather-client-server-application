@@ -1,30 +1,27 @@
 #include "AuthViewModel.h"
 #include <QDebug>
-#include "../Mappers/UserModelMapper.h"
-#include "../UIModels/UserModel.h"
-
 #include <QFutureWatcher>
+
+#include "../../Domain/Entities/AuthorizationRequest.h"
+#include "../../Domain/Entities/AuthorizationReply.h"
 
 
 AuthViewModel::AuthViewModel(std::shared_ptr<AuthenticateUserUseCase> authUseCase, std::shared_ptr<RegisterUserUseCase> regUseCase, QObject *parent)
     :QObject(parent), authUseCase_(std::move(authUseCase)), regUseCase_(std::move(regUseCase))
 {
-    user_ = new UserModel(this);
 }
 
 void AuthViewModel::loginUser(const QString &username, const QString &password){
-    user_->setUsername(username);
-    user_->setPassword(password);
 
-    QFuture<Result<User>> future = authUseCase_->execute(UserModelMapper::fromUiModel(user_));
+    QFuture<AuthorizationReply> future = authUseCase_->execute(AuthorizationRequest{username.toStdString(), password.toStdString()});
 
-    auto* watcher = new QFutureWatcher<Result<User>>(this);
-    connect(watcher, &QFutureWatcher<Result<User>>::finished, this, [this, watcher]() {
-        Result<User> result = watcher->result();
-        if (result.isSuccess()) {
+    auto* watcher = new QFutureWatcher<AuthorizationReply>(this);
+    connect(watcher, &QFutureWatcher<AuthorizationReply>::finished, this, [this, watcher]() {
+        AuthorizationReply reply = watcher->result();
+        if (reply.authorized) {
             emit authSucceeded();
         } else {
-            emit authFailed(QString::fromStdString(result.errorMessage()));
+            emit authFailed(QString::fromStdString(reply.messageError));
         }
         watcher->deleteLater();
     });
@@ -32,18 +29,16 @@ void AuthViewModel::loginUser(const QString &username, const QString &password){
 }
 
 void AuthViewModel::registerUser(const QString &username, const QString &password) {
-    user_->setUsername(username);
-    user_->setPassword(password);
 
-    QFuture<Result<User>> future = regUseCase_->execute(UserModelMapper::fromUiModel(user_));
+    QFuture<AuthorizationReply> future = regUseCase_->execute(AuthorizationRequest{username.toStdString(), password.toStdString()});
 
-    auto* watcher = new QFutureWatcher<Result<User>>(this);
-    connect(watcher, &QFutureWatcher<Result<User>>::finished, this, [this, watcher]() {
-        Result<User> result = watcher->result();
-        if (result.isSuccess()) {
+    auto* watcher = new QFutureWatcher<AuthorizationReply>(this);
+    connect(watcher, &QFutureWatcher<AuthorizationReply>::finished, this, [this, watcher]() {
+        AuthorizationReply reply = watcher->result();
+        if (reply.authorized) {
             emit authSucceeded();
         } else {
-            emit authFailed(QString::fromStdString(result.errorMessage()));
+            emit authFailed(QString::fromStdString(reply.messageError));
         }
         watcher->deleteLater();
     });

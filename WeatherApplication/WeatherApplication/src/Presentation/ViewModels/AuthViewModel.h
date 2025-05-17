@@ -4,7 +4,6 @@
 #include <QObject>
 #include <memory>
 #include <QFuture>
-#include "../UIModels/UserModel.h"
 #include "../../Domain/UseCases/AuthenticateUserUseCase.h"
 #include "../../Domain/UseCases/RegisterUserUseCase.h"
 
@@ -22,8 +21,6 @@ signals:
     void authFailed(const QString& message);
 
 private:
-    UserModel *user_ = nullptr;
-
     std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
     std::shared_ptr<RegisterUserUseCase> regUseCase_;
 };

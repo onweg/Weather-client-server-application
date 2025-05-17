@@ -5,8 +5,15 @@
 
 struct AuthorizationReply
 {
-    bool success = false;
-    std::string message;
+    static AuthorizationReply success() {
+        return AuthorizationReply{true, ""};
+    }
+    static AuthorizationReply failure(const std::string& errorMessage) {
+        return AuthorizationReply{false, errorMessage};
+    }
+
+    bool authorized = false;
+    std::string messageError;
 };
 
 #endif // AUTHORIZATIONREPLY_H

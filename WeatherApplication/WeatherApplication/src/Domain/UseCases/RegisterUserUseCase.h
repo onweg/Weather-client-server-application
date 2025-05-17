@@ -5,12 +5,13 @@
 #include <functional>
 
 #include "../Interfaces/Api/IUserRepository.h"
-#include "../Entities/User.h"
+#include "../Entities/AuthorizationReply.h"
+#include "../Entities/AuthorizationRequest.h"
 
 class  RegisterUserUseCase {
 public:
     explicit RegisterUserUseCase(IUserRepository* repo);
-    QFuture<Result<User>> execute(const User& user);
+    QFuture<AuthorizationReply> execute(const AuthorizationRequest& request);
 private:
     IUserRepository* repository_;
 };

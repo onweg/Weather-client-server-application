@@ -25,18 +25,18 @@ UserRepository::UserRepository(std::shared_ptr<IConfigProvider> config,  std::sh
     networkManager_ = new QNetworkAccessManager(this);
 }
 
-QFuture<Result<User>> UserRepository::findUser(const User &user)
+QFuture<AuthorizationReply> UserRepository::findUser(const AuthorizationRequest &request)
 {
-    return sendRequest(user, "LOGIN");
+    return sendRequest(request, "LOGIN");
 }
 
-QFuture<Result<User>> UserRepository::registerUser(const User &user)
+QFuture<AuthorizationReply> UserRepository::registerUser(const AuthorizationRequest &request)
 {
-    return sendRequest(user, "REGISTER");
+    return sendRequest(request, "REGISTER");
 }
 
-QFuture<Result<User>> UserRepository::sendRequest(const User &user, const QString command) {
-    QFutureInterface<Result<User>> futureInterface;
+QFuture<AuthorizationReply> UserRepository::sendRequest(const AuthorizationRequest &user, const QString command) {
+    QFutureInterface<AuthorizationReply> futureInterface;
     futureInterface.reportStarted();
 
 
@@ -62,24 +62,21 @@ QFuture<Result<User>> UserRepository::sendRequest(const User &user, const QStrin
     QNetworkReply* reply = networkManager_->post(request, data);
 
     QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, user, futureInterface]() mutable {
-        Result<User> result;
+        AuthorizationReply result;
 
         QByteArray response = reply->readAll();
 
         QJsonParseError error;
         QJsonDocument doc = QJsonDocument::fromJson(response, &error);
         if (error.error != QJsonParseError::NoError) {
-            result = Result<User>::failure("Ошибка парсинга JSON:" + error.errorString().toStdString());
+            result = AuthorizationReply::failure("Ошибка парсинга JSON:" + error.errorString().toStdString());
         } else {
             if (!doc.isObject()) {
-                result = Result<User>::failure("JSON не является объектом");
+                result = AuthorizationReply::failure("JSON не является объектом");
             } else {
-                AuthorizationReply authorizationReply = AuthorizationReplyJsonConverter::parseAuthorizationReply(doc.object());
-                if (authorizationReply.success) {
+                result = AuthorizationReplyJsonConverter::parseAuthorizationReply(doc.object());
+                if (result.authorized) {
                     sharedState_->setUsername(user.username);
-                    result = Result<User>::success(user);
-                } else {
-                    result = Result<User>::failure(authorizationReply.message);
                 }
             }
         }
