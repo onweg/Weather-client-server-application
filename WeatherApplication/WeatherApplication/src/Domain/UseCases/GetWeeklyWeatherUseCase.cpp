@@ -8,20 +8,12 @@ GetWeeklyWeatherUseCase::GetWeeklyWeatherUseCase(IApiWeatherSource *apiRepo, std
 
 QFuture<Result<WeekWeatherData> > GetWeeklyWeatherUseCase::execute(const std::string &city)
 {
-    auto cached = cacheRepository_->getWeekWeather(city);
-    if (cached.isSuccess()) {
-        callback(cached);
-        return;
+    auto cachedResult = cacheRepository_->getWeekWeather(city);
+    if (cachedResult.isSuccess()) {
+        // Вернуть готовый уже завершённый QFuture с результатом из кеша
+        return QtFuture::makeReadyFuture(Result<WeekWeatherData>::success(cachedResult.value()));
     }
 
-    apiRepository_->findWeatherDataByCity(city, [this, city, callback](Result<WeekWeatherData> apiResult) {
-        if (!apiResult.isSuccess()) {
-            callback(Result<WeekWeatherData>::failure(apiResult.errorMessage()));
-            return;
-        }
-
-        cacheRepository_->addWeekWeather(city, apiResult.value());
-        callback(apiResult);
-    });
+    return apiRepository_->findWeatherDataByCity(city);
 }
 

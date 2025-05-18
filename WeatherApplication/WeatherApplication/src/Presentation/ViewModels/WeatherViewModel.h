@@ -16,10 +16,8 @@ class WeatherViewModel : public QObject  {
     Q_PROPERTY(WeatherUiModel* weatherModel READ getWeatherModel NOTIFY weatherDataUpdated)
     Q_PROPERTY(WeekWeatherUiModel* weekWeatherModel READ getWeekWeatherModel NOTIFY weatherDataUpdated)
 public:
-    explicit WeatherViewModel(std::shared_ptr<GetDailyWeatherFromCacheUseCase> dailyCacheUC,
-                              std::shared_ptr<GetWeeklyWeatherFromCacheUseCase> weeklyCacheUC,
-                              std::shared_ptr<SaveWeeklyWeatherToCacheUseCase> weeklyCacheSaveUseCase_,
-                              std::shared_ptr<GetWeeklyWeatherFromApiUseCase> weeklyApiUC,
+    explicit WeatherViewModel(std::shared_ptr<GetDailyWeatherUseCase> getDailyWeatherUC,
+                              std::shared_ptr<GetWeeklyWeatherUseCase> getWeeklyWeatherUC,
                               std::shared_ptr<SaveWeatherHistoryUseCase> saveHistory,
                               QObject* parent = nullptr);
     Q_INVOKABLE void clickSearchCityButton(const QString &city);
@@ -39,23 +37,11 @@ private:
     WeekWeatherUiModel* getWeekWeatherModel();
     bool isDateValid(const QDate& date);
 
-    std::shared_ptr<GetDailyWeatherFromCacheUseCase> dailyCacheUseCase_;
-    std::shared_ptr<GetWeeklyWeatherFromCacheUseCase> weeklyCacheUseCase_;
-    std::shared_ptr<GetWeeklyWeatherFromApiUseCase> weeklyApiUseCase_;
-    std::shared_ptr<SaveWeeklyWeatherToCacheUseCase> weeklyCacheSaveUseCase_;
+    std::shared_ptr<GetDailyWeatherUseCase> getDailyWeatherUseCase_;
+    std::shared_ptr<GetWeeklyWeatherUseCase> getWeeklyWeatherUseCase_;
     std::shared_ptr<SaveWeatherHistoryUseCase> saveHistoryUseCase_;
 
-    QFutureWatcher<Result<WeekWeatherData>> weeklyApiWatcher_;
-
     const int MAX_COUNT_DAYS = 5;
-
-    enum class RequestType {
-        DailyRequest,
-        WeeklyRequest
-    };
-
-    RequestType currentReqestType_;
-
 
 private slots:
     void onWeeklyApiFinished();
