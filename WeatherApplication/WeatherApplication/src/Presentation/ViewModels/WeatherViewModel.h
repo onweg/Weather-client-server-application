@@ -14,7 +14,7 @@ class WeatherViewModel : public QObject  {
      Q_OBJECT
 
     Q_PROPERTY(WeatherUiModel* weatherModel READ getWeatherModel NOTIFY weatherDataUpdated)
-    Q_PROPERTY(WeekWeatherUiModel* weekWeatherModel READ getWeekWeatherModel NOTIFY weatherDataUpdated)
+    Q_PROPERTY(WeekWeatherUiModel* weekWeatherModel READ getWeekWeatherModel NOTIFY weekWeatherDataUpdated)
 public:
     explicit WeatherViewModel(std::shared_ptr<GetDailyWeatherUseCase> getDailyWeatherUC,
                               std::shared_ptr<GetWeeklyWeatherUseCase> getWeeklyWeatherUC,
@@ -43,11 +43,9 @@ private:
 
     const int MAX_COUNT_DAYS = 5;
 
-private slots:
-    void onWeeklyApiFinished();
-
 signals:
     void weatherDataUpdated();
+    void weekWeatherDataUpdated();
 
 
 };

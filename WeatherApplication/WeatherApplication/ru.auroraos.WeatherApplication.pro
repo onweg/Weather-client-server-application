@@ -51,6 +51,7 @@ SOURCES += \
     src/Data/Repositories/Database/SqliteWeatherHistoryRepository.cpp \
     src/Data/Repositories/Database/WeatherDatabaseInitializer.cpp \
     src/Data/Repositories/SharedState/SharedState.cpp \
+    src/Data/Repositories/Weather/WeatherRepository.cpp \
     src/Domain/UseCases/GetWeatherHistoryUseCase.cpp \
     src/Domain/UseCases/SaveWeatherHistoryUseCase.cpp \
     src/Presentation/Mappers/WeatherUiMapper.cpp \
@@ -84,6 +85,7 @@ HEADERS += \
     src/Data/Repositories/Database/SqliteWeatherHistoryRepository.h \
     src/Data/Repositories/Database/WeatherDatabaseInitializer.h \
     src/Data/Repositories/SharedState/SharedState.h \
+    src/Data/Repositories/Weather/WeatherRepository.h \
     src/Domain/Entities/AuthorizationReply.h \
     src/Domain/Entities/AuthorizationRequest.h \
     src/Domain/Entities/ApiConfig.h \
@@ -101,8 +103,10 @@ HEADERS += \
     src/Domain/Interfaces/Database/IWeatherDatabaseInitializer.h \
     src/Domain/Interfaces/Database/IWeatherHistoryRepository.h \
     src/Domain/Interfaces/SharedState/ISharedState.h \
+    src/Domain/Interfaces/Weather/IWeatherRepository.h \
     src/Domain/UseCases/GetWeatherHistoryUseCase.h \
     src/Domain/UseCases/SaveWeatherHistoryUseCase.h \
+    src/Domain/Utils/MakeReadyFuture.h \
     src/Domain/Utils/SimpleOptional.h \
     src/Presentation/Mappers/WeatherUiMapper.h \
     src/Presentation/Mappers/WeekWeatherUiMapper.h \

@@ -19,6 +19,7 @@
 #include "../Domain/Interfaces/Cache/IWeatherCacheSource.h"
 #include "../Domain/Interfaces/Database/IWeatherDatabaseInitializer.h"
 #include "../Domain/Interfaces/Database/IWeatherHistoryRepository.h"
+#include "../Domain/Interfaces/Weather/IWeatherRepository.h"
 
 class DependencyContainer {
 public:
@@ -34,9 +35,9 @@ private:
     std::shared_ptr<IWeatherDatabaseInitializer> dbInitializerInterface_;
     std::shared_ptr<IWeatherHistoryRepository> dbWeatherHistoryInterface_;
 
-
     IUserRepository* userRepositoryInterface_ = nullptr;
-    IApiWeatherSource* apiWeatherSourceInterface_ = nullptr;;
+    IApiWeatherSource* apiWeatherSourceInterface_ = nullptr;
+    IWeatherRepository* weatherRepositoryInterface_ = nullptr;
 
     std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
     std::shared_ptr<RegisterUserUseCase> regUseCase_;

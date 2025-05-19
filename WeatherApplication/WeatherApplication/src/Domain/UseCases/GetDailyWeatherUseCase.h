@@ -5,18 +5,16 @@
 #include <functional>
 #include <memory>
 #include "../Entities/WeatherData.h"
-#include "../Interfaces/Api/IApiWeatherSource.h"
-#include "../Interfaces/Cache/IWeatherCacheSource.h"
+#include "../Interfaces/Weather/IWeatherRepository.h"
 
 class GetDailyWeatherUseCase {
 public:
-    explicit GetDailyWeatherUseCase(IApiWeatherSource* apiRepo, std::shared_ptr<IWeatherCacheSource> cacheRepo);
+    explicit GetDailyWeatherUseCase(IWeatherRepository* weatherRepo);
 
-    QFuture<Result<WeekWeatherData>> execute(const std::string& city, const std::string& date);
+    QFuture<Result<WeatherData>> execute(const std::string& city, const std::string& date);
 
 private:
-    IApiWeatherSource* apiRepository_;
-    std::shared_ptr<IWeatherCacheSource> cacheRepository_;
+    IWeatherRepository* weatherRepository_;
 };
 
 #endif // GETDAILYWEATHERUSECASE_H

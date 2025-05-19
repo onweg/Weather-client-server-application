@@ -15,7 +15,6 @@ public:
     Result<WeatherData> getDayWeather(const std::string& city, const std::string& date) override;
     Result<WeekWeatherData> getWeekWeather(const std::string& city) override;
     void addWeekWeather(const std::string& city, const WeekWeatherData& data) override;
-    bool hasValidData(const std::string& city) override;
 
 private:
     struct CacheEntry {
@@ -27,6 +26,7 @@ private:
     static constexpr int MAX_COUNT_DAYS = 5;
     std::unordered_map<std::string, CacheEntry> cache_;
 
+    bool hasValidData(const std::string& city);
     bool isExpired(const CacheEntry& entry) const;
     int findDayIndex(const std::vector<WeatherData>& days, const std::string& date) const;
     void removeCity(const std::string& city);

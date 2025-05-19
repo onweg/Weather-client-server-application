@@ -8,6 +8,7 @@
 #include "../Data/Repositories/Cache/WeatherCache.h"
 #include "../Data/Repositories/Database/SqliteWeatherHistoryRepository.h"
 #include "../Data/Repositories/Database/WeatherDatabaseInitializer.h"
+#include "../Data/Repositories/Weather/WeatherRepository.h"
 
 
 DependencyContainer::DependencyContainer(QObject *qmlRoot)
@@ -22,7 +23,6 @@ DependencyContainer::DependencyContainer(QObject *qmlRoot)
     auto dbInitializerImpl = std::make_shared<WeatherDatabaseInitializer>();
     dbInitializerInterface_ = dbInitializerImpl;
 
-
     auto configProviderImpl = std::make_shared<ConfigProvider>(configLoaderInterface_);
     configProviderInterface_ = configProviderImpl;
     auto* userRepositoryImpl = new UserRepository(configProviderInterface_, sharedStateInterface_, qmlRoot_);
@@ -31,11 +31,13 @@ DependencyContainer::DependencyContainer(QObject *qmlRoot)
     apiWeatherSourceInterface_ = weatherApiSourceImpl;
     auto dbWeatherHistoryImpl = std::make_shared<SqliteWeatherHistoryRepository>(dbInitializerInterface_, sharedStateInterface_);
     dbWeatherHistoryInterface_ = dbWeatherHistoryImpl;
+    auto weatherRepositoryImpl = new WeatherRepository(cacheSourceInterface_, apiWeatherSourceInterface_, qmlRoot);
+    weatherRepositoryInterface_ = weatherRepositoryImpl;
 
     authUseCase_ = std::make_shared<AuthenticateUserUseCase>(userRepositoryInterface_);
     regUseCase_ = std::make_shared<RegisterUserUseCase>(userRepositoryInterface_);
-    dailyWeatherUseCase_ = std::make_shared<GetDailyWeatherUseCase>(apiWeatherSourceInterface_, cacheSourceInterface_);
-    weeklyWeatherUseCase_ = std::make_shared<GetWeeklyWeatherUseCase>(apiWeatherSourceInterface_, cacheSourceInterface_);
+    dailyWeatherUseCase_ = std::make_shared<GetDailyWeatherUseCase>(weatherRepositoryInterface_);
+    weeklyWeatherUseCase_ = std::make_shared<GetWeeklyWeatherUseCase>(weatherRepositoryInterface_);
     saveHistoryUseCase_ = std::make_shared<SaveWeatherHistoryUseCase>(dbWeatherHistoryInterface_);
     getHistoryUseCase_ = std::make_shared<GetWeatherHistoryUseCase>(dbWeatherHistoryInterface_);
 

@@ -7,18 +7,16 @@
 #include <memory>
 #include "../Entities/WeekWeatherData.h"
 #include "../Utils/Result.h"
-#include "../Interfaces/Api/IApiWeatherSource.h"
-#include "../Interfaces/Cache/IWeatherCacheSource.h"
+#include "../Interfaces/Weather/IWeatherRepository.h"
 
 class GetWeeklyWeatherUseCase {
 public:
-    explicit GetWeeklyWeatherUseCase(IApiWeatherSource* apiRepo, std::shared_ptr<IWeatherCacheSource> cacheRepo);
+    explicit GetWeeklyWeatherUseCase(IWeatherRepository* weatherRepo);
 
     QFuture<Result<WeekWeatherData>> execute(const std::string& city);
 
 private:
-    IApiWeatherSource* apiRepository_;
-    std::shared_ptr<IWeatherCacheSource> cacheRepository_;
+    IWeatherRepository* weatherRepository_;
 };
 
 #endif // GETWEEKLYWEATHERUSECASE_H
