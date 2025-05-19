@@ -77,7 +77,6 @@ SOURCES += \
     src/main.cpp
 
 HEADERS += \
-    src/Data/DtoModels/UserDto.h \
     src/Data/DtoModels/WeatherDataDto.h \
     src/Data/DtoModels/WeekWeatherDataDto.h \
     src/Data/Mappers/WeatherDomainMapper.h \
@@ -94,7 +93,6 @@ HEADERS += \
     src/Domain/Entities/WeatherData.h \
     src/Domain/Entities/WeatherHistoryItem.h \
     src/Domain/Entities/WeekWeatherData.h \
-    src/Domain/Interfaces/Api/IWeatherRepository.h \
     src/Domain/Interfaces/Cache/IWeatherCacheSource.h \
     src/Domain/Interfaces/Config/IConfigLoader.h \
     src/Domain/Interfaces/Config/IConfigProvider.h \
