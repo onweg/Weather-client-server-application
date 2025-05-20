@@ -3,8 +3,10 @@
 
 #include <string>
 
-class ApiConfig {
+class ApiConfig
+{
 public:
+    ApiConfig();
     ApiConfig(const std::string& urlFindCityByName,
               const std::string& urlFindWeatherByCoordinates,
               const std::string& key);

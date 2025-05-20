@@ -6,23 +6,21 @@
 
 class WeatherData
 {
-private:
-    double m_lat;
-    double m_lon;
-    std::string m_city;
-    std::string m_date;
-    std::string m_description;
-    double m_temp;
-    double m_feels_like;
-    double m_temp_max;
-    double m_temp_min;
-    double m_wind_speed;
-    int m_humidity;
-    int m_pressure;
-    std::string m_messageError;
-
 public:
     WeatherData();
+    WeatherData(double lat,
+                double lon,
+                const std::string& city,
+                const std::string& date,
+                const std::string& description,
+                double temp,
+                double feels_like,
+                double temp_max,
+                double temp_min,
+                double wind_speed,
+                int humidity,
+                int pressure,
+                const std::string& messageError);
 
     double getLat() const;
     void setLat(double lat);
@@ -65,6 +63,21 @@ public:
 
     bool operator==(const WeatherData& other) const;
     bool operator!=(const WeatherData& other) const;
+
+private:
+    double m_lat;
+    double m_lon;
+    std::string m_city;
+    std::string m_date;
+    std::string m_description;
+    double m_temp;
+    double m_feels_like;
+    double m_temp_max;
+    double m_temp_min;
+    double m_wind_speed;
+    int m_humidity;
+    int m_pressure;
+    std::string m_messageError;
 };
 
 inline bool areAlmostEqual(double a, double b, double epsilon = 1e-9) {

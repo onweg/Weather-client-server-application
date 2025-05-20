@@ -15,6 +15,35 @@ WeatherData::WeatherData()
 {
 }
 
+WeatherData::WeatherData(double lat,
+                         double lon,
+                         const std::string& city,
+                         const std::string& date,
+                         const std::string& description,
+                         double temp,
+                         double feels_like,
+                         double temp_max,
+                         double temp_min,
+                         double wind_speed,
+                         int humidity,
+                         int pressure,
+                         const std::string& messageError)
+    : m_lat(lat),
+      m_lon(lon),
+      m_city(city),
+      m_date(date),
+      m_description(description),
+      m_temp(temp),
+      m_feels_like(feels_like),
+      m_temp_max(temp_max),
+      m_temp_min(temp_min),
+      m_wind_speed(wind_speed),
+      m_humidity(humidity),
+      m_pressure(pressure),
+      m_messageError(messageError)
+{
+}
+
 double WeatherData::getLat() const
 {
     return m_lat;

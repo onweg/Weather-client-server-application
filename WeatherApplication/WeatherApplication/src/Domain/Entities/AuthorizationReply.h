@@ -5,13 +5,8 @@
 
 class AuthorizationReply
 {
-private:
-    bool m_authorized;
-    std::string m_messageError;
-
 public:
     AuthorizationReply();
-
     AuthorizationReply(bool authorized, const std::string& messageError);
 
     bool isAuthorized() const;
@@ -22,6 +17,10 @@ public:
 
     static AuthorizationReply success();
     static AuthorizationReply failure(const std::string& errorMessage);
+
+private:
+    bool m_authorized;
+    std::string m_messageError;
 };
 
 #endif // AUTHORIZATIONREPLY_H

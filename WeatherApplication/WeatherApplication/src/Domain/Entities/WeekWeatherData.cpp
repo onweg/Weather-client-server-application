@@ -1,5 +1,17 @@
 #include "WeekWeatherData.h"
 
+WeekWeatherData::WeekWeatherData()
+    : m_city(""), m_messageError("")
+{
+}
+
+WeekWeatherData::WeekWeatherData(const std::string& city,
+                                 const std::vector<WeatherData>& dailyWeather,
+                                 const std::string& messageError)
+    : m_city(city), m_dailyWeather(dailyWeather), m_messageError(messageError)
+{
+}
+
 const std::string& WeekWeatherData::getCity() const
 {
     return m_city;

@@ -1,5 +1,15 @@
 #include "AuthorizationRequest.h"
 
+AuthorizationRequest::AuthorizationRequest()
+    : m_username(""), m_passwordHash("")
+{
+}
+
+AuthorizationRequest::AuthorizationRequest(const std::string& username, const std::string& passwordHash)
+    : m_username(username), m_passwordHash(passwordHash)
+{
+}
+
 const std::string& AuthorizationRequest::getUsername() const
 {
     return m_username;

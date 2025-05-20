@@ -1,6 +1,12 @@
 #include "AppConfig.h"
 
 AppConfig::AppConfig()
+    : m_serverHostConfig(), m_apiConfig()
+{
+}
+
+AppConfig::AppConfig(const ServerHostConfig& serverHostConfig, const ApiConfig& apiConfig)
+    : m_serverHostConfig(serverHostConfig), m_apiConfig(apiConfig)
 {
 }
 

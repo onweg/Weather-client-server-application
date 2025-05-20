@@ -6,14 +6,14 @@
 
 class WeatherHistoryItem
 {
-private:
-    int m_id;
-    std::string m_username;
-    std::chrono::system_clock::time_point m_timestamp;
-    std::string m_city;
-    std::string m_date;
-
 public:
+    WeatherHistoryItem();
+    WeatherHistoryItem(int id,
+                       const std::string& username,
+                       const std::chrono::system_clock::time_point& timestamp,
+                       const std::string& city,
+                       const std::string& date);
+
     int getId() const;
     void setId(int id);
 
@@ -28,6 +28,13 @@ public:
 
     const std::string& getDate() const;
     void setDate(const std::string& date);
+
+private:
+    int m_id;
+    std::string m_username;
+    std::chrono::system_clock::time_point m_timestamp;
+    std::string m_city;
+    std::string m_date;
 };
 
 #endif // WEATHERHISTORYITEM_H

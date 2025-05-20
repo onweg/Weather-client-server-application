@@ -8,12 +8,12 @@
 
 class WeekWeatherData
 {
-private:
-    std::string m_city;
-    std::vector<WeatherData> m_dailyWeather;
-    std::string m_messageError;
-
 public:
+    WeekWeatherData();
+    WeekWeatherData(const std::string& city,
+                    const std::vector<WeatherData>& dailyWeather,
+                    const std::string& messageError);
+
     const std::string& getCity() const;
     void setCity(const std::string& city);
 
@@ -25,6 +25,11 @@ public:
 
     bool operator==(const WeekWeatherData& other) const;
     bool operator!=(const WeekWeatherData& other) const;
+
+private:
+    std::string m_city;
+    std::vector<WeatherData> m_dailyWeather;
+    std::string m_messageError;
 };
 
 #endif // WEEKWEATHERDATA_H
