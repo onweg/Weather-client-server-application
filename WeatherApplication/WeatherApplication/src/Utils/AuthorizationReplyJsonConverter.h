@@ -12,6 +12,11 @@ public:
 
     static AuthorizationReply parseAuthorizationReply(const QJsonObject &jsonObj);
 
+private:
+    static bool hasValidStatusField(const QJsonObject& obj);
+    static bool hasValidMessageField(const QJsonObject& obj);
+    static AuthorizationReply createReplyFromStatusAndMessage(const QString& status, const QString& message);
+
 signals:
 
 };

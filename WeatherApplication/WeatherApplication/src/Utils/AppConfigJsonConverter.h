@@ -17,6 +17,8 @@ public:
 private:
     static bool parseServerHostConfig(const QJsonObject& jsonObject, ServerHostConfig& config);
     static bool parseApiConfig(const QJsonObject& jsonObject, ApiConfig& config);
+    static QJsonObject getJsonObject(const QJsonObject& obj, const QString& key);
+    static std::string getStringValue(const QJsonObject& obj, const QString& key);
 };
 
 #endif // APPCONFIGJSONCONVERTER_H

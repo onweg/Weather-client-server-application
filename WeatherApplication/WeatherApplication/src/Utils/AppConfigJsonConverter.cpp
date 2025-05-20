@@ -9,50 +9,41 @@ bool AppConfigJsonConverter::fromJson(const QJsonObject& jsonObject, AppConfig& 
     if (!parseServerHostConfig(jsonObject, config.serverHostConfig)) {
         return false;
     }
-
     if (!parseApiConfig(jsonObject, config.apiConfig)) {
         return false;
     }
-
     return true;
 }
 
-bool AppConfigJsonConverter::parseServerHostConfig(const QJsonObject& jsonObject, ServerHostConfig& config)
-{
-    if (!jsonObject.contains("server host") || !jsonObject["server host"].isObject()) {
-        return false;
-    }
-    QJsonObject serverHostObj = jsonObject["server host"].toObject();
-    if (!serverHostObj.contains("ip") || !serverHostObj["ip"].isString()) {
-        return false;
-    }
-    if (!serverHostObj.contains("port") || !serverHostObj["port"].isString()) {
-        return false;
-    }
-    config.ip = serverHostObj["ip"].toString().toStdString();
-    config.port = serverHostObj["port"].toString().toStdString();
-    return true;
+bool AppConfigJsonConverter::parseServerHostConfig(const QJsonObject& jsonObject, ServerHostConfig& config) {
+    const QJsonObject hostObj = getJsonObject(jsonObject, "server host");
+    if (hostObj.isEmpty()) return false;
+    config.ip = getStringValue(hostObj, "ip");
+    config.port = getStringValue(hostObj, "port");
+    return !config.ip.empty() && !config.port.empty();
 }
 
-bool AppConfigJsonConverter::parseApiConfig(const QJsonObject& jsonObject, ApiConfig& config)
-{
-    if (!jsonObject.contains("api") || !jsonObject["api"].isObject()) {
-        return false;
-    }
+bool AppConfigJsonConverter::parseApiConfig(const QJsonObject& jsonObject, ApiConfig& config) {
+    const QJsonObject apiObj = getJsonObject(jsonObject, "api");
+    if (apiObj.isEmpty()) return false;
+    config.urlFindCityByName = getStringValue(apiObj, "urlFindCityByName");
+    config.urlFindWeatherByCoordinates = getStringValue(apiObj, "urlFindWeatherByCoordinates");
+    config.key = getStringValue(apiObj, "key");
+    return !config.urlFindCityByName.empty() &&
+           !config.urlFindWeatherByCoordinates.empty() &&
+           !config.key.empty();
+}
 
-    QJsonObject apiObj = jsonObject["api"].toObject();
-    if (!apiObj.contains("urlFindCityByName") || !apiObj["urlFindCityByName"].isString()) {
-        return false;
+QJsonObject AppConfigJsonConverter::getJsonObject(const QJsonObject &obj, const QString &key) {
+    if (obj.contains(key) && obj[key].isObject()) {
+        return obj[key].toObject();
     }
-    if (!apiObj.contains("urlFindWeatherByCoordinates") || !apiObj["urlFindWeatherByCoordinates"].isString()) {
-        return false;
-    }
-    if (!apiObj.contains("key") || !apiObj["key"].isString()) {
-        return false;
-    }
+    return QJsonObject();
+}
 
-    config.urlFindCityByName = apiObj["urlFindCityByName"].toString().toStdString();;
-    config.urlFindWeatherByCoordinates = apiObj["urlFindWeatherByCoordinates"].toString().toStdString();;
-    config.key = apiObj["key"].toString().toStdString();;
-    return true;
+std::string AppConfigJsonConverter::getStringValue(const QJsonObject &obj, const QString &key) {
+    if (obj.contains(key) && obj[key].isString()) {
+        return obj[key].toString().toStdString();
+    }
+    return {};
 }

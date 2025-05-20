@@ -17,6 +17,8 @@ public:
     static QJsonDocument loginUserToJsonDocument(const AuthorizationRequest &request);
     static QJsonDocument registerUserToJsonDocument(const AuthorizationRequest &request);
 
+private:
+    static QJsonObject createRequestObject(const AuthorizationRequest& request, const QString& command);
 
 signals:
 
