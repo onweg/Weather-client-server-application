@@ -49,6 +49,10 @@ Page {
             text: weatherViewModel.weekWeatherModel.messageError.length > 0 ? "Error: " + weatherViewModel.weekWeatherModel.messageError : ""
             color: "red"
             visible: weatherViewModel.weekWeatherModel.messageError.length > 0
+
+            width: parent.width
+            wrapMode: Text.WordWrap
+            horizontalAlignment: Text.AlignLeft
         }
     }
 }

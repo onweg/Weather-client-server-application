@@ -43,6 +43,10 @@ Item {
                 text: "error"
                 color: "red"
                 visible: false
+
+                width: parent.width
+                wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignLeft
             }
         }
         Column {
