@@ -4,29 +4,36 @@
 #include <QDebug>
 
 bool WeatherDatabaseInitializer::initialize() {
-    QSqlDatabase db;
-    if (!QSqlDatabase::contains()) {
-        db = QSqlDatabase::addDatabase("QSQLITE");
-        db.setDatabaseName(DB_PATH);
+    if (!connectToDatabase()) return false;
+    if (!createTableIfNotExists()) return false;
+    return true;
+}
 
-        if (!db.open()) {
-            qDebug() << "Ошибка подключения:" << db.lastError();
-            return false;
-        }
-    } else {
-        db = QSqlDatabase::database();
+bool WeatherDatabaseInitializer::connectToDatabase() {
+    if (QSqlDatabase::contains()) {
+        return true;
     }
-
-    QSqlQuery query;
-    if (!query.exec("CREATE TABLE IF NOT EXISTS weather_data ("
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    "username TEXT, "
-                    "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, "
-                    "city TEXT, "
-                    "date TEXT)")) {
-        qDebug() << "Ошибка при создании таблицы:" << query.lastError();
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(DB_PATH);
+    if (!db.open()) {
+        qDebug() << "Ошибка подключения к БД:" << db.lastError();
         return false;
     }
-
     return true;
+}
+
+bool WeatherDatabaseInitializer::createTableIfNotExists() {
+    QSqlQuery query;
+    bool ok = query.exec(
+                "CREATE TABLE IF NOT EXISTS weather_data ("
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+            "username TEXT, "
+            "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, "
+            "city TEXT, "
+            "date TEXT)"
+        );
+    if (!ok) {
+        qDebug() << "Ошибка при создании таблицы:" << query.lastError();
+    }
+    return ok;
 }

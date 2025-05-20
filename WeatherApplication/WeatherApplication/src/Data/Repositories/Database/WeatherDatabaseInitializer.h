@@ -9,6 +9,9 @@ public:
     bool initialize() override;
 private:
     const QString DB_PATH = "weather_data_request.db";
+
+    bool connectToDatabase();
+    bool createTableIfNotExists();
 };
 
 #endif // WEATHERDATABASEINITIALIZER_H
