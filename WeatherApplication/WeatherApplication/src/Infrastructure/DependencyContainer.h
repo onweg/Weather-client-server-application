@@ -34,7 +34,6 @@ private:
     std::shared_ptr<IWeatherCacheSource> cacheSourceInterface_;
     std::shared_ptr<IWeatherDatabaseInitializer> dbInitializerInterface_;
     std::shared_ptr<IWeatherHistoryRepository> dbWeatherHistoryInterface_;
-
     IUserRepository* userRepositoryInterface_ = nullptr;
     IApiWeatherSource* apiWeatherSourceInterface_ = nullptr;
     IWeatherRepository* weatherRepositoryInterface_ = nullptr;
@@ -46,11 +45,15 @@ private:
     std::shared_ptr<SaveWeatherHistoryUseCase> saveHistoryUseCase_;
     std::shared_ptr<GetWeatherHistoryUseCase> getHistoryUseCase_;
 
-
     AuthViewModel* authViewModel_ = nullptr;
     WeatherViewModel* weatherViewModel = nullptr;
 
     QObject* qmlRoot_;
+
+    void initInfrastructure();
+    void initRepositories();
+    void initUseCases();
+    void initViewModels();
 };
 
 #endif // DEPENDENCYCONTAINER_H
