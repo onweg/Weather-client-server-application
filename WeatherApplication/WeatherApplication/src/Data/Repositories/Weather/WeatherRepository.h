@@ -22,6 +22,16 @@ private:
     IApiWeatherSource* api_;
 
     Result<WeatherData> findDayInWeek(const WeekWeatherData& week, const std::string& targetDate);
+    QFuture<Result<WeatherData>> fetchAndProcessWeatherForDay(const std::string& city, const std::string& date);
+    void handleApiResultForDay(QFutureInterface<Result<WeatherData>>* interface,
+                                                  QFutureWatcher<Result<WeekWeatherData>>* watcher,
+                                                  const std::string& city, const std::string& date);
+    QFuture<Result<WeekWeatherData>> fetchAndProcessWeatherForWeek(const std::string& city);
+    void handleApiResultForWeek(QFutureInterface<Result<WeekWeatherData>>* interface,
+                                                   QFutureWatcher<Result<WeekWeatherData>>* watcher,
+                                                   const std::string& city);
+    void cleanupAfter(QFutureInterfaceBase* interface, QObject* watcher);
+    void reportFailure(QFutureInterface<Result<WeatherData>>* interface, const std::string& message);
 };
 
 #endif // WEATHERREPOSITORY_H
