@@ -10,7 +10,7 @@
 class IApiWeatherSource {
 public:
     virtual ~IApiWeatherSource() = default;
-
+    // принимаем примитивы возвращаем entiry
     virtual QFuture<Result<WeekWeatherData>> findWeatherDataByCity(const std::string city) = 0;
 };
 

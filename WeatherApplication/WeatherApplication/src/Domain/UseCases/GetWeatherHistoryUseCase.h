@@ -8,7 +8,7 @@ class GetWeatherHistoryUseCase
 {
 public:
     explicit GetWeatherHistoryUseCase(std::shared_ptr<IWeatherHistoryRepository> repository);
-
+    // принимаем entity возвращаем entiry
     std::vector<WeatherHistoryItem> execute();
 
 private:

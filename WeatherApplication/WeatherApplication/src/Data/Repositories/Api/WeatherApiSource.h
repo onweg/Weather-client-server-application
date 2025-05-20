@@ -16,7 +16,7 @@ class WeatherApiSource : public QObject, public IApiWeatherSource {
 public:
     explicit WeatherApiSource(std::shared_ptr<IConfigProvider> config,
                               QObject* parent = nullptr);
-
+    // принимаем примитивы, преобразует в DTO, преобразует в JSON, отправляет на сервер JSON, принмает c сервера JSON, преобразует в DTO, преобразует в entity, возвращаем entiry
     QFuture<Result<WeekWeatherData>> findWeatherDataByCity(const std::string city) override;
 
 private:

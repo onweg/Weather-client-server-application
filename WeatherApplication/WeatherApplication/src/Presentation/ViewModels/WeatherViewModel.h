@@ -20,6 +20,10 @@ public:
                               std::shared_ptr<GetWeeklyWeatherUseCase> getWeeklyWeatherUC,
                               std::shared_ptr<SaveWeatherHistoryUseCase> saveHistory,
                               QObject* parent = nullptr);
+    // принимаем от UI примитивы, отправляем примитивы в UseCase entity
+    // получаем от UsecCase Entity, преобразуем их в UIModel, сигнализируем UI
+
+
     Q_INVOKABLE void clickSearchCityButton(const QString &city);
     Q_INVOKABLE void clickNextDayButton();
     Q_INVOKABLE void clickPrevDayButton();

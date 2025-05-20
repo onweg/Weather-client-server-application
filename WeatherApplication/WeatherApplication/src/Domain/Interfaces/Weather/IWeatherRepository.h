@@ -11,7 +11,7 @@
 class IWeatherRepository {
 public:
     virtual ~IWeatherRepository() = default;
-
+    // принимаем примитивы возвращаем entiry
     virtual QFuture<Result<WeatherData>> getDailyWeather(const std::string& city, const std::string& date) = 0;
     virtual QFuture<Result<WeekWeatherData>> getWeeklyWeather(const std::string& city) = 0;
 };

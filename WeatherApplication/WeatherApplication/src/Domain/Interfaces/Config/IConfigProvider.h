@@ -9,6 +9,7 @@
 class IConfigProvider {
 public:
     virtual ~IConfigProvider() = default;
+    // принимаем ничего возвращаем entiry
     virtual Result<ApiConfig> getApiConfig() = 0;
     virtual Result<ServerHostConfig> getServerHostConfig() = 0;
 };

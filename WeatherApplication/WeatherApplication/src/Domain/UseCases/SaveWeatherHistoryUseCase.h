@@ -7,7 +7,7 @@
 class SaveWeatherHistoryUseCase {
 public:
     explicit SaveWeatherHistoryUseCase(std::shared_ptr<IWeatherHistoryRepository> repository);
-
+    // принимаем entity возвращаем entiry
     void execute(const std::string &city, const std::string &date);
 
 private:

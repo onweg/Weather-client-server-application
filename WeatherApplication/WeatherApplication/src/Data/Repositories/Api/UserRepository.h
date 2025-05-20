@@ -17,7 +17,7 @@ public:
     UserRepository(std::shared_ptr<IConfigProvider> config,
                    std::shared_ptr<ISharedState> state,
                    QObject* parent = nullptr);
-
+    // принимаем entity, преобразует в DTO, преобразует в JSON, отправляет на сервер JSON, принмает c сервера JSON, преобразует в DTO, преобразует в entity, возвращаем entiry
     QFuture<AuthorizationReply> findUser(const AuthorizationRequest& request) override;
     QFuture<AuthorizationReply> registerUser(const AuthorizationRequest& request) override;
 

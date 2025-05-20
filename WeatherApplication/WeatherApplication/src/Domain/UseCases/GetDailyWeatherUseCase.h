@@ -10,7 +10,7 @@
 class GetDailyWeatherUseCase {
 public:
     explicit GetDailyWeatherUseCase(IWeatherRepository* weatherRepo);
-
+    // принимаем entity возвращаем entiry
     QFuture<Result<WeatherData>> execute(const std::string& city, const std::string& date);
 
 private:

@@ -11,6 +11,8 @@
 class SqliteWeatherHistoryRepository : public IWeatherHistoryRepository {
 public:
     SqliteWeatherHistoryRepository(std::shared_ptr<IWeatherDatabaseInitializer> dbInitializer, std::shared_ptr<ISharedState> state);
+    // на сохранение данных принимаю entity, перевожу в Dto, перевожу в SQL, отправляю SQL в дб
+    // на взятие данны принимаю ничего, получаю данные SQL, перевожу в DTO, перевожу в Entity, возвращаю Entity
     std::vector<WeatherHistoryItem> getAll() override;
     void save(const std::string &city, const std::string &date) override;
 

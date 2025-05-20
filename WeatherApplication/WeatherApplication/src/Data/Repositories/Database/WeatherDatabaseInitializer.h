@@ -6,6 +6,7 @@
 
 class WeatherDatabaseInitializer : public IWeatherDatabaseInitializer {
 public:
+    // принимаем ничего, возврааем примитив на db
     bool initialize() override;
 private:
     const QString DB_PATH = "weather_data_request.db";

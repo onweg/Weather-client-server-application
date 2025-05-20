@@ -9,6 +9,7 @@
 class IUserRepository {
 public:
     virtual ~IUserRepository() = default;
+    // принимаем entity возвращаем entiry
     virtual QFuture<AuthorizationReply> findUser(const AuthorizationRequest& request) = 0;
     virtual QFuture<AuthorizationReply> registerUser(const AuthorizationRequest& request) = 0;
 };
