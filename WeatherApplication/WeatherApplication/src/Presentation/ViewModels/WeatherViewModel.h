@@ -33,15 +33,21 @@ private:
     WeatherUiModel* weatherModel_;
     WeekWeatherUiModel* weekWeatherModel_;
 
-    WeatherUiModel* getWeatherModel();
-    WeekWeatherUiModel* getWeekWeatherModel();
-    bool isDateValid(const QDate& date);
-
     std::shared_ptr<GetDailyWeatherUseCase> getDailyWeatherUseCase_;
     std::shared_ptr<GetWeeklyWeatherUseCase> getWeeklyWeatherUseCase_;
     std::shared_ptr<SaveWeatherHistoryUseCase> saveHistoryUseCase_;
 
     const int MAX_COUNT_DAYS = 5;
+
+    WeatherUiModel* getWeatherModel();
+    WeekWeatherUiModel* getWeekWeatherModel();
+    bool isDateValid(const QDate& date);
+    void changeDateAndFetch(int daysOffset);
+    void fetchAndSetDailyWeather();
+    void setupDailyWeatherWatcher(QFuture<Result<WeatherData>> future);
+    void handleDailyWeatherResult(const Result<WeatherData>& result);
+    void setupWeeklyWeatherWatcher(QFuture<Result<WeekWeatherData>> future);
+    void handleWeeklyWeatherResult(const Result<WeekWeatherData>& result);
 
 signals:
     void weatherDataUpdated();

@@ -30,6 +30,8 @@ private:
     std::shared_ptr<RegisterUserUseCase> regUseCase_;
 
     void executeAuthOperation(const QString& username, const QString& password, AuthFunction authFunc);
+    void setupWatcherAndStart(QFuture<AuthorizationReply> future);
+    void handleAuthResult(QFutureWatcher<AuthorizationReply>* watcher);
 };
 
 #endif // AUTHVIEWMODEL_H

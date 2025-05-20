@@ -20,95 +20,23 @@ WeatherViewModel::WeatherViewModel(std::shared_ptr<GetDailyWeatherUseCase> getDa
     weekWeatherModel_ = new WeekWeatherUiModel(this);
 }
 
-void WeatherViewModel::clickSearchCityButton(const QString &city)
-{
+void WeatherViewModel::clickSearchCityButton(const QString &city) {
     desiredCity_ = city;
     desiredDate_ = QDate::currentDate();
-
-    auto future = getDailyWeatherUseCase_->execute(desiredCity_.toStdString(), desiredDate_.toString("yyyy-MM-dd").toStdString());
-
-    auto* watcher = new QFutureWatcher<Result<WeatherData>>(this);
-    connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
-        const auto result = watcher->result();
-        if (result.isSuccess()) {
-            WeatherUiMapper::toUiModel(result.value(), weatherModel_);
-        } else {
-            WeatherUiMapper::toUiModel({}, weatherModel_);
-            weatherModel_->setMessageError(QString::fromStdString(result.errorMessage()));
-        }
-        emit weatherDataUpdated();
-        watcher->deleteLater();
-    });
-    watcher->setFuture(future);
+    fetchAndSetDailyWeather();
 }
 
-void WeatherViewModel::clickNextDayButton()
-{
-    QDate nextDate = desiredDate_.addDays(1);
-    if (!isDateValid(nextDate)) {
-        return;
-    }
-    desiredDate_ = nextDate;
-    
-    auto future = getDailyWeatherUseCase_->execute(desiredCity_.toStdString(), desiredDate_.toString("yyyy-MM-dd").toStdString());
-
-    auto* watcher = new QFutureWatcher<Result<WeatherData>>(this);
-    connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
-        const auto result = watcher->result();
-        if (result.isSuccess()) {
-            WeatherUiMapper::toUiModel(result.value(), weatherModel_);
-        } else {
-            WeatherUiMapper::toUiModel({}, weatherModel_);
-            weatherModel_->setMessageError(QString::fromStdString(result.errorMessage()));
-        }
-        emit weatherDataUpdated();
-        watcher->deleteLater();
-    });
-    watcher->setFuture(future);
+void WeatherViewModel::clickNextDayButton() {
+    changeDateAndFetch(1);
 }
 
-void WeatherViewModel::clickPrevDayButton()
-{
-    QDate prevDate = desiredDate_.addDays(-1);
-    if (!isDateValid(prevDate)) {
-        return;
-    }
-    desiredDate_ = prevDate;
-
-    auto future = getDailyWeatherUseCase_->execute(desiredCity_.toStdString(), desiredDate_.toString("yyyy-MM-dd").toStdString());
-
-    auto* watcher = new QFutureWatcher<Result<WeatherData>>(this);
-    connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
-        const auto result = watcher->result();
-        if (result.isSuccess()) {
-            WeatherUiMapper::toUiModel(result.value(), weatherModel_);
-        } else {
-            WeatherUiMapper::toUiModel({}, weatherModel_);
-            weatherModel_->setMessageError(QString::fromStdString(result.errorMessage()));
-        }
-        emit weatherDataUpdated();
-        watcher->deleteLater();
-    });
-    watcher->setFuture(future);
+void WeatherViewModel::clickPrevDayButton() {
+    changeDateAndFetch(-1);
 }
 
-void WeatherViewModel::clickWeekWeatherDataButton()
-{
+void WeatherViewModel::clickWeekWeatherDataButton() {
     auto future = getWeeklyWeatherUseCase_->execute(desiredCity_.toStdString());
-
-    auto* watcher = new QFutureWatcher<Result<WeekWeatherData>>(this);
-    connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
-        const auto result = watcher->result();
-        if (result.isSuccess()) {
-            WeekWeatherUiMapper::toUiModel(result.value(), weekWeatherModel_);
-        } else {
-            WeekWeatherUiMapper::toUiModel({}, weekWeatherModel_);
-            weekWeatherModel_->setMessageError(QString::fromStdString(result.errorMessage()));
-        }
-        emit weekWeatherDataUpdated();
-        watcher->deleteLater();
-    });
-    watcher->setFuture(future);
+    setupWeeklyWeatherWatcher(future);
 }
 
 WeatherUiModel *WeatherViewModel::getWeatherModel()
@@ -125,6 +53,60 @@ bool WeatherViewModel::isDateValid(const QDate& date)
 {
     QDate today = QDate::currentDate();
     QDate daysLater = today.addDays(MAX_COUNT_DAYS - 1);
-
     return (date >= today) && (date <= daysLater);
+}
+
+void WeatherViewModel::changeDateAndFetch(int daysOffset) {
+    QDate newDate = desiredDate_.addDays(daysOffset);
+    if (!isDateValid(newDate)) return;
+    desiredDate_ = newDate;
+    fetchAndSetDailyWeather();
+}
+
+void WeatherViewModel::fetchAndSetDailyWeather() {
+    auto future = getDailyWeatherUseCase_->execute(
+                desiredCity_.toStdString(),
+                desiredDate_.toString("yyyy-MM-dd").toStdString()
+                );
+    setupDailyWeatherWatcher(future);
+}
+
+void WeatherViewModel::setupDailyWeatherWatcher(QFuture<Result<WeatherData> > future) {
+    auto* watcher = new QFutureWatcher<Result<WeatherData>>(this);
+    connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
+        handleDailyWeatherResult(watcher->result());
+        watcher->deleteLater();
+    });
+    watcher->setFuture(future);
+}
+
+void WeatherViewModel::handleDailyWeatherResult(const Result<WeatherData> &result) {
+    if (result.isSuccess()) {
+        WeatherUiMapper::toUiModel(result.value(), weatherModel_);
+        weatherModel_->setMessageError("");
+    } else {
+        WeatherUiMapper::toUiModel({}, weatherModel_);
+        weatherModel_->setMessageError(QString::fromStdString(result.errorMessage()));
+    }
+    emit weatherDataUpdated();
+}
+
+void WeatherViewModel::setupWeeklyWeatherWatcher(QFuture<Result<WeekWeatherData> > future) {
+    auto* watcher = new QFutureWatcher<Result<WeekWeatherData>>(this);
+    connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
+        handleWeeklyWeatherResult(watcher->result());
+        watcher->deleteLater();
+    });
+    watcher->setFuture(future);
+}
+
+void WeatherViewModel::handleWeeklyWeatherResult(const Result<WeekWeatherData> &result) {
+    if (result.isSuccess()) {
+        WeekWeatherUiMapper::toUiModel(result.value(), weekWeatherModel_);
+        weekWeatherModel_->setMessageError("");
+    } else {
+        WeekWeatherUiMapper::toUiModel({}, weekWeatherModel_);
+        weekWeatherModel_->setMessageError(QString::fromStdString(result.errorMessage()));
+    }
+    emit weekWeatherDataUpdated();
 }
