@@ -4,10 +4,20 @@
 #include "ApiConfig.h"
 #include "ServerHostConfig.h"
 
-struct AppConfig
+class AppConfig
 {
-    ServerHostConfig serverHostConfig;
-    ApiConfig apiConfig;
+private:
+    ServerHostConfig m_serverHostConfig;
+    ApiConfig m_apiConfig;
+
+public:
+    AppConfig();
+
+    const ServerHostConfig& getServerHostConfig() const;
+    void setServerHostConfig(const ServerHostConfig& config);
+
+    const ApiConfig& getApiConfig() const;
+    void setApiConfig(const ApiConfig& config);
 };
 
 #endif // APPCONFIG_H

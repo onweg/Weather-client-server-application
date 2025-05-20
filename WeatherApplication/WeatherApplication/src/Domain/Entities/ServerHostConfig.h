@@ -3,9 +3,18 @@
 
 #include <string>
 
-struct ServerHostConfig {
-    std::string ip;
-    std::string port;
+class ServerHostConfig
+{
+private:
+    std::string m_ip;
+    std::string m_port;
+
+public:
+    const std::string& getIp() const;
+    void setIp(const std::string& ip);
+
+    const std::string& getPort() const;
+    void setPort(const std::string& port);
 };
 
 #endif // SERVERHOSTCONFIG_H

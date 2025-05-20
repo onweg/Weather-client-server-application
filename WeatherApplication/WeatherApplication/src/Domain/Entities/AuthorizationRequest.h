@@ -3,9 +3,18 @@
 
 #include <string>
 
-struct AuthorizationRequest{
-    std::string username;
-    std::string passwordHash;
+class AuthorizationRequest
+{
+private:
+    std::string m_username;
+    std::string m_passwordHash;
+
+public:
+    const std::string& getUsername() const;
+    void setUsername(const std::string& username);
+
+    const std::string& getPasswordHash() const;
+    void setPasswordHash(const std::string& passwordHash);
 };
 
 #endif // AUTHORIZATIONREQUEST_H

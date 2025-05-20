@@ -54,6 +54,14 @@ SOURCES += \
     src/Data/Repositories/Weather/WeatherRepository.cpp \
     src/Domain/UseCases/GetWeatherHistoryUseCase.cpp \
     src/Domain/UseCases/SaveWeatherHistoryUseCase.cpp \
+    src/Domain/Entities/AuthorizationReply.cpp \
+    src/Domain/Entities/AuthorizationRequest.cpp \
+    src/Domain/Entities/ApiConfig.cpp \
+    src/Domain/Entities/ServerHostConfig.cpp \
+    src/Domain/Entities/AppConfig.cpp \
+    src/Domain/Entities/WeatherData.cpp \
+    src/Domain/Entities/WeatherHistoryItem.cpp \
+    src/Domain/Entities/WeekWeatherData.cpp \
     src/Presentation/Mappers/WeatherUiMapper.cpp \
     src/Presentation/Mappers/WeekWeatherUiMapper.cpp \
     src/Presentation/UIModels/WeatherUiModel.cpp \

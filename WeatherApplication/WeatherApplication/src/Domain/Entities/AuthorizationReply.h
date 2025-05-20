@@ -3,17 +3,25 @@
 
 #include <string>
 
-struct AuthorizationReply
+class AuthorizationReply
 {
-    static AuthorizationReply success() {
-        return AuthorizationReply{true, ""};
-    }
-    static AuthorizationReply failure(const std::string& errorMessage) {
-        return AuthorizationReply{false, errorMessage};
-    }
+private:
+    bool m_authorized;
+    std::string m_messageError;
 
-    bool authorized = false;
-    std::string messageError;
+public:
+    AuthorizationReply();
+
+    AuthorizationReply(bool authorized, const std::string& messageError);
+
+    bool isAuthorized() const;
+    void setAuthorized(bool authorized);
+
+    const std::string& getMessageError() const;
+    void setMessageError(const std::string& messageError);
+
+    static AuthorizationReply success();
+    static AuthorizationReply failure(const std::string& errorMessage);
 };
 
 #endif // AUTHORIZATIONREPLY_H

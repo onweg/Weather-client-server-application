@@ -4,47 +4,71 @@
 #include <string>
 #include <cmath>
 
-inline bool areAlmostEqual(double a, double b, double epsilon = 1e-9) {
-    return std::fabs(a - b) <= epsilon * std::max(std::fabs(a), std::fabs(b));
-}
-
-struct WeatherData
+class WeatherData
 {
-    double lat = 0.0;
-    double lon = 0.0;
-    std::string city = "...";
-    std::string date;
-    std::string description = "...";
-    double temp = 0.0;
-    double feels_like = 0.0;
-    double temp_max = 0.0;
-    double temp_min = 0.0;
-    double wind_speed = 0.0;
-    int humidity = 0;
-    int pressure = 0;
-    std::string messageError;
+private:
+    double m_lat;
+    double m_lon;
+    std::string m_city;
+    std::string m_date;
+    std::string m_description;
+    double m_temp;
+    double m_feels_like;
+    double m_temp_max;
+    double m_temp_min;
+    double m_wind_speed;
+    int m_humidity;
+    int m_pressure;
+    std::string m_messageError;
 
-    bool operator==(const WeatherData &other) const;
-    bool operator!=(const WeatherData &other) const;
+public:
+    WeatherData();
+
+    double getLat() const;
+    void setLat(double lat);
+
+    double getLon() const;
+    void setLon(double lon);
+
+    const std::string& getCity() const;
+    void setCity(const std::string& city);
+
+    const std::string& getDate() const;
+    void setDate(const std::string& date);
+
+    const std::string& getDescription() const;
+    void setDescription(const std::string& description);
+
+    double getTemp() const;
+    void setTemp(double temp);
+
+    double getFeelsLike() const;
+    void setFeelsLike(double feels_like);
+
+    double getTempMax() const;
+    void setTempMax(double temp_max);
+
+    double getTempMin() const;
+    void setTempMin(double temp_min);
+
+    double getWindSpeed() const;
+    void setWindSpeed(double wind_speed);
+
+    int getHumidity() const;
+    void setHumidity(int humidity);
+
+    int getPressure() const;
+    void setPressure(int pressure);
+
+    const std::string& getMessageError() const;
+    void setMessageError(const std::string& messageError);
+
+    bool operator==(const WeatherData& other) const;
+    bool operator!=(const WeatherData& other) const;
 };
 
-inline bool WeatherData::operator==(const WeatherData &other) const {
-    return city == other.city &&
-           date == other.date &&
-           description == other.description &&
-           areAlmostEqual(lat, other.lat) &&
-           areAlmostEqual(lon, other.lon) &&
-           areAlmostEqual(temp, other.temp) &&
-           areAlmostEqual(feels_like, other.feels_like) &&
-           areAlmostEqual(temp_max, other.temp_max) &&
-           areAlmostEqual(temp_min, other.temp_min) &&
-           areAlmostEqual(wind_speed, other.wind_speed) &&
-           humidity == other.humidity &&
-           pressure == other.pressure;
-}
-
-inline bool WeatherData::operator!=(const WeatherData &other) const {
-    return !(*this == other);
+inline bool areAlmostEqual(double a, double b, double epsilon = 1e-9) {
+    return std::fabs(a - b) <= epsilon * std::max(std::fabs(a), std::fabs(b));
 }
 
 #endif // WEATHERDATA_H

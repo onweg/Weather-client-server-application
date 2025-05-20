@@ -3,28 +3,28 @@
 
 #include <string>
 #include <vector>
-#include <algorithm>
 
 #include "WeatherData.h"
 
-struct WeekWeatherData {
-    std::string city;
-    std::vector<WeatherData> dailyWeather;
-    std::string messageError;
+class WeekWeatherData
+{
+private:
+    std::string m_city;
+    std::vector<WeatherData> m_dailyWeather;
+    std::string m_messageError;
 
-    bool operator==(const WeekWeatherData &other) const;
-    bool operator!=(const WeekWeatherData &other) const;
+public:
+    const std::string& getCity() const;
+    void setCity(const std::string& city);
+
+    const std::vector<WeatherData>& getDailyWeather() const;
+    void setDailyWeather(const std::vector<WeatherData>& dailyWeather);
+
+    const std::string& getMessageError() const;
+    void setMessageError(const std::string& messageError);
+
+    bool operator==(const WeekWeatherData& other) const;
+    bool operator!=(const WeekWeatherData& other) const;
 };
-
-inline bool WeekWeatherData::operator==(const WeekWeatherData &other) const {
-    return city == other.city &&
-           messageError == other.messageError &&
-           dailyWeather.size() == other.dailyWeather.size() &&
-           std::equal(dailyWeather.begin(), dailyWeather.end(), other.dailyWeather.begin());
-}
-
-inline bool WeekWeatherData::operator!=(const WeekWeatherData &other) const {
-    return !(*this == other);
-}
 
 #endif // WEEKWEATHERDATA_H
