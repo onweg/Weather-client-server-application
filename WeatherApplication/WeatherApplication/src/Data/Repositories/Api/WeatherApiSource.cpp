@@ -94,9 +94,11 @@ void WeatherApiSource::handleCityCoordinatesReply(QNetworkReply *reply, QFutureI
     if (!jsonResult.isSuccess()) {
         return finishWithError(futureInterface, jsonResult.errorMessage(), reply);
     }
-    auto [lat, lon] = jsonResult.value();
-            fetchWeatherByCoordinates(lat, lon, futureInterface);
-            reply->deleteLater();
+    const auto& value = jsonResult.value();
+    QString lat = value.first;
+    QString lon = value.second;
+    fetchWeatherByCoordinates(lat, lon, futureInterface);
+    reply->deleteLater();
 }
 
 void WeatherApiSource::fetchWeatherByCoordinates(const QString &lat, const QString &lon, QFutureInterface<Result<WeekWeatherData> > &futureInterface) {
