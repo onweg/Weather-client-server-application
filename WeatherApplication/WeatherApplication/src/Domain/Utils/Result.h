@@ -37,4 +37,32 @@ private:
     Result(const std::string& error) : success_(false), value_(), errorMessage_(error) {}
 };
 
+template<>
+class Result<void> {
+public:
+    static Result<void> success() {
+        return Result<void>();
+    }
+
+    static Result<void> failure(const std::string& errorMessage) {
+        return Result<void>(errorMessage);
+    }
+
+    bool isSuccess() const {
+        return success_;
+    }
+
+    const std::string& errorMessage() const {
+        return errorMessage_;
+    }
+
+private:
+    bool success_;
+    std::string errorMessage_;
+
+    // Для void нет value_
+    Result() : success_(true), errorMessage_("") {}
+    explicit Result(const std::string& error) : success_(false), errorMessage_(error) {}
+};
+
 #endif // RESULT_H

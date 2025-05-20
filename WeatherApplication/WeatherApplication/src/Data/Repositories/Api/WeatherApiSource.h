@@ -20,7 +20,7 @@ public:
     QFuture<Result<WeekWeatherData>> findWeatherDataByCity(const std::string city) override;
 
 private:
-    void initConfig();
+    Result<void> tryInitConfig();
     void handleCityCoordinatesReply(QNetworkReply* reply,
                                     QFutureInterface<Result<WeekWeatherData>>& futureInterface);
     void fetchWeatherByCoordinates(const QString& lat,
@@ -31,6 +31,12 @@ private:
     void finishWithError(QFutureInterface<Result<WeekWeatherData>>& futureInterface,
                          const std::string& errorMessage,
                          QNetworkReply* reply);
+    QString buildCityRequestUrl(const std::string& city) const;
+    Result<std::pair<QString, QString>> parseCityCoordinatesJson(QNetworkReply* reply);
+    Result<WeekWeatherData> parseWeatherJson(QNetworkReply* reply);
+    QFuture<Result<WeekWeatherData>> finishWithImmediateError(
+        QFutureInterface<Result<WeekWeatherData>>& futureInterface,
+        const std::string& errorMessage);
 
     std::shared_ptr<IConfigProvider> configProvider_;
     std::shared_ptr<ApiConfig> apiConfig_;

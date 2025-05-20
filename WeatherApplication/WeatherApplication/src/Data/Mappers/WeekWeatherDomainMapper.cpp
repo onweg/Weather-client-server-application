@@ -6,7 +6,6 @@ WeekWeatherDataDto WeekWeatherDomainMapper::toDto(const WeekWeatherData& domain)
     for (const auto& weather : domain.dailyWeather) {
         dailyDtos.push_back(WeatherDomainMapper::toDto(weather));
     }
-
     return WeekWeatherDataDto{
         domain.city,
         dailyDtos,
@@ -19,7 +18,6 @@ WeekWeatherData WeekWeatherDomainMapper::fromDto(const WeekWeatherDataDto& dto) 
     for (const auto& weatherDto : dto.dailyWeather) {
         dailyWeather.push_back(WeatherDomainMapper::fromDto(weatherDto));
     }
-
     return WeekWeatherData{
         dto.city,
         dailyWeather,

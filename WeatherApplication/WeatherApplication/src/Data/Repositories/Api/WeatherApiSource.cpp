@@ -18,87 +18,16 @@ WeatherApiSource::WeatherApiSource(std::shared_ptr<IConfigProvider> config, QObj
 QFuture<Result<WeekWeatherData>> WeatherApiSource::findWeatherDataByCity(const std::string city) {
     QFutureInterface<Result<WeekWeatherData>> futureInterface;
     futureInterface.reportStarted();
-
-    try {
-        initConfig();
-    } catch (const std::exception& e) {
-        futureInterface.reportResult(Result<WeekWeatherData>::failure(e.what()));
-        futureInterface.reportFinished();
-        return futureInterface.future();
+    auto configResult = tryInitConfig();
+    if (!configResult.isSuccess()) {
+        return finishWithImmediateError(futureInterface, configResult.errorMessage());
     }
-
-    QString cityName = QString::fromStdString(city);
-    QString url = QString::fromStdString(apiConfig_->urlFindCityByName).arg(cityName, QString::fromStdString(apiConfig_->key));
-    QNetworkRequest request((QUrl(url)));
-    QNetworkReply* reply = networkManager_->get(request);
-
-    connect(reply, &QNetworkReply::finished, this, [this, reply, cityName, futureInterface]() mutable {
+    auto url = buildCityRequestUrl(city);
+    auto* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
+    connect(reply, &QNetworkReply::finished, this, [this, reply, futureInterface]() mutable {
         handleCityCoordinatesReply(reply, futureInterface);
     });
-
     return futureInterface.future();
-}
-
-void WeatherApiSource::handleCityCoordinatesReply(QNetworkReply* reply,
-                                                  QFutureInterface<Result<WeekWeatherData>>& futureInterface) {
-    if (reply->error() != QNetworkReply::NoError) {
-        finishWithError(futureInterface, reply->errorString().toStdString(), reply);
-        return;
-    }
-
-    QByteArray responseData = reply->readAll();
-    QJsonParseError error;
-    QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData, &error);
-    if (error.error != QJsonParseError::NoError  || !jsonDocument.isArray() || jsonDocument.array().isEmpty()) {
-        finishWithError(futureInterface, "Ошибка при получении координат города", reply);
-        return;
-    }
-
-    QJsonObject cityData = jsonDocument.array().at(0).toObject();
-    QString lat = QString::number(cityData["lat"].toDouble());
-    QString lon = QString::number(cityData["lon"].toDouble());
-
-    fetchWeatherByCoordinates(lat, lon, futureInterface);
-    reply->deleteLater();
-}
-
-void WeatherApiSource::fetchWeatherByCoordinates(const QString& lat, const QString& lon,
-                                                 QFutureInterface<Result<WeekWeatherData>>& futureInterface) {
-    QString weatherUrl = QString::fromStdString(apiConfig_->urlFindWeatherByCoordinates)
-                             .arg(lat, lon, QString::fromStdString(apiConfig_->key));
-
-    QNetworkRequest request((QUrl(weatherUrl)));
-    QNetworkReply* reply = networkManager_->get(request);
-
-    connect(reply, &QNetworkReply::finished, this, [this, reply, futureInterface]() mutable {
-        handleWeatherReply(reply, futureInterface);
-    });
-}
-
-void WeatherApiSource::handleWeatherReply(QNetworkReply* reply,
-                                          QFutureInterface<Result<WeekWeatherData>>& futureInterface) {
-    if (reply->error() != QNetworkReply::NoError) {
-        finishWithError(futureInterface, reply->errorString().toStdString(), reply);
-        return;
-    }
-
-    QByteArray data = reply->readAll();
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(data, &error);
-    if (error.error != QJsonParseError::NoError || !doc.isObject()) {
-        finishWithError(futureInterface, "Ошибка парсинга JSON с погодой", reply);
-        return;
-    }
-
-    WeekWeatherData weatherData = WeatherJsonConverter::parseWeekWeather(doc.object());
-    if (!weatherData.messageError.empty()) {
-        finishWithError(futureInterface, weatherData.messageError, reply);
-        return;
-    }
-
-    futureInterface.reportResult(Result<WeekWeatherData>::success(weatherData));
-    futureInterface.reportFinished();
-    reply->deleteLater();
 }
 
 void WeatherApiSource::finishWithError(QFutureInterface<Result<WeekWeatherData>>& futureInterface,
@@ -108,13 +37,85 @@ void WeatherApiSource::finishWithError(QFutureInterface<Result<WeekWeatherData>>
     if (reply) reply->deleteLater();
 }
 
-void WeatherApiSource::initConfig() {
-    if (!apiConfig_) {
-        auto result = configProvider_->getApiConfig();
-        if (!result.isSuccess()) {
-            throw std::runtime_error(result.errorMessage());
-        }
-        apiConfig_ = std::make_shared<ApiConfig>(result.value());
-    }
+QString WeatherApiSource::buildCityRequestUrl(const std::string &city) const {
+    QString cityName = QString::fromStdString(city);
+    return QString::fromStdString(apiConfig_->urlFindCityByName).arg(cityName, QString::fromStdString(apiConfig_->key));
 }
 
+Result<std::pair<QString, QString> > WeatherApiSource::parseCityCoordinatesJson(QNetworkReply *reply) {
+    if (reply->error() != QNetworkReply::NoError) {
+        return Result<std::pair<QString, QString>>::failure(reply->errorString().toStdString());
+    }
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(reply->readAll(), &error);
+    if (error.error != QJsonParseError::NoError || !doc.isArray() || doc.array().isEmpty()) {
+        return Result<std::pair<QString, QString>>::failure("Ошибка при получении координат города");
+    }
+    QJsonObject obj = doc.array().first().toObject();
+    QString lat = QString::number(obj["lat"].toDouble());
+    QString lon = QString::number(obj["lon"].toDouble());
+
+    return Result<std::pair<QString, QString>>::success({lat, lon});
+}
+
+Result<WeekWeatherData> WeatherApiSource::parseWeatherJson(QNetworkReply *reply) {
+    if (reply->error() != QNetworkReply::NoError) {
+        return Result<WeekWeatherData>::failure(reply->errorString().toStdString());
+    }
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(reply->readAll(), &error);
+    if (error.error != QJsonParseError::NoError || !doc.isObject()) {
+        return Result<WeekWeatherData>::failure("Ошибка парсинга JSON с погодой");
+    }
+    WeekWeatherData data = WeatherJsonConverter::parseWeekWeather(doc.object());
+    if (!data.messageError.empty()) {
+        return Result<WeekWeatherData>::failure(data.messageError);
+    }
+    return Result<WeekWeatherData>::success(data);
+}
+
+QFuture<Result<WeekWeatherData> > WeatherApiSource::finishWithImmediateError(QFutureInterface<Result<WeekWeatherData> > &futureInterface, const std::string &errorMessage) {
+
+    futureInterface.reportResult(Result<WeekWeatherData>::failure(errorMessage));
+    futureInterface.reportFinished();
+    return futureInterface.future();
+}
+
+Result<void> WeatherApiSource::tryInitConfig() {
+    if (apiConfig_) return Result<void>::success();
+    auto result = configProvider_->getApiConfig();
+    if (!result.isSuccess()) return Result<void>::failure(result.errorMessage());
+    apiConfig_ = std::make_shared<ApiConfig>(result.value());
+    return Result<void>::success();
+}
+
+void WeatherApiSource::handleCityCoordinatesReply(QNetworkReply *reply, QFutureInterface<Result<WeekWeatherData> > &futureInterface) {
+    auto jsonResult = parseCityCoordinatesJson(reply);
+    if (!jsonResult.isSuccess()) {
+        return finishWithError(futureInterface, jsonResult.errorMessage(), reply);
+    }
+    auto [lat, lon] = jsonResult.value();
+            fetchWeatherByCoordinates(lat, lon, futureInterface);
+            reply->deleteLater();
+}
+
+void WeatherApiSource::fetchWeatherByCoordinates(const QString &lat, const QString &lon, QFutureInterface<Result<WeekWeatherData> > &futureInterface) {
+    QString url = QString::fromStdString(apiConfig_->urlFindWeatherByCoordinates)
+            .arg(lat, lon, QString::fromStdString(apiConfig_->key));
+    QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply, futureInterface]() mutable {
+        handleWeatherReply(reply, futureInterface);
+    });
+}
+
+
+void WeatherApiSource::handleWeatherReply(QNetworkReply *reply, QFutureInterface<Result<WeekWeatherData> > &futureInterface) {
+    auto weatherResult = parseWeatherJson(reply);
+    if (!weatherResult.isSuccess()) {
+        return finishWithError(futureInterface, weatherResult.errorMessage(), reply);
+    }
+    futureInterface.reportResult(Result<WeekWeatherData>::success(weatherResult.value()));
+    futureInterface.reportFinished();
+    reply->deleteLater();
+}

@@ -73,7 +73,6 @@ void UserRepository::sendHttpRequest(const QNetworkRequest& req, const QByteArra
                                      std::shared_ptr<QFutureInterface<AuthorizationReply>> futureInterface,
                                      AuthCommand /*command*/) {
     QNetworkReply* reply = networkManager_->post(req, data);
-
     QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, user, futureInterface]() {
         handleReply(reply, user, futureInterface);
     });
@@ -92,21 +91,16 @@ void UserRepository::handleReply(QNetworkReply* reply,
 AuthorizationReply UserRepository::parseReply(const QByteArray& response, const AuthorizationRequest& user) {
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(response, &error);
-
     if (error.error != QJsonParseError::NoError) {
         return AuthorizationReply::failure("Ошибка парсинга JSON: " + error.errorString().toStdString());
     }
-
     if (!doc.isObject()) {
         return AuthorizationReply::failure("JSON не является объектом");
     }
-
     AuthorizationReply result = AuthorizationReplyJsonConverter::parseAuthorizationReply(doc.object());
-
     if (result.authorized) {
         sharedState_->setUsername(user.username);
     }
-
     return result;
 }
 
