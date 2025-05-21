@@ -16,6 +16,7 @@ public:
     void addWeekWeather(const std::string& city, const WeekWeatherData& data) override;
 
 private:
+    static constexpr int MAX_CACHE_SIZE = 10; // максимальное количество записей
     struct CacheEntry {
         WeekWeatherData data;
         std::chrono::system_clock::time_point timestamp;
@@ -30,6 +31,7 @@ private:
     int findDayIndex(const std::vector<WeatherData>& days, const std::string& date) const;
     void removeCity(const std::string& city);
     void clearExpired();
+    void removeOldestEntry();
 };
 
 #endif // WEATHERCACHE_H

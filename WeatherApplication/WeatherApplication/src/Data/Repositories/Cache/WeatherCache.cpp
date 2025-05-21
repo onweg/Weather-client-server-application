@@ -24,6 +24,10 @@ Result<WeekWeatherData> WeatherCache::getWeekWeather(const std::string& city) {
 }
 
 void WeatherCache::addWeekWeather(const std::string& city, const WeekWeatherData& data) {
+    clearExpired();
+    if (cache_.size() >= MAX_CACHE_SIZE) {
+        removeOldestEntry();
+    }
     cache_[city] = {data, std::chrono::system_clock::now()};
 }
 
@@ -62,4 +66,19 @@ void WeatherCache::clearExpired() {
             ++it;
         }
     }
+}
+
+void WeatherCache::removeOldestEntry() {
+    if (cache_.empty()) {
+        return;
+    }
+
+    auto oldestIt = cache_.begin();
+    for (auto it = std::next(cache_.begin()); it != cache_.end(); ++it) {
+        if (it->second.timestamp < oldestIt->second.timestamp) {
+            oldestIt = it;
+        }
+    }
+
+    cache_.erase(oldestIt);
 }
