@@ -46,8 +46,15 @@ CONFIG += \
 PKGCONFIG += \
 
 SOURCES += \
+    src/Data/Mappers/ApiConfigDomainMapper.cpp \
+    src/Data/Mappers/AppConfigDomainMapper.cpp \
+    src/Data/Mappers/AuthorizationReplyDomainMapper.cpp \
+    src/Data/Mappers/AuthorizationRequestDomainMapper.cpp \
+    src/Data/Mappers/ServerHostConfigDomainMapper.cpp \
     src/Data/Mappers/WeatherDomainMapper.cpp \
+    src/Data/Mappers/WeatherHistoryItemDomainMapper.cpp \
     src/Data/Mappers/WeekWeatherDomainMapper.cpp \
+    src/Data/Repositories/Database/QtDatabaseConnection.cpp \
     src/Data/Repositories/Database/SqliteWeatherHistoryRepository.cpp \
     src/Data/Repositories/Database/WeatherDatabaseInitializer.cpp \
     src/Data/Repositories/SharedState/SharedState.cpp \
@@ -85,10 +92,23 @@ SOURCES += \
     src/main.cpp
 
 HEADERS += \
+    src/Data/DtoModels/ApiConfigDto.h \
+    src/Data/DtoModels/AppConfigDto.h \
+    src/Data/DtoModels/AuthorizationReplyDto.h \
+    src/Data/DtoModels/AuthorizationRequestDto.h \
+    src/Data/DtoModels/ServerHostConfigDto.h \
     src/Data/DtoModels/WeatherDataDto.h \
+    src/Data/DtoModels/WeatherHistoryItemDto.h \
     src/Data/DtoModels/WeekWeatherDataDto.h \
+    src/Data/Mappers/ApiConfigDomainMapper.h \
+    src/Data/Mappers/AppConfigDomainMapper.h \
+    src/Data/Mappers/AuthorizationReplyDomainMapper.h \
+    src/Data/Mappers/AuthorizationRequestDomainMapper.h \
+    src/Data/Mappers/ServerHostConfigDomainMapper.h \
     src/Data/Mappers/WeatherDomainMapper.h \
+    src/Data/Mappers/WeatherHistoryItemDomainMapper.h \
     src/Data/Mappers/WeekWeatherDomainMapper.h \
+    src/Data/Repositories/Database/QtDatabaseConnection.h \
     src/Data/Repositories/Database/SqliteWeatherHistoryRepository.h \
     src/Data/Repositories/Database/WeatherDatabaseInitializer.h \
     src/Data/Repositories/SharedState/SharedState.h \
@@ -106,6 +126,7 @@ HEADERS += \
     src/Domain/Interfaces/Config/IConfigProvider.h \
     src/Domain/Interfaces/Api/IUserRepository.h \
     src/Domain/Interfaces/Api/IApiWeatherSource.h \
+    src/Domain/Interfaces/Database/IWeatherDatabaseConnection.h \
     src/Domain/Interfaces/Database/IWeatherDatabaseInitializer.h \
     src/Domain/Interfaces/Database/IWeatherHistoryRepository.h \
     src/Domain/Interfaces/SharedState/ISharedState.h \

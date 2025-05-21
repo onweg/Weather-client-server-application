@@ -30,8 +30,8 @@ QFuture<Result<WeekWeatherData>> WeatherRepository::getWeeklyWeather(const std::
 
 Result<WeatherData> WeatherRepository::findDayInWeek(const WeekWeatherData &week, const std::string &targetDate)
 {
-    for (const auto& day : week.dailyWeather) {
-        if (day.date == targetDate) {
+    for (const auto& day : week.getDailyWeather()) {
+        if (day.getDate() == targetDate) {
             return Result<WeatherData>::success(day);
         }
     }

@@ -3,13 +3,13 @@
 
 WeekWeatherDataDto WeekWeatherDomainMapper::toDto(const WeekWeatherData& domain) {
     std::vector<WeatherDataDto> dailyDtos;
-    for (const auto& weather : domain.dailyWeather) {
+    for (const auto& weather : domain.getDailyWeather()) {
         dailyDtos.push_back(WeatherDomainMapper::toDto(weather));
     }
     return WeekWeatherDataDto{
-        domain.city,
+        domain.getCity(),
         dailyDtos,
-        domain.messageError
+        domain.getMessageError()
     };
 }
 

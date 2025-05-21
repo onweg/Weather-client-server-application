@@ -3,19 +3,19 @@
 
 #include <QObject>
 #include <QJsonObject>
-#include "../Domain/Entities/AuthorizationReply.h"
+#include "../Data/DtoModels/AuthorizationReplyDto.h"
 
 class AuthorizationReplyJsonConverter
 {
 public:
     explicit AuthorizationReplyJsonConverter();
 
-    static AuthorizationReply parseAuthorizationReply(const QJsonObject &jsonObj);
+    static AuthorizationReplyDto parseAuthorizationReply(const QJsonObject &jsonObj);
 
 private:
     static bool hasValidStatusField(const QJsonObject& obj);
     static bool hasValidMessageField(const QJsonObject& obj);
-    static AuthorizationReply createReplyFromStatusAndMessage(const QString& status, const QString& message);
+    static AuthorizationReplyDto createReplyFromStatusAndMessage(const QString& status, const QString& message);
 
 signals:
 

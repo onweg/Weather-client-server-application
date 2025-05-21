@@ -1,6 +1,9 @@
 #include "WeatherApiSource.h"
 #include "../../../Utils/WeatherJsonConverter.h"
 
+#include "../../DtoModels/WeekWeatherDataDto.h"
+#include "../../Mappers/WeekWeatherDomainMapper.h"
+
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QJsonDocument>
@@ -39,7 +42,7 @@ void WeatherApiSource::finishWithError(QFutureInterface<Result<WeekWeatherData>>
 
 QString WeatherApiSource::buildCityRequestUrl(const std::string &city) const {
     QString cityName = QString::fromStdString(city);
-    return QString::fromStdString(apiConfig_->urlFindCityByName).arg(cityName, QString::fromStdString(apiConfig_->key));
+    return QString::fromStdString(apiConfig_->getUrlFindCityByName()).arg(cityName, QString::fromStdString(apiConfig_->getKey()));
 }
 
 Result<std::pair<QString, QString> > WeatherApiSource::parseCityCoordinatesJson(QNetworkReply *reply) {
@@ -67,9 +70,10 @@ Result<WeekWeatherData> WeatherApiSource::parseWeatherJson(QNetworkReply *reply)
     if (error.error != QJsonParseError::NoError || !doc.isObject()) {
         return Result<WeekWeatherData>::failure("Ошибка парсинга JSON с погодой");
     }
-    WeekWeatherData data = WeatherJsonConverter::parseWeekWeather(doc.object());
-    if (!data.messageError.empty()) {
-        return Result<WeekWeatherData>::failure(data.messageError);
+    WeekWeatherDataDto dto =  WeatherJsonConverter::parseWeekWeather(doc.object());
+    WeekWeatherData data = WeekWeatherDomainMapper::fromDto(dto);
+    if (!data.getMessageError().empty()) {
+        return Result<WeekWeatherData>::failure(data.getMessageError());
     }
     return Result<WeekWeatherData>::success(data);
 }
@@ -102,8 +106,8 @@ void WeatherApiSource::handleCityCoordinatesReply(QNetworkReply *reply, QFutureI
 }
 
 void WeatherApiSource::fetchWeatherByCoordinates(const QString &lat, const QString &lon, QFutureInterface<Result<WeekWeatherData> > &futureInterface) {
-    QString url = QString::fromStdString(apiConfig_->urlFindWeatherByCoordinates)
-            .arg(lat, lon, QString::fromStdString(apiConfig_->key));
+    QString url = QString::fromStdString(apiConfig_->getUrlFindWeatherByCoordinates())
+            .arg(lat, lon, QString::fromStdString(apiConfig_->getKey()));
     QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
 
     connect(reply, &QNetworkReply::finished, this, [this, reply, futureInterface]() mutable {

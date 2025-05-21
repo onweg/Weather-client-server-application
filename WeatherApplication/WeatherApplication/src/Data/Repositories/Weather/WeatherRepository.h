@@ -13,7 +13,6 @@ public:
         std::shared_ptr<IWeatherCacheSource> cache,
         IApiWeatherSource* api,
         QObject* parent = nullptr);
-    // принимаем примитивы возвращаем entiry
     QFuture<Result<WeatherData>> getDailyWeather(const std::string& city, const std::string& date) override;
     QFuture<Result<WeekWeatherData>> getWeeklyWeather(const std::string& city) override;
 

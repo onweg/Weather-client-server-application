@@ -20,7 +20,7 @@ public:
                               std::shared_ptr<GetWeeklyWeatherUseCase> getWeeklyWeatherUC,
                               std::shared_ptr<SaveWeatherHistoryUseCase> saveHistory,
                               QObject* parent = nullptr);
-    // принимаем от UI примитивы, отправляем примитивы в UseCase entity
+    // принимаем от UI примитивы, отправляем entity в UseCase
     // получаем от UsecCase Entity, преобразуем их в UIModel, сигнализируем UI
 
 

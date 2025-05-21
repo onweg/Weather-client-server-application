@@ -11,8 +11,6 @@ class WeatherCache : public IWeatherCacheSource
 {
 public:
     WeatherCache();
-    // на сохранение данных я принимаю entity, сохраняю entity модель, ничего не возвращаю
-    // на взятие данных принимаю примитивы с++, получаю entity, возвращаю entity
     Result<WeatherData> getDayWeather(const std::string& city, const std::string& date) override;
     Result<WeekWeatherData> getWeekWeather(const std::string& city) override;
     void addWeekWeather(const std::string& city, const WeekWeatherData& data) override;

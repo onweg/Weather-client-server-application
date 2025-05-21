@@ -4,7 +4,7 @@ AppConfigJsonConverter::AppConfigJsonConverter()
 {
 }
 
-bool AppConfigJsonConverter::fromJson(const QJsonObject& jsonObject, AppConfig& config)
+bool AppConfigJsonConverter::fromJson(const QJsonObject& jsonObject, AppConfigDto& config)
 {
     if (!parseServerHostConfig(jsonObject, config.serverHostConfig)) {
         return false;
@@ -15,7 +15,7 @@ bool AppConfigJsonConverter::fromJson(const QJsonObject& jsonObject, AppConfig& 
     return true;
 }
 
-bool AppConfigJsonConverter::parseServerHostConfig(const QJsonObject& jsonObject, ServerHostConfig& config) {
+bool AppConfigJsonConverter::parseServerHostConfig(const QJsonObject& jsonObject, ServerHostConfigDto& config) {
     const QJsonObject hostObj = getJsonObject(jsonObject, "server host");
     if (hostObj.isEmpty()) return false;
     config.ip = getStringValue(hostObj, "ip");
@@ -23,7 +23,7 @@ bool AppConfigJsonConverter::parseServerHostConfig(const QJsonObject& jsonObject
     return !config.ip.empty() && !config.port.empty();
 }
 
-bool AppConfigJsonConverter::parseApiConfig(const QJsonObject& jsonObject, ApiConfig& config) {
+bool AppConfigJsonConverter::parseApiConfig(const QJsonObject& jsonObject, ApiConfigDto& config) {
     const QJsonObject apiObj = getJsonObject(jsonObject, "api");
     if (apiObj.isEmpty()) return false;
     config.urlFindCityByName = getStringValue(apiObj, "urlFindCityByName");

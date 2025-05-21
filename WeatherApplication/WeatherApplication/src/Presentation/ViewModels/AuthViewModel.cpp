@@ -40,10 +40,10 @@ void AuthViewModel::setupWatcherAndStart(QFuture<AuthorizationReply> future) {
 
 void AuthViewModel::handleAuthResult(QFutureWatcher<AuthorizationReply> *watcher) {
     const AuthorizationReply reply = watcher->result();
-    if (reply.authorized) {
+    if (reply.isAuthorized()) {
         emit authSucceeded();
     } else {
-        emit authFailed(QString::fromStdString(reply.messageError));
+        emit authFailed(QString::fromStdString(reply.getMessageError()));
     }
     watcher->deleteLater();
 }

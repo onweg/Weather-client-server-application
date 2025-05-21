@@ -7,7 +7,7 @@ Result<WeatherData> WeatherCache::getDayWeather(const std::string& city, const s
         return Result<WeatherData>::failure("Не нашлись данные о погоде в городе " + city);
     }
 
-    const auto& days = cache_.at(city).data.dailyWeather;
+    const auto& days = cache_.at(city).data.getDailyWeather();
     int index = findDayIndex(days, date);
     if (index >= 0 && index < MAX_COUNT_DAYS) {
         return Result<WeatherData>::success(days[index]);
@@ -43,7 +43,7 @@ bool WeatherCache::isExpired(const CacheEntry& entry) const {
 
 int WeatherCache::findDayIndex(const std::vector<WeatherData>& days, const std::string& date) const {
     for (size_t i = 0; i < days.size(); ++i) {
-        if (days[i].date == date) {
+        if (days[i].getDate() == date) {
             return static_cast<int>(i);
         }
     }

@@ -5,13 +5,13 @@ AuthorizationReplyJsonConverter::AuthorizationReplyJsonConverter()
 
 }
 
-AuthorizationReply AuthorizationReplyJsonConverter::parseAuthorizationReply(const QJsonObject &jsonObj)
+AuthorizationReplyDto AuthorizationReplyJsonConverter::parseAuthorizationReply(const QJsonObject &jsonObj)
 {
     if (!hasValidStatusField(jsonObj)) {
-        return AuthorizationReply::failure("Missing or invalid 'status' field in JSON.");
+        return AuthorizationReplyDto::failure("Missing or invalid 'status' field in JSON.");
     }
     if (!hasValidMessageField(jsonObj)) {
-        return AuthorizationReply::failure("Missing or invalid 'message' field in JSON.");
+        return AuthorizationReplyDto::failure("Missing or invalid 'message' field in JSON.");
     }
     QString status = jsonObj["status"].toString();
     QString message = jsonObj["message"].toString();
@@ -29,13 +29,13 @@ bool AuthorizationReplyJsonConverter::hasValidMessageField(const QJsonObject& ob
     return obj.contains("message") && obj["message"].isString();
 }
 
-AuthorizationReply AuthorizationReplyJsonConverter::createReplyFromStatusAndMessage(
+AuthorizationReplyDto AuthorizationReplyJsonConverter::createReplyFromStatusAndMessage(
     const QString& status, const QString& message)
 {
     if (status == "success") {
-        return AuthorizationReply::success();
+        return AuthorizationReplyDto::success();
     } else if (status == "error") {
-        return AuthorizationReply::failure(message.toStdString());
+        return AuthorizationReplyDto::failure(message.toStdString());
     }
-    return AuthorizationReply::failure("Unknown status value: " + status.toStdString());
+    return AuthorizationReplyDto::failure("Unknown status value: " + status.toStdString());
 }

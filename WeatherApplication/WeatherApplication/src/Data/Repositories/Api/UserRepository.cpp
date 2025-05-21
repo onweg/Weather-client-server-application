@@ -1,4 +1,9 @@
 #include "UserRepository.h"
+
+#include "../../DtoModels/AuthorizationRequestDto.h"
+#include "../../DtoModels/AuthorizationReplyDto.h"
+#include "../../Mappers/AuthorizationRequestDomainMapper.h"
+#include "../../Mappers/AuthorizationReplyDomainMapper.h"
 #include "../../../Utils/AuthorizationInfoJsonConverter.h"
 #include "../../../Utils/AuthorizationReplyJsonConverter.h"
 
@@ -53,15 +58,19 @@ QFuture<AuthorizationReply> UserRepository::startAuthorization(const Authorizati
 
 QByteArray UserRepository::buildRequestData(const AuthorizationRequest& request, AuthCommand command) {
     if (command == AuthCommand::Login) {
-        return AuthorizationInfoJsonConverter::loginUserToJsonDocument(request).toJson();
+        AuthorizationRequestDto dto = AuthorizationRequestDomainMapper::toDto(request);
+        auto jsonDoc = AuthorizationInfoJsonConverter::loginUserToJsonDocument(dto);
+        return jsonDoc.toJson();
     } else {
-        return AuthorizationInfoJsonConverter::registerUserToJsonDocument(request).toJson();
+        AuthorizationRequestDto dto = AuthorizationRequestDomainMapper::toDto(request);
+        auto jsonDoc = AuthorizationInfoJsonConverter::registerUserToJsonDocument(dto);
+        return jsonDoc.toJson();
     }
 }
 
 QNetworkRequest UserRepository::buildHttpRequest() {
-    QString urlStr = "http://" + QString::fromStdString(serverHostConfig_->ip) + ":" +
-                     QString::fromStdString(serverHostConfig_->port);
+    QString urlStr = "http://" + QString::fromStdString(serverHostConfig_->getIp()) + ":" +
+                     QString::fromStdString(serverHostConfig_->getPort());
     QUrl url(urlStr);
     QNetworkRequest req(url);
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -97,9 +106,10 @@ AuthorizationReply UserRepository::parseReply(const QByteArray& response, const 
     if (!doc.isObject()) {
         return AuthorizationReply::failure("JSON не является объектом");
     }
-    AuthorizationReply result = AuthorizationReplyJsonConverter::parseAuthorizationReply(doc.object());
-    if (result.authorized) {
-        sharedState_->setUsername(user.username);
+    AuthorizationReplyDto dto = AuthorizationReplyJsonConverter::parseAuthorizationReply(doc.object());
+    AuthorizationReply result = AuthorizationReplyDomainMapper::fromDto(dto);
+    if (result.isAuthorized()) {
+        sharedState_->setUsername(user.getUsername());
     }
     return result;
 }

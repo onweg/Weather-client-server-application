@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QJsonDocument>
 
+#include "../../DtoModels/AppConfigDto.h"
+#include "../../Mappers/AppConfigDomainMapper.h"
 #include "../../../Utils/AppConfigJsonConverter.h"
 
 ConfigLoader::ConfigLoader()
@@ -21,10 +23,12 @@ Result<AppConfig> ConfigLoader::load()
     if (!jsonResult.isSuccess()) {
         return Result<AppConfig>::failure(jsonResult.errorMessage());
     }
-    AppConfig config;
-    if (!AppConfigJsonConverter::fromJson(jsonResult.value(), config)) {
+    AppConfigDto dto;
+    int result = AppConfigJsonConverter::fromJson(jsonResult.value(), dto);
+    if (!result) {
         return Result<AppConfig>::failure("Некорректный формат config.json");
     }
+    AppConfig config = AppConfigDomainMapper::fromDto(dto);
     return Result<AppConfig>::success(config);
 }
 

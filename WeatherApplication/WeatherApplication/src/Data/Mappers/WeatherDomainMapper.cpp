@@ -2,19 +2,19 @@
 
 WeatherDataDto WeatherDomainMapper::toDto(const WeatherData& domain) {
     return WeatherDataDto{
-        domain.lat,
-        domain.lon,
-        domain.city,
-        domain.date,
-        domain.description,
-        domain.temp,
-        domain.feels_like,
-        domain.temp_max,
-        domain.temp_min,
-        domain.wind_speed,
-        domain.humidity,
-        domain.pressure,
-        domain.messageError
+        domain.getLat(),
+        domain.getLon(),
+        domain.getCity(),
+        domain.getDate(),
+        domain.getDescription(),
+        domain.getTemp(),
+        domain.getFeelsLike(),
+        domain.getTempMax(),
+        domain.getTempMin(),
+        domain.getWindSpeed(),
+        domain.getHumidity(),
+        domain.getPressure(),
+        domain.getMessageError()
     };
 }
 

@@ -1,30 +1,35 @@
 #ifndef SQLITEWEATHERHISTORYREPOSITORY_H
 #define SQLITEWEATHERHISTORYREPOSITORY_H
 
-#include <QSqlDatabase>
-#include <QDateTime>
+#include <QSqlQuery>
 #include <memory>
+
 #include "../../../Domain/Interfaces/Database/IWeatherHistoryRepository.h"
 #include "../../../Domain/Interfaces/Database/IWeatherDatabaseInitializer.h"
+#include "../../../Domain/Interfaces/Database/IWeatherDatabaseConnection.h"
 #include "../../../Domain/Interfaces/SharedState/ISharedState.h"
+
+#include "../../DtoModels/WeatherHistoryItemDto.h"
 
 class SqliteWeatherHistoryRepository : public IWeatherHistoryRepository {
 public:
-    SqliteWeatherHistoryRepository(std::shared_ptr<IWeatherDatabaseInitializer> dbInitializer, std::shared_ptr<ISharedState> state);
-    // на сохранение данных принимаю entity, перевожу в Dto, перевожу в SQL, отправляю SQL в дб
-    // на взятие данны принимаю ничего, получаю данные SQL, перевожу в DTO, перевожу в Entity, возвращаю Entity
+    explicit SqliteWeatherHistoryRepository(
+        std::shared_ptr<IWeatherDatabaseInitializer> dbInitializer,
+        std::shared_ptr<ISharedState> state);
+
+    void save(const std::string& city, const std::string& date) override;
     std::vector<WeatherHistoryItem> getAll() override;
-    void save(const std::string &city, const std::string &date) override;
 
 private:
-    QSqlDatabase db_;
     std::shared_ptr<ISharedState> sharedState_;
+    std::shared_ptr<IWeatherDatabaseConnection> connection_;
 
-    WeatherHistoryItem extractWeatherHistoryItem(const QSqlQuery& query);
-    std::chrono::system_clock::time_point convertToTimePoint(const QDateTime& dateTime);
     bool executeQuery(QSqlQuery& query, const char* errorMessage);
     void prepareInsertStatement(QSqlQuery& query);
-    void bindInsertValues(QSqlQuery& query, const std::string& city, const std::string& date);
+    void bindInsertValues(QSqlQuery &query, const WeatherHistoryItemDto& dto);
+    WeatherHistoryItem extractWeatherHistoryItem(const QSqlQuery& query);
+    WeatherHistoryItemDto extractWeatherHistoryItemDto(const QSqlQuery &query);
+
 };
 
 #endif // SQLITEWEATHERHISTORYREPOSITORY_H
