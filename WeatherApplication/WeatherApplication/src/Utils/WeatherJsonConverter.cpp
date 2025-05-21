@@ -67,12 +67,12 @@ WeatherDataDto WeatherJsonConverter::parseWeatherData(
     data.city = cityName.toStdString();
     data.date = forecastTime.date().toString("yyyy-MM-dd").toStdString();
     data.temp = mainData["temp"].toDouble();
-    data.feels_like = mainData["feels_like"].toDouble();
-    data.temp_min = mainData["temp_min"].toDouble();
-    data.temp_max = mainData["temp_max"].toDouble();
+    data.feelsLike = mainData["feels_like"].toDouble();
+    data.tempMin = mainData["temp_min"].toDouble();
+    data.tempMax = mainData["temp_max"].toDouble();
     data.humidity = mainData["humidity"].toInt();
     data.pressure = mainData["pressure"].toInt();
-    data.wind_speed = windData["speed"].toDouble();
+    data.windSpeed = windData["speed"].toDouble();
     if (forecast.contains("weather") && forecast["weather"].isArray()) {
         QJsonArray weatherArray = forecast["weather"].toArray();
         if (!weatherArray.isEmpty()) {

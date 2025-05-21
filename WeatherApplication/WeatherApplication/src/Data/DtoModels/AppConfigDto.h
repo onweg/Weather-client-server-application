@@ -6,7 +6,6 @@
 
 struct AppConfigDto
 {
-public:
     ServerHostConfigDto serverHostConfig;
     ApiConfigDto apiConfig;
 };

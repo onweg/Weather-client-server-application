@@ -10,10 +10,10 @@ struct WeatherDataDto {
     std::string date;
     std::string description;
     double temp;
-    double feels_like;
-    double temp_max;
-    double temp_min;
-    double wind_speed;
+    double feelsLike;
+    double tempMax;
+    double tempMin;
+    double windSpeed;
     int humidity;
     int pressure;
     std::string messageError;
