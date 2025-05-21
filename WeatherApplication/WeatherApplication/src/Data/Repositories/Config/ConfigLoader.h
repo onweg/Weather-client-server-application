@@ -9,7 +9,6 @@
 class ConfigLoader : public IConfigLoader {
 public:
     explicit ConfigLoader();
-    // принимаем ничего, получсем Json файл, переводим его в Dto, потом переводит в entiy, возвращаем entiry
     Result<AppConfig> load() override;
 private:
     QByteArray readFile(const QString& path);

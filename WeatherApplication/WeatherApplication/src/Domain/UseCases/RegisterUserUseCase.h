@@ -11,7 +11,6 @@
 class  RegisterUserUseCase {
 public:
     explicit RegisterUserUseCase(IUserRepository* repo);
-    // принимаем entity возвращаем entiry
     QFuture<AuthorizationReply> execute(const AuthorizationRequest& request);
 private:
     IUserRepository* repository_;

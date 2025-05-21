@@ -7,7 +7,6 @@
 class IConfigLoader {
 public:
     virtual ~IConfigLoader() = default;
-    // принимаем ничего возвращаем entiry
     virtual Result<AppConfig> load() = 0;
 };
 

@@ -12,7 +12,6 @@
 class GetWeeklyWeatherUseCase {
 public:
     explicit GetWeeklyWeatherUseCase(IWeatherRepository* weatherRepo);
-    // принимаем entity возвращаем entiry
     QFuture<Result<WeekWeatherData>> execute(const std::string& city);
 
 private:
