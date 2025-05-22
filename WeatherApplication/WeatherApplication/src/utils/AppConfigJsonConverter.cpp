@@ -38,7 +38,17 @@ bool AppConfigJsonConverter::parseApiConfig(const QJsonObject &jsonObject,
 	    getStringValue(apiObj, "urlFindWeatherByCoordinates");
 	config.key = getStringValue(apiObj, "key");
 	return !config.urlFindCityByName.empty() &&
-	       !config.urlFindWeatherByCoordinates.empty() && !config.key.empty();
+            !config.urlFindWeatherByCoordinates.empty() && !config.key.empty();
+}
+
+bool AppConfigJsonConverter::parseCacheConfig(const QJsonObject &jsonObject,
+                                              CacheConfigDto &config)
+{
+    const QJsonObject cacheObj = getJsonObject(jsonObject, "cache");
+    if (cacheObj.isEmpty())
+        return false;
+    config.maxMemoryBytes = getIntValue(cacheObj, "maxMemoryBytes");
+    return config.maxMemoryBytes;
 }
 
 QJsonObject AppConfigJsonConverter::getJsonObject(const QJsonObject &obj,
@@ -59,4 +69,14 @@ std::string AppConfigJsonConverter::getStringValue(const QJsonObject &obj,
 		return obj[key].toString().toStdString();
 	}
 	return {};
+}
+
+int AppConfigJsonConverter::getIntValue(const QJsonObject &obj,
+                                                   const QString &key)
+{
+    if (obj.contains(key))
+    {
+        return obj[key].toInt();
+    }
+    return {};
 }

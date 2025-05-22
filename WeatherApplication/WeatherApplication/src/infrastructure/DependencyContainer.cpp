@@ -50,13 +50,13 @@ WeatherViewModel* DependencyContainer::getWeatherViewModel() {
 bool DependencyContainer::initInfrastructure() {
     if (!createSharedState()) return false;
     if (!createConfigLoader()) return false;
-    if (!createWeatherCache()) return false;
     if (!createDbInitializer()) return false;
     return true;
 }
 
 bool DependencyContainer::initRepositories() {
     if (!createConfigProvider()) return false;
+    if (!createWeatherCache()) return false;
     if (!createUserRepository()) return false;
     if (!createWeatherApiSource()) return false;
     setDbWeatherHistoryRepository();
@@ -102,7 +102,7 @@ bool DependencyContainer::createConfigLoader() {
 
 bool DependencyContainer::createWeatherCache() {
     try {
-        cacheSourceInterface_ = std::make_shared<WeatherCache>();
+        cacheSourceInterface_ = std::make_shared<WeatherCache>(configProviderInterface_);
     } catch (const std::bad_alloc& e) {
         qCritical() << "Ошибка выделения памяти в createWeatherCache:" << e.what();
         return false;

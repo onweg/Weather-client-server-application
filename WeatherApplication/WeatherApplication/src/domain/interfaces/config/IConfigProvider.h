@@ -5,6 +5,7 @@
 
 #include "../../entities/ApiConfig.h"
 #include "../../entities/ServerHostConfig.h"
+#include "../../entities/CacheConfig.h"
 #include "../../utils/Result.h"
 
 class IConfigProvider
@@ -13,6 +14,7 @@ class IConfigProvider
 	virtual ~IConfigProvider() = default;
 	virtual Result<ApiConfig> getApiConfig() = 0;
 	virtual Result<ServerHostConfig> getServerHostConfig() = 0;
+    virtual Result<CacheConfig> getCacheConfig() = 0;
 };
 
 #endif // ICONFIGPROVIDER_H

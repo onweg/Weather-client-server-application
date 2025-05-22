@@ -1,6 +1,11 @@
 #include "WeatherCache.h"
+#include <limits>
+#include <QDebug>
+WeatherCache::WeatherCache(std::shared_ptr<IConfigProvider> config)
+    :configProvider_(std::move(config))
+{
 
-WeatherCache::WeatherCache() {}
+}
 
 Result<WeatherData> WeatherCache::getDayWeather(const std::string &city,
                                                 const std::string &date)
@@ -46,12 +51,25 @@ Result<WeekWeatherData> WeatherCache::getWeekWeather(const std::string &city)
 void WeatherCache::addWeekWeather(const std::string &city,
                                   const WeekWeatherData &data)
 {
+    tryInitConfig();
     clearExpired();
-    if (cache_.size() >= MAX_CACHE_SIZE)
+    size_t dataSize = calculateDataSize(data);
+    if (currentCacheSize_ > std::numeric_limits<size_t>::max() - dataSize)
     {
-        removeOldestEntry();
+        qDebug() << "не добавились данные";
+        return;
     }
-    cache_[city] = {data, std::chrono::system_clock::now()};
+    while (currentCacheSize_ + dataSize > cacheConfig_->getMaxMemoryBytes())
+    {
+        if (cache_.empty()) break;
+        removeOldestEntry(); // Удаляем самые старые записи, пока не освободится место
+    }
+    if (currentCacheSize_ + dataSize <= cacheConfig_->getMaxMemoryBytes())
+    {
+        cache_[city] = {data, std::chrono::system_clock::now()};
+        currentCacheSize_ += dataSize;
+    }
+    qDebug() << "Добавились данные " << currentCacheSize_ ;
 }
 
 bool WeatherCache::hasValidData(const std::string &city)
@@ -96,7 +114,12 @@ int WeatherCache::findDayIndex(const std::vector<WeatherData> &days,
 
 void WeatherCache::removeCity(const std::string &city)
 {
-    cache_.erase(city);
+    auto it = cache_.find(city);
+    if (it != cache_.end())
+    {
+        currentCacheSize_ -= calculateDataSize(it->second.data);
+        cache_.erase(it);
+    }
 }
 
 void WeatherCache::clearExpired()
@@ -105,6 +128,7 @@ void WeatherCache::clearExpired()
     {
         if (isExpired(it->second))
         {
+            currentCacheSize_ -= calculateDataSize(it->second.data);
             it = cache_.erase(it);
         }
         else
@@ -130,3 +154,48 @@ void WeatherCache::removeOldestEntry()
     }
     cache_.erase(oldestIt);
 }
+
+Result<void> WeatherCache::tryInitConfig()
+{
+    if (cacheConfig_)
+        return Result<void>::success();
+    auto result = configProvider_->getCacheConfig();
+    if (!result.isSuccess())
+    {
+        throw std::runtime_error("Failed to load Cache configuration: " +
+                                 result.errorMessage());
+    }
+    cacheConfig_ = std::make_shared<CacheConfig>(result.value());
+    return Result<void>::success();
+}
+
+size_t WeatherCache::calculateDataSize(const WeekWeatherData &data) const
+{
+    size_t totalSize = 0;
+    for (const auto &day : data.getDailyWeather())
+    {
+        totalSize += bytesWeatherData(day);
+    }
+    totalSize += sizeof(data);
+    return totalSize;
+}
+
+size_t WeatherCache::bytesWeatherData(const WeatherData &day) const
+{
+     size_t totalSize = 0;
+     totalSize += sizeof(day.getLat());
+     totalSize += sizeof(day.getLon());
+     totalSize += sizeof(day.getTemp());
+     totalSize += sizeof(day.getFeelsLike());
+     totalSize += sizeof(day.getTempMax());
+     totalSize += sizeof(day.getTempMin());
+     totalSize += sizeof(day.getWindSpeed());
+     totalSize += sizeof(day.getHumidity());
+     totalSize += sizeof(day.getPressure());
+     totalSize += day.getCity().size();
+     totalSize += day.getDate().size();
+     totalSize += day.getDescription().size();
+     totalSize += day.getMessageError().size();
+     return totalSize;
+}
+

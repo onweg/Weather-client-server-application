@@ -12,6 +12,7 @@ class ConfigProvider : public IConfigProvider
 	explicit ConfigProvider(std::shared_ptr<IConfigLoader> configLoader);
 	Result<ApiConfig> getApiConfig() override;
 	Result<ServerHostConfig> getServerHostConfig() override;
+    Result<CacheConfig> getCacheConfig() override;
 
   private:
 	std::shared_ptr<IConfigLoader> configLoader_;

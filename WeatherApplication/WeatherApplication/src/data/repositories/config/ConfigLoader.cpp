@@ -11,7 +11,8 @@
 
 ConfigLoader::ConfigLoader() {}
 
-Result<AppConfig> ConfigLoader::load()
+Result<AppConfig> ConfigLoader::
+load()
 {
 	QByteArray data = readFile(FILE_PATH);
 	if (data.isEmpty())

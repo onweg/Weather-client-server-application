@@ -65,3 +65,5 @@ int main(int argc, char *argv[])
 
 	return application->exec();
 }
+
+// проверить от куда берутся данные из кеш или из api, сохраняются ли вообще данные в кеш

@@ -18,10 +18,14 @@ class AppConfigJsonConverter
 	                                  ServerHostConfigDto &config);
 	static bool parseApiConfig(const QJsonObject &jsonObject,
 	                           ApiConfigDto &config);
+    static bool parseCacheConfig(const QJsonObject &jsonObject,
+                               CacheConfigDto &config);
 	static QJsonObject getJsonObject(const QJsonObject &obj,
 	                                 const QString &key);
 	static std::string getStringValue(const QJsonObject &obj,
 	                                  const QString &key);
+    static int getIntValue(const QJsonObject &obj,
+                            const QString &key);
 };
 
 #endif // APPCONFIGJSONCONVERTER_H

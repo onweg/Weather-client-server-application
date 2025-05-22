@@ -5,6 +5,8 @@
 
 #include "../../../domain/utils/MakeReadyFuture.h"
 
+#include <QDebug>
+
 WeatherRepository::WeatherRepository(std::shared_ptr<IWeatherCacheSource> cache,
                                      IApiWeatherSource *api, QObject *parent)
  : QObject(parent), cache_(std::move(cache)), api_(api)

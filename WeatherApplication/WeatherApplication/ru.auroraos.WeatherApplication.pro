@@ -50,6 +50,7 @@ SOURCES += \
     src/data/mappers/AppConfigDomainMapper.cpp \
     src/data/mappers/AuthorizationReplyDomainMapper.cpp \
     src/data/mappers/AuthorizationRequestDomainMapper.cpp \
+    src/data/mappers/CacheConfigDomainMapper.cpp \
     src/data/mappers/ServerHostConfigDomainMapper.cpp \
     src/data/mappers/WeatherDomainMapper.cpp \
     src/data/mappers/WeatherHistoryItemDomainMapper.cpp \
@@ -59,6 +60,7 @@ SOURCES += \
     src/data/repositories/database/WeatherDatabaseInitializer.cpp \
     src/data/repositories/sharedstate/SharedState.cpp \
     src/data/repositories/weather/WeatherRepository.cpp \
+    src/domain/entities/CacheConfig.cpp \
     src/domain/usecases/GetWeatherHistoryUseCase.cpp \
     src/domain/usecases/SaveWeatherHistoryUseCase.cpp \
     src/domain/entities/AuthorizationReply.cpp \
@@ -96,6 +98,7 @@ HEADERS += \
     src/data/dtomodels/AppConfigDto.h \
     src/data/dtomodels/AuthorizationReplyDto.h \
     src/data/dtomodels/AuthorizationRequestDto.h \
+    src/data/dtomodels/CacheConfigDto.h \
     src/data/dtomodels/ServerHostConfigDto.h \
     src/data/dtomodels/WeatherDataDto.h \
     src/data/dtomodels/WeatherHistoryItemDto.h \
@@ -104,6 +107,7 @@ HEADERS += \
     src/data/mappers/AppConfigDomainMapper.h \
     src/data/mappers/AuthorizationReplyDomainMapper.h \
     src/data/mappers/AuthorizationRequestDomainMapper.h \
+    src/data/mappers/CacheConfigDomainMapper.h \
     src/data/mappers/ServerHostConfigDomainMapper.h \
     src/data/mappers/WeatherDomainMapper.h \
     src/data/mappers/WeatherHistoryItemDomainMapper.h \
@@ -116,6 +120,7 @@ HEADERS += \
     src/domain/entities/AuthorizationReply.h \
     src/domain/entities/AuthorizationRequest.h \
     src/domain/entities/ApiConfig.h \
+    src/domain/entities/CacheConfig.h \
     src/domain/entities/ServerHostConfig.h \
     src/domain/entities/AppConfig.h \
     src/domain/entities/WeatherData.h \
