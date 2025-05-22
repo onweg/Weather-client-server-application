@@ -107,7 +107,6 @@ QFuture<Result<WeekWeatherData>> WeatherApiSource::finishWithImmediateError(
     QFutureInterface<Result<WeekWeatherData>> &futureInterface,
     const std::string &errorMessage)
 {
-
 	futureInterface.reportResult(
 	    Result<WeekWeatherData>::failure(errorMessage));
 	futureInterface.reportFinished();
@@ -123,7 +122,6 @@ Result<void> WeatherApiSource::tryInitConfig()
 	{
 		throw std::runtime_error("Failed to load API configuration: " +
 		                         result.errorMessage());
-		// return Result<void>::failure(result.errorMessage());
 	}
 	apiConfig_ = std::make_shared<ApiConfig>(result.value());
 	return Result<void>::success();
