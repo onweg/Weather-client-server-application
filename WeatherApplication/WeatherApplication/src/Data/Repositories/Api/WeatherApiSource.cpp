@@ -88,7 +88,10 @@ QFuture<Result<WeekWeatherData> > WeatherApiSource::finishWithImmediateError(QFu
 Result<void> WeatherApiSource::tryInitConfig() {
     if (apiConfig_) return Result<void>::success();
     auto result = configProvider_->getApiConfig();
-    if (!result.isSuccess()) return Result<void>::failure(result.errorMessage());
+    if (!result.isSuccess()) {
+        throw std::runtime_error("Failed to load API configuration: " + result.errorMessage());
+        // return Result<void>::failure(result.errorMessage());
+    }
     apiConfig_ = std::make_shared<ApiConfig>(result.value());
     return Result<void>::success();
 }

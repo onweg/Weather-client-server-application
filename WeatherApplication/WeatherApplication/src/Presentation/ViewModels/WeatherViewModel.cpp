@@ -64,11 +64,17 @@ void WeatherViewModel::changeDateAndFetch(int daysOffset) {
 }
 
 void WeatherViewModel::fetchAndSetDailyWeather() {
-    auto future = getDailyWeatherUseCase_->execute(
-                desiredCity_.toStdString(),
-                desiredDate_.toString("yyyy-MM-dd").toStdString()
-                );
-    setupDailyWeatherWatcher(future);
+    try {
+        auto future = getDailyWeatherUseCase_->execute(
+                    desiredCity_.toStdString(),
+                    desiredDate_.toString("yyyy-MM-dd").toStdString()
+                    );
+        setupDailyWeatherWatcher(future);
+    }  catch (const std::runtime_error& error) {
+        WeatherUiMapper::toUiModel({}, weatherModel_);
+        weatherModel_->setMessageError(QString::fromStdString(error.what()));
+        emit weatherDataUpdated();
+    }
 }
 
 void WeatherViewModel::setupDailyWeatherWatcher(QFuture<Result<WeatherData> > future) {
@@ -92,12 +98,19 @@ void WeatherViewModel::handleDailyWeatherResult(const Result<WeatherData> &resul
 }
 
 void WeatherViewModel::setupWeeklyWeatherWatcher(QFuture<Result<WeekWeatherData> > future) {
-    auto* watcher = new QFutureWatcher<Result<WeekWeatherData>>(this);
-    connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
-        handleWeeklyWeatherResult(watcher->result());
-        watcher->deleteLater();
-    });
-    watcher->setFuture(future);
+    try {
+        auto* watcher = new QFutureWatcher<Result<WeekWeatherData>>(this);
+        connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
+            handleWeeklyWeatherResult(watcher->result());
+            watcher->deleteLater();
+        });
+        watcher->setFuture(future);
+    }  catch (const std::runtime_error& error) {
+        WeekWeatherUiMapper::toUiModel({}, weekWeatherModel_);
+        weekWeatherModel_->setMessageError(QString::fromStdString(error.what()));
+        emit weekWeatherDataUpdated();
+    }
+
 }
 
 void WeatherViewModel::handleWeeklyWeatherResult(const Result<WeekWeatherData> &result) {
@@ -108,5 +121,5 @@ void WeatherViewModel::handleWeeklyWeatherResult(const Result<WeekWeatherData> &
         WeekWeatherUiMapper::toUiModel({}, weekWeatherModel_);
         weekWeatherModel_->setMessageError(QString::fromStdString(result.errorMessage()));
     }
-    emit weekWeatherDataUpdated();
+
 }
