@@ -20,9 +20,9 @@ class ApiConfig
 	void setKey(const std::string &key);
 
   private:
-	std::string urlFindCityByName_;
-	std::string urlFindWeatherByCoordinates_;
-	std::string key_;
+    std::string m_urlFindCityByName;
+    std::string m_urlFindWeatherByCoordinates;
+    std::string m_key;
 };
 
 #endif // APICONFIG_H

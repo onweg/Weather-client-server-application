@@ -50,6 +50,10 @@ int main(int argc, char *argv[])
 	auto *rootView = view.data();
 
 	DependencyContainer container(rootView);
+    if (!container.init()) {
+        qDebug() << "Не удалось инициализировать приложение";
+        return -1;
+    }
 
 	view->rootContext()->setContextProperty("authViewModel",
 	                                        container.getAuthViewModel());

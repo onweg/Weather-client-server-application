@@ -1,44 +1,44 @@
 #include "ApiConfig.h"
 
 ApiConfig::ApiConfig()
- : urlFindCityByName_(""), urlFindWeatherByCoordinates_(""), key_("")
+ : m_urlFindCityByName(""), m_urlFindWeatherByCoordinates(""), m_key("")
 {
 }
 
 ApiConfig::ApiConfig(const std::string &urlFindCityByName,
                      const std::string &urlFindWeatherByCoordinates,
                      const std::string &key)
- : urlFindCityByName_(urlFindCityByName),
-   urlFindWeatherByCoordinates_(urlFindWeatherByCoordinates), key_(key)
+ : m_urlFindCityByName(urlFindCityByName),
+   m_urlFindWeatherByCoordinates(urlFindWeatherByCoordinates), m_key(key)
 {
 }
 
 const std::string &ApiConfig::getUrlFindCityByName() const
 {
-	return urlFindCityByName_;
+    return m_urlFindCityByName;
 }
 
 const std::string &ApiConfig::getUrlFindWeatherByCoordinates() const
 {
-	return urlFindWeatherByCoordinates_;
+    return m_urlFindWeatherByCoordinates;
 }
 
 const std::string &ApiConfig::getKey() const
 {
-	return key_;
+    return m_key;
 }
 
 void ApiConfig::setUrlFindCityByName(const std::string &url)
 {
-	urlFindCityByName_ = url;
+    m_urlFindCityByName = url;
 }
 
 void ApiConfig::setUrlFindWeatherByCoordinates(const std::string &url)
 {
-	urlFindWeatherByCoordinates_ = url;
+    m_urlFindWeatherByCoordinates = url;
 }
 
 void ApiConfig::setKey(const std::string &key)
 {
-	key_ = key;
+    m_key = key;
 }
