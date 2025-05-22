@@ -35,8 +35,14 @@ void WeatherViewModel::clickPrevDayButton() {
 }
 
 void WeatherViewModel::clickWeekWeatherDataButton() {
-    auto future = getWeeklyWeatherUseCase_->execute(desiredCity_.toStdString());
-    setupWeeklyWeatherWatcher(future);
+    try {
+        auto future = getWeeklyWeatherUseCase_->execute(desiredCity_.toStdString());
+        setupWeeklyWeatherWatcher(future);
+    }  catch (const std::runtime_error& error) {
+        WeekWeatherUiMapper::toUiModel({}, weekWeatherModel_);
+        weekWeatherModel_->setMessageError(QString::fromStdString(error.what()));
+        emit weekWeatherDataUpdated();
+    }
 }
 
 WeatherUiModel *WeatherViewModel::getWeatherModel()
@@ -98,19 +104,13 @@ void WeatherViewModel::handleDailyWeatherResult(const Result<WeatherData> &resul
 }
 
 void WeatherViewModel::setupWeeklyWeatherWatcher(QFuture<Result<WeekWeatherData> > future) {
-    try {
-        auto* watcher = new QFutureWatcher<Result<WeekWeatherData>>(this);
-        connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
-            handleWeeklyWeatherResult(watcher->result());
-            watcher->deleteLater();
-        });
-        watcher->setFuture(future);
-    }  catch (const std::runtime_error& error) {
-        WeekWeatherUiMapper::toUiModel({}, weekWeatherModel_);
-        weekWeatherModel_->setMessageError(QString::fromStdString(error.what()));
-        emit weekWeatherDataUpdated();
-    }
 
+    auto* watcher = new QFutureWatcher<Result<WeekWeatherData>>(this);
+    connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
+        handleWeeklyWeatherResult(watcher->result());
+        watcher->deleteLater();
+    });
+    watcher->setFuture(future);
 }
 
 void WeatherViewModel::handleWeeklyWeatherResult(const Result<WeekWeatherData> &result) {
