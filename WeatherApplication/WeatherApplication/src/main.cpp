@@ -37,7 +37,7 @@
 
 #include <auroraapp.h>
 
-#include "Infrastructure/DependencyContainer.h"
+#include "infrastructure/DependencyContainer.h"
 
 int main(int argc, char *argv[])
 {
