@@ -1,0 +1,60 @@
+#ifndef DEPENDENCYCONTAINER_H
+#define DEPENDENCYCONTAINER_H
+
+#include <memory>
+
+#include "../domain/interfaces/api/IApiWeatherSource.h"
+#include "../domain/interfaces/api/IUserRepository.h"
+#include "../domain/interfaces/cache/IWeatherCacheSource.h"
+#include "../domain/interfaces/config/IConfigLoader.h"
+#include "../domain/interfaces/config/IConfigProvider.h"
+#include "../domain/interfaces/database/IWeatherDatabaseInitializer.h"
+#include "../domain/interfaces/database/IWeatherHistoryRepository.h"
+#include "../domain/interfaces/sharedstate/ISharedState.h"
+#include "../domain/interfaces/weather/IWeatherRepository.h"
+#include "../domain/usecases/AuthenticateUserUseCase.h"
+#include "../domain/usecases/GetDailyWeatherUseCase.h"
+#include "../domain/usecases/GetWeatherHistoryUseCase.h"
+#include "../domain/usecases/GetWeeklyWeatherUseCase.h"
+#include "../domain/usecases/RegisterUserUseCase.h"
+#include "../domain/usecases/SaveWeatherHistoryUseCase.h"
+#include "../presentation/viewmodels/AuthViewModel.h"
+#include "../presentation/viewmodels/WeatherViewModel.h"
+
+class DependencyContainer
+{
+  public:
+	explicit DependencyContainer(QObject *qmlRoot);
+	AuthViewModel *getAuthViewModel();
+	WeatherViewModel *getWeatherViewModel();
+
+  private:
+	std::shared_ptr<ISharedState> sharedStateInterface_;
+	std::shared_ptr<IConfigLoader> configLoaderInterface_;
+	std::shared_ptr<IConfigProvider> configProviderInterface_;
+	std::shared_ptr<IWeatherCacheSource> cacheSourceInterface_;
+	std::shared_ptr<IWeatherDatabaseInitializer> dbInitializerInterface_;
+	std::shared_ptr<IWeatherHistoryRepository> dbWeatherHistoryInterface_;
+	IUserRepository *userRepositoryInterface_ = nullptr;
+	IApiWeatherSource *apiWeatherSourceInterface_ = nullptr;
+	IWeatherRepository *weatherRepositoryInterface_ = nullptr;
+
+	std::shared_ptr<AuthenticateUserUseCase> authUseCase_;
+	std::shared_ptr<RegisterUserUseCase> regUseCase_;
+	std::shared_ptr<GetDailyWeatherUseCase> dailyWeatherUseCase_;
+	std::shared_ptr<GetWeeklyWeatherUseCase> weeklyWeatherUseCase_;
+	std::shared_ptr<SaveWeatherHistoryUseCase> saveHistoryUseCase_;
+	std::shared_ptr<GetWeatherHistoryUseCase> getHistoryUseCase_;
+
+	AuthViewModel *authViewModel_ = nullptr;
+	WeatherViewModel *weatherViewModel = nullptr;
+
+	QObject *qmlRoot_;
+
+	void initInfrastructure();
+	void initRepositories();
+	void initUseCases();
+	void initViewModels();
+};
+
+#endif // DEPENDENCYCONTAINER_H
