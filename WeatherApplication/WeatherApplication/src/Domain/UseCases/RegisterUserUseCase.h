@@ -1,19 +1,21 @@
 #ifndef REGISTERUSERUSECASE_H
 #define REGISTERUSERUSECASE_H
 
-#include <memory>
 #include <functional>
+#include <memory>
 
-#include "../Interfaces/Api/IUserRepository.h"
 #include "../Entities/AuthorizationReply.h"
 #include "../Entities/AuthorizationRequest.h"
+#include "../Interfaces/Api/IUserRepository.h"
 
-class  RegisterUserUseCase {
-public:
-    explicit RegisterUserUseCase(IUserRepository* repo);
-    QFuture<AuthorizationReply> execute(const AuthorizationRequest& request);
-private:
-    IUserRepository* repository_;
+class RegisterUserUseCase
+{
+  public:
+	explicit RegisterUserUseCase(IUserRepository *repo);
+	QFuture<AuthorizationReply> execute(const AuthorizationRequest &request);
+
+  private:
+	IUserRepository *repository_;
 };
 
 #endif // REGISTERUSERUSECASE_H

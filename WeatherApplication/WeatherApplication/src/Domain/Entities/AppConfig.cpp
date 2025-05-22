@@ -1,31 +1,29 @@
 #include "AppConfig.h"
 
-AppConfig::AppConfig()
-    : m_serverHostConfig(), m_apiConfig()
+AppConfig::AppConfig() : m_serverHostConfig(), m_apiConfig() {}
+
+AppConfig::AppConfig(const ServerHostConfig &serverHostConfig,
+                     const ApiConfig &apiConfig)
+ : m_serverHostConfig(serverHostConfig), m_apiConfig(apiConfig)
 {
 }
 
-AppConfig::AppConfig(const ServerHostConfig& serverHostConfig, const ApiConfig& apiConfig)
-    : m_serverHostConfig(serverHostConfig), m_apiConfig(apiConfig)
+const ServerHostConfig &AppConfig::getServerHostConfig() const
 {
+	return m_serverHostConfig;
 }
 
-const ServerHostConfig& AppConfig::getServerHostConfig() const
+void AppConfig::setServerHostConfig(const ServerHostConfig &config)
 {
-    return m_serverHostConfig;
+	m_serverHostConfig = config;
 }
 
-void AppConfig::setServerHostConfig(const ServerHostConfig& config)
+const ApiConfig &AppConfig::getApiConfig() const
 {
-    m_serverHostConfig = config;
+	return m_apiConfig;
 }
 
-const ApiConfig& AppConfig::getApiConfig() const
+void AppConfig::setApiConfig(const ApiConfig &config)
 {
-    return m_apiConfig;
-}
-
-void AppConfig::setApiConfig(const ApiConfig& config)
-{
-    m_apiConfig = config;
+	m_apiConfig = config;
 }

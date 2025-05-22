@@ -5,11 +5,9 @@
 
 struct ApiConfigDto
 {
-    std::string urlFindCityByName;
-    std::string urlFindWeatherByCoordinates;
-    std::string key;
+	std::string urlFindCityByName;
+	std::string urlFindWeatherByCoordinates;
+	std::string key;
 };
-
-
 
 #endif // APICONFIGDTO_H

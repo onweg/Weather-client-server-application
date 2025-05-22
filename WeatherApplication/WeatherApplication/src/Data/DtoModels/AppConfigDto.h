@@ -6,8 +6,8 @@
 
 struct AppConfigDto
 {
-    ServerHostConfigDto serverHostConfig;
-    ApiConfigDto apiConfig;
+	ServerHostConfigDto serverHostConfig;
+	ApiConfigDto apiConfig;
 };
 
 #endif // APPCONFIGDTO_H

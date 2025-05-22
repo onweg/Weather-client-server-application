@@ -1,56 +1,54 @@
 #include "WeekWeatherData.h"
 
-WeekWeatherData::WeekWeatherData()
-    : m_city(""), m_messageError("")
+WeekWeatherData::WeekWeatherData() : m_city(""), m_messageError("") {}
+
+WeekWeatherData::WeekWeatherData(const std::string &city,
+                                 const std::vector<WeatherData> &dailyWeather,
+                                 const std::string &messageError)
+ : m_city(city), m_dailyWeather(dailyWeather), m_messageError(messageError)
 {
 }
 
-WeekWeatherData::WeekWeatherData(const std::string& city,
-                                 const std::vector<WeatherData>& dailyWeather,
-                                 const std::string& messageError)
-    : m_city(city), m_dailyWeather(dailyWeather), m_messageError(messageError)
+const std::string &WeekWeatherData::getCity() const
 {
+	return m_city;
 }
 
-const std::string& WeekWeatherData::getCity() const
+void WeekWeatherData::setCity(const std::string &city)
 {
-    return m_city;
+	m_city = city;
 }
 
-void WeekWeatherData::setCity(const std::string& city)
+const std::vector<WeatherData> &WeekWeatherData::getDailyWeather() const
 {
-    m_city = city;
+	return m_dailyWeather;
 }
 
-const std::vector<WeatherData>& WeekWeatherData::getDailyWeather() const
+void WeekWeatherData::setDailyWeather(
+    const std::vector<WeatherData> &dailyWeather)
 {
-    return m_dailyWeather;
+	m_dailyWeather = dailyWeather;
 }
 
-void WeekWeatherData::setDailyWeather(const std::vector<WeatherData>& dailyWeather)
+const std::string &WeekWeatherData::getMessageError() const
 {
-    m_dailyWeather = dailyWeather;
+	return m_messageError;
 }
 
-const std::string& WeekWeatherData::getMessageError() const
+void WeekWeatherData::setMessageError(const std::string &messageError)
 {
-    return m_messageError;
+	m_messageError = messageError;
 }
 
-void WeekWeatherData::setMessageError(const std::string& messageError)
+bool WeekWeatherData::operator==(const WeekWeatherData &other) const
 {
-    m_messageError = messageError;
+	return m_city == other.m_city && m_messageError == other.m_messageError &&
+	       m_dailyWeather.size() == other.m_dailyWeather.size() &&
+	       std::equal(m_dailyWeather.begin(), m_dailyWeather.end(),
+	                  other.m_dailyWeather.begin());
 }
 
-bool WeekWeatherData::operator==(const WeekWeatherData& other) const
+bool WeekWeatherData::operator!=(const WeekWeatherData &other) const
 {
-    return m_city == other.m_city &&
-           m_messageError == other.m_messageError &&
-           m_dailyWeather.size() == other.m_dailyWeather.size() &&
-           std::equal(m_dailyWeather.begin(), m_dailyWeather.end(), other.m_dailyWeather.begin());
-}
-
-bool WeekWeatherData::operator!=(const WeekWeatherData& other) const
-{
-    return !(*this == other);
+	return !(*this == other);
 }

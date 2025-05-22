@@ -36,25 +36,30 @@
 *******************************************************************************/
 
 #include <auroraapp.h>
+
 #include "Infrastructure/DependencyContainer.h"
 
 int main(int argc, char *argv[])
 {
-    QScopedPointer<QGuiApplication> application(Aurora::Application::application(argc, argv));
-    application->setOrganizationName(QStringLiteral("ru.auroraos"));
-    application->setApplicationName(QStringLiteral("WeatherApplication"));
+	QScopedPointer<QGuiApplication> application(
+	    Aurora::Application::application(argc, argv));
+	application->setOrganizationName(QStringLiteral("ru.auroraos"));
+	application->setApplicationName(QStringLiteral("WeatherApplication"));
 
-    QScopedPointer<QQuickView> view(Aurora::Application::createView());
-    auto* rootView = view.data();
+	QScopedPointer<QQuickView> view(Aurora::Application::createView());
+	auto *rootView = view.data();
 
-    DependencyContainer container(rootView);
+	DependencyContainer container(rootView);
 
-    view->rootContext()->setContextProperty("authViewModel", container.getAuthViewModel());
-    view->rootContext()->setContextProperty("weatherViewModel", container.getWeatherViewModel());
-    view->setSource(Aurora::Application::pathTo(QStringLiteral("qml/WeatherApplication.qml")));
-    view->show();
+	view->rootContext()->setContextProperty("authViewModel",
+	                                        container.getAuthViewModel());
+	view->rootContext()->setContextProperty("weatherViewModel",
+	                                        container.getWeatherViewModel());
+	view->setSource(Aurora::Application::pathTo(
+	    QStringLiteral("qml/WeatherApplication.qml")));
+	view->show();
 
-    return application->exec();
+	return application->exec();
 }
 
 // отформатировать каждый файл на clang

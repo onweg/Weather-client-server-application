@@ -5,9 +5,8 @@
 
 struct AuthorizationRequestDto
 {
-    std::string username;
-    std::string passwordHash;
+	std::string username;
+	std::string passwordHash;
 };
-
 
 #endif // AUTHORIZATIONREQUESTDTO_H

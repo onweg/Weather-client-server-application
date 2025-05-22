@@ -5,8 +5,8 @@
 
 struct ServerHostConfigDto
 {
-    std::string ip;
-    std::string port;
+	std::string ip;
+	std::string port;
 };
 
 #endif // SERVERHOSTCONFIGDTO_H

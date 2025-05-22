@@ -1,25 +1,27 @@
 #ifndef WEATHERDATABASEINITIALIZER_H
 #define WEATHERDATABASEINITIALIZER_H
 
-#include "../../../Domain/Interfaces/Database/IWeatherDatabaseInitializer.h"
 #include <QString>
 #include <memory>
 
-class WeatherDatabaseInitializer : public IWeatherDatabaseInitializer {
-public:
-    WeatherDatabaseInitializer();
-    ~WeatherDatabaseInitializer();
+#include "../../../Domain/Interfaces/Database/IWeatherDatabaseInitializer.h"
 
-    DatabaseConnectionPtr initialize() override;
+class WeatherDatabaseInitializer : public IWeatherDatabaseInitializer
+{
+  public:
+	WeatherDatabaseInitializer();
+	~WeatherDatabaseInitializer();
 
-private:
-    const QString DB_PATH = "weather_data_request.db";
+	DatabaseConnectionPtr initialize() override;
 
-    bool connectToDatabase();
-    bool createTableIfNotExists();
+  private:
+	const QString DB_PATH = "weather_data_request.db";
 
-    class Impl;
-    std::unique_ptr<Impl> pimpl_;
+	bool connectToDatabase();
+	bool createTableIfNotExists();
+
+	class Impl;
+	std::unique_ptr<Impl> pimpl_;
 };
 
 #endif // WEATHERDATABASEINITIALIZER_H

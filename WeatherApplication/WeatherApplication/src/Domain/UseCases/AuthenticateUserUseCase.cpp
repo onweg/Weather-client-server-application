@@ -1,16 +1,12 @@
 #include "AuthenticateUserUseCase.h"
 
-AuthenticateUserUseCase::AuthenticateUserUseCase(IUserRepository* repo)
-    : repository_(repo)
+AuthenticateUserUseCase::AuthenticateUserUseCase(IUserRepository *repo)
+ : repository_(repo)
 {
-
 }
 
-QFuture<AuthorizationReply> AuthenticateUserUseCase::execute(const AuthorizationRequest &request)
+QFuture<AuthorizationReply>
+AuthenticateUserUseCase::execute(const AuthorizationRequest &request)
 {
-    return repository_->findUser(request);
+	return repository_->findUser(request);
 }
-
-
-
-

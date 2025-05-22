@@ -5,12 +5,13 @@
 
 class SharedState : public ISharedState
 {
-public:
-    SharedState();
-    std::string getUsername() override ;
-    void setUsername(const std::string& username) override;
-private:
-    std::string username_ = "";
+  public:
+	SharedState();
+	std::string getUsername() override;
+	void setUsername(const std::string &username) override;
+
+  private:
+	std::string username_ = "";
 };
 
 #endif // SHAREDSTATE_H

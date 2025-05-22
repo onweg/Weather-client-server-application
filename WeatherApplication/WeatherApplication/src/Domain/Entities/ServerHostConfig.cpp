@@ -1,31 +1,29 @@
 #include "ServerHostConfig.h"
 
-ServerHostConfig::ServerHostConfig()
-    : m_ip(""), m_port("")
+ServerHostConfig::ServerHostConfig() : m_ip(""), m_port("") {}
+
+ServerHostConfig::ServerHostConfig(const std::string &ip,
+                                   const std::string &port)
+ : m_ip(ip), m_port(port)
 {
 }
 
-ServerHostConfig::ServerHostConfig(const std::string& ip, const std::string& port)
-    : m_ip(ip), m_port(port)
+const std::string &ServerHostConfig::getIp() const
 {
+	return m_ip;
 }
 
-const std::string& ServerHostConfig::getIp() const
+void ServerHostConfig::setIp(const std::string &ip)
 {
-    return m_ip;
+	m_ip = ip;
 }
 
-void ServerHostConfig::setIp(const std::string& ip)
+const std::string &ServerHostConfig::getPort() const
 {
-    m_ip = ip;
+	return m_port;
 }
 
-const std::string& ServerHostConfig::getPort() const
+void ServerHostConfig::setPort(const std::string &port)
 {
-    return m_port;
-}
-
-void ServerHostConfig::setPort(const std::string& port)
-{
-    m_port = port;
+	m_port = port;
 }

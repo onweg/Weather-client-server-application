@@ -1,18 +1,22 @@
 #ifndef IWEATHERREPOSITORY_H
 #define IWEATHERREPOSITORY_H
 
-#include "../../Utils/Result.h"
+#include <QFuture>
+#include <memory>
+#include <string>
+
 #include "../../Entities/WeatherData.h"
 #include "../../Entities/WeekWeatherData.h"
-#include <string>
-#include <memory>
-#include <QFuture>
+#include "../../Utils/Result.h"
 
-class IWeatherRepository {
-public:
-    virtual ~IWeatherRepository() = default;
-    virtual QFuture<Result<WeatherData>> getDailyWeather(const std::string& city, const std::string& date) = 0;
-    virtual QFuture<Result<WeekWeatherData>> getWeeklyWeather(const std::string& city) = 0;
+class IWeatherRepository
+{
+  public:
+	virtual ~IWeatherRepository() = default;
+	virtual QFuture<Result<WeatherData>>
+	getDailyWeather(const std::string &city, const std::string &date) = 0;
+	virtual QFuture<Result<WeekWeatherData>>
+	getWeeklyWeather(const std::string &city) = 0;
 };
 
 #endif // IWEATHERREPOSITORY_H

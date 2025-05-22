@@ -4,10 +4,11 @@
 #include "../../Entities/AppConfig.h"
 #include "../../Utils/Result.h"
 
-class IConfigLoader {
-public:
-    virtual ~IConfigLoader() = default;
-    virtual Result<AppConfig> load() = 0;
+class IConfigLoader
+{
+  public:
+	virtual ~IConfigLoader() = default;
+	virtual Result<AppConfig> load() = 0;
 };
 
 #endif // ICONFIGLOADER_H

@@ -1,14 +1,13 @@
 #include "AuthorizationReplyDomainMapper.h"
 
-AuthorizationReplyDto AuthorizationReplyDomainMapper::toDto(const AuthorizationReply& reply)
+AuthorizationReplyDto
+AuthorizationReplyDomainMapper::toDto(const AuthorizationReply &reply)
 {
-    return {
-        reply.isAuthorized(),
-        reply.getMessageError()
-    };
+	return {reply.isAuthorized(), reply.getMessageError()};
 }
 
-AuthorizationReply AuthorizationReplyDomainMapper::fromDto(const AuthorizationReplyDto& dto)
+AuthorizationReply
+AuthorizationReplyDomainMapper::fromDto(const AuthorizationReplyDto &dto)
 {
-    return AuthorizationReply(dto.authorized, dto.messageError);
+	return AuthorizationReply(dto.authorized, dto.messageError);
 }

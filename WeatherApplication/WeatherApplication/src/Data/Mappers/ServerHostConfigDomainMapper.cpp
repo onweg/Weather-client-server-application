@@ -1,14 +1,13 @@
 #include "ServerHostConfigDomainMapper.h"
 
-ServerHostConfigDto ServerHostConfigDomainMapper::toDto(const ServerHostConfig& config)
+ServerHostConfigDto
+ServerHostConfigDomainMapper::toDto(const ServerHostConfig &config)
 {
-    return {
-        config.getIp(),
-        config.getPort()
-    };
+	return {config.getIp(), config.getPort()};
 }
 
-ServerHostConfig ServerHostConfigDomainMapper::fromDto(const ServerHostConfigDto& dto)
+ServerHostConfig
+ServerHostConfigDomainMapper::fromDto(const ServerHostConfigDto &dto)
 {
-    return ServerHostConfig(dto.ip, dto.port);
+	return ServerHostConfig(dto.ip, dto.port);
 }
