@@ -16,13 +16,13 @@ QFuture<Result<WeatherData>>
 WeatherRepository::getDailyWeather(const std::string &city,
                                    const std::string &date)
 {
-	auto cachedWeek = cache_->getWeekWeather(city);
-	if (cachedWeek.isSuccess())
+    auto cachedResult = cache_->getWeekWeather(city);
+    if (cachedResult.isSuccess())
 	{
-		auto day = findDayInWeek(cachedWeek.value(), date);
-		if (day.isSuccess())
+        auto dayResult = findDayInWeek(cachedResult.value(), date);
+        if (dayResult.isSuccess())
 		{
-			return makeReadyFuture(Result<WeatherData>::success(day.value()));
+            return makeReadyFuture(Result<WeatherData>::success(dayResult.value()));
 		}
 	}
 	return fetchAndProcessWeatherForDay(city, date);
@@ -31,11 +31,11 @@ WeatherRepository::getDailyWeather(const std::string &city,
 QFuture<Result<WeekWeatherData>>
 WeatherRepository::getWeeklyWeather(const std::string &city)
 {
-	auto cached = cache_->getWeekWeather(city);
-	if (cached.isSuccess())
+    auto cachedResult = cache_->getWeekWeather(city);
+    if (cachedResult.isSuccess())
 	{
 		return makeReadyFuture(
-		    Result<WeekWeatherData>::success(cached.value()));
+            Result<WeekWeatherData>::success(cachedResult.value()));
 	}
 	return fetchAndProcessWeatherForWeek(city);
 }
@@ -85,10 +85,10 @@ void WeatherRepository::handleApiResultForDay(
 	}
 	const WeekWeatherData &week = result.value();
 	cache_->addWeekWeather(city, week);
-	Result<WeatherData> day = findDayInWeek(week, date);
-	if (day.isSuccess())
+    Result<WeatherData> dayResult = findDayInWeek(week, date);
+    if (dayResult.isSuccess())
 	{
-		interface->reportResult(Result<WeatherData>::success(day.value()));
+        interface->reportResult(Result<WeatherData>::success(dayResult.value()));
 	}
 	else
 	{
