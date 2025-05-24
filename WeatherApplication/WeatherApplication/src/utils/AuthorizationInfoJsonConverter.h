@@ -25,8 +25,6 @@ class AuthorizationInfoJsonConverter : public QObject
 	static QJsonObject
 	createRequestObject(const AuthorizationRequestDto &request,
 	                    const QString &command);
-
-  signals:
 };
 
 #endif // AUTHORIZATIONINFOJSONCONVERTER_H

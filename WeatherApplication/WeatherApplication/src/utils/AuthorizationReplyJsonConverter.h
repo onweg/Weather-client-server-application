@@ -20,8 +20,6 @@ class AuthorizationReplyJsonConverter
 	static AuthorizationReplyDto
 	createReplyFromStatusAndMessage(const QString &status,
 	                                const QString &message);
-
-  signals:
 };
 
 #endif // AUTHORIZATIONREPLYJSONCONVERTER_H
