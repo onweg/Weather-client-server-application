@@ -1,6 +1,6 @@
 #include "AppConfig.h"
 
-AppConfig::AppConfig() : m_serverHostConfig(), m_apiConfig() {}
+AppConfig::AppConfig() : m_serverHostConfig(), m_apiConfig(), m_cacheConfig() {}
 
 AppConfig::AppConfig(const ServerHostConfig &serverHostConfig,
                      const ApiConfig &apiConfig,

@@ -7,7 +7,6 @@
 class AppConfigDomainMapper
 {
   public:
-	static AppConfigDto toDto(const AppConfig &config);
 	static AppConfig fromDto(const AppConfigDto &dto);
 };
 

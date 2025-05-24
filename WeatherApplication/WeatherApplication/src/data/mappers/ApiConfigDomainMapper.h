@@ -7,7 +7,6 @@
 class ApiConfigDomainMapper
 {
   public:
-	static ApiConfigDto toDto(const ApiConfig &config);
 	static ApiConfig fromDto(const ApiConfigDto &dto);
 };
 

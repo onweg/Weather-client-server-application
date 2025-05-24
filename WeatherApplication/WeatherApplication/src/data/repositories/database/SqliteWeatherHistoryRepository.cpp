@@ -24,7 +24,6 @@ void SqliteWeatherHistoryRepository::save(const std::string &city, const std::st
  QSqlQuery query(db_);
  query.prepare("INSERT INTO weather_data (username, city, date) VALUES (:username, :city, :date)");
  bindInsertValues(query, city, date);
-
  if (!executeQuery(query, "Ошибка при вставке"))
   return;
 }

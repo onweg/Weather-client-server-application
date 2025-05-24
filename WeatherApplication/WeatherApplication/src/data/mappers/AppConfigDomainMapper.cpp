@@ -4,13 +4,6 @@
 #include "ServerHostConfigDomainMapper.h"
 #include "CacheConfigDomainMapper.h"
 
-AppConfigDto AppConfigDomainMapper::toDto(const AppConfig &config)
-{
-	return {ServerHostConfigDomainMapper::toDto(config.getServerHostConfig()),
-            ApiConfigDomainMapper::toDto(config.getApiConfig()),
-            CacheConfigDomainMapper::toDto(config.getCacheConfig())};
-}
-
 AppConfig AppConfigDomainMapper::fromDto(const AppConfigDto &dto)
 {
 	return AppConfig(

@@ -24,7 +24,7 @@ load()
 	{
 		return Result<AppConfig>::failure(jsonResult.errorMessage());
 	}
-	AppConfigDto dto;
+    AppConfigDto dto;
 	int result = AppConfigJsonConverter::fromJson(jsonResult.value(), dto);
 	if (!result)
 	{
