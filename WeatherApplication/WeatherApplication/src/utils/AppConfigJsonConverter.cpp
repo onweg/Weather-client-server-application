@@ -5,16 +5,13 @@ AppConfigJsonConverter::AppConfigJsonConverter() {}
 bool AppConfigJsonConverter::fromJson(const QJsonObject &jsonObject,
                                       AppConfigDto &config)
 {
-	if (!parseServerHostConfig(jsonObject, config.serverHostConfig))
-	{
+    if (!parseServerHostConfig(jsonObject, config.serverHostConfig)) {
 		return false;
 	}
-	if (!parseApiConfig(jsonObject, config.apiConfig))
-	{
+    if (!parseApiConfig(jsonObject, config.apiConfig)) {
 		return false;
 	}
-	if (!parseCacheConfig(jsonObject, config.cacheConfig))
-	{
+    if (!parseCacheConfig(jsonObject, config.cacheConfig)) {
 		return false;
 	}
 	return true;
@@ -55,8 +52,7 @@ bool AppConfigJsonConverter::parseCacheConfig(const QJsonObject &jsonObject,
 QJsonObject AppConfigJsonConverter::getJsonObject(const QJsonObject &obj,
                                                   const QString &key)
 {
-	if (obj.contains(key) && obj[key].isObject())
-	{
+    if (obj.contains(key) && obj[key].isObject()) {
 		return obj[key].toObject();
 	}
 	return QJsonObject();
@@ -65,8 +61,7 @@ QJsonObject AppConfigJsonConverter::getJsonObject(const QJsonObject &obj,
 std::string AppConfigJsonConverter::getStringValue(const QJsonObject &obj,
                                                    const QString &key)
 {
-	if (obj.contains(key) && obj[key].isString())
-	{
+    if (obj.contains(key) && obj[key].isString()) {
 		return obj[key].toString().toStdString();
 	}
 	return {};
@@ -75,8 +70,7 @@ std::string AppConfigJsonConverter::getStringValue(const QJsonObject &obj,
 int AppConfigJsonConverter::getIntValue(const QJsonObject &obj,
                                         const QString &key)
 {
-	if (obj.contains(key))
-	{
+    if (obj.contains(key)) {
 		return obj[key].toInt();
 	}
 	return {};

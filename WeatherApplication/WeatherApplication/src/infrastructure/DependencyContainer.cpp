@@ -25,6 +25,16 @@ bool DependencyContainer::init() {
     return success;
 }
 
+AuthViewModel *DependencyContainer::getAuthViewModel()
+{
+    return authViewModel_;
+}
+
+WeatherViewModel *DependencyContainer::getWeatherViewModel()
+{
+    return weatherViewModel;
+}
+
 bool DependencyContainer::initInfrastructure() {
     bool success = true;
     success &= createSharedState();

@@ -8,8 +8,7 @@ WeekWeatherDataDto
 WeatherJsonConverter::parseWeekWeather(const QJsonObject &jsonObj)
 {
 	WeekWeatherDataDto weekData;
-	if (!jsonObj.contains("list") || !jsonObj["list"].isArray())
-	{
+    if (!jsonObj.contains("list") || !jsonObj["list"].isArray()) {
 		weekData.messageError = "Invalid JSON: no 'list' field.";
 		return weekData;
 	}
@@ -19,8 +18,7 @@ WeatherJsonConverter::parseWeekWeather(const QJsonObject &jsonObj)
 	    groupForecastsByDay(forecasts, cityName);
 	weekData.city = cityName.toStdString();
 	const QStringList keys = sortedKeys(dailyData);
-	for (const QString &key : keys)
-	{
+    for (const QString &key : keys) {
 		weekData.dailyWeather.push_back(dailyData[key]);
 	}
 	return weekData;
@@ -28,8 +26,7 @@ WeatherJsonConverter::parseWeekWeather(const QJsonObject &jsonObj)
 
 QString WeatherJsonConverter::parseCityName(const QJsonObject &jsonObj)
 {
-	if (jsonObj.contains("city") && jsonObj["city"].isObject())
-	{
+    if (jsonObj.contains("city") && jsonObj["city"].isObject()) {
 		return jsonObj["city"].toObject()["name"].toString();
 	}
 	return QString();
@@ -41,8 +38,7 @@ WeatherJsonConverter::groupForecastsByDay(const QJsonArray &forecasts,
 {
 	QMap<QString, WeatherDataDto> dailyData;
 	QDate currentDate = QDate::currentDate();
-	for (const QJsonValue &forecastValue : forecasts)
-	{
+    for (const QJsonValue &forecastValue : forecasts) {
 		if (!forecastValue.isObject())
 			continue;
 		processForecast(forecastValue.toObject(), cityName, currentDate,
@@ -88,11 +84,9 @@ WeatherJsonConverter::parseWeatherData(const QJsonObject &forecast,
 	data.humidity = mainData["humidity"].toInt();
 	data.pressure = mainData["pressure"].toInt();
 	data.windSpeed = windData["speed"].toDouble();
-	if (forecast.contains("weather") && forecast["weather"].isArray())
-	{
+    if (forecast.contains("weather") && forecast["weather"].isArray()) {
 		QJsonArray weatherArray = forecast["weather"].toArray();
-		if (!weatherArray.isEmpty())
-		{
+        if (!weatherArray.isEmpty()) {
 			data.description = weatherArray.first()
 			                       .toObject()["description"]
 			                       .toString()
@@ -108,16 +102,13 @@ void WeatherJsonConverter::selectBestForecastForDay(
     QMap<QString, WeatherDataDto> &dailyData)
 {
 	int hour = forecastTime.time().hour();
-	if (forecastTime.date() == currentDate && hour >= 12)
-	{
+    if (forecastTime.date() == currentDate && hour >= 12) {
 		if (!dailyData.contains(dateKey) ||
-		    isBetterMatch(hour, dailyData, dateKey))
-		{
+            isBetterMatch(hour, dailyData, dateKey)) {
 			dailyData[dateKey] = data;
 		}
 	}
-	else if (hour == 15)
-	{
+    else if (hour == 15) {
 		dailyData[dateKey] = data;
 	}
 }
