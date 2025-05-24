@@ -14,12 +14,9 @@ SqliteWeatherHistoryRepository::SqliteWeatherHistoryRepository(
  : dbInitializer_(std::move(dbInit)), sharedState_(std::move(state))
 {
 	db_ = dbInitializer_->initialize();
-	if (!db_.isOpen())
-	{
+    if (!db_.isOpen()) {
 		qWarning() << "База данных не открыта!";
-	}
-	else
-	{
+    } else {
 		qDebug() << "База данных открыта!";
 	}
 }
@@ -38,14 +35,12 @@ void SqliteWeatherHistoryRepository::save(const std::string &city,
 std::vector<WeatherHistoryItem> SqliteWeatherHistoryRepository::getAll()
 {
 	QSqlQuery query = fetchData();
-	if (!query.isActive())
-	{
+    if (!query.isActive()) {
 		return {};
 	}
 	std::vector<WeatherHistoryItemDto> dtos = mapToDtos(query);
 	std::vector<WeatherHistoryItem> items;
-	for (const auto &dto : dtos)
-	{
+    for (const auto &dto : dtos) {
 		items.push_back(WeatherHistoryItemDomainMapper::fromDto(dto));
 	}
 	return items;
@@ -54,8 +49,7 @@ std::vector<WeatherHistoryItem> SqliteWeatherHistoryRepository::getAll()
 bool SqliteWeatherHistoryRepository::executeQuery(QSqlQuery &query,
                                                   const char *errorMessage)
 {
-	if (!query.exec())
-	{
+    if (!query.exec()) {
 		qDebug() << errorMessage << ":" << query.lastError();
 		return false;
 	}
@@ -76,8 +70,7 @@ QSqlQuery SqliteWeatherHistoryRepository::fetchData()
 {
 	QSqlQuery query(
 	    "SELECT id, username, timestamp, city, date FROM weather_data", db_);
-	if (!executeQuery(query, "Ошибка при получении данных"))
-	{
+    if (!executeQuery(query, "Ошибка при получении данных")) {
 		return QSqlQuery(); // пустой запрос
 	}
 	return query;
@@ -87,8 +80,7 @@ std::vector<WeatherHistoryItemDto>
 SqliteWeatherHistoryRepository::mapToDtos(QSqlQuery &query)
 {
 	std::vector<WeatherHistoryItemDto> dtos;
-	while (query.next())
-	{
+    while (query.next()) {
 		dtos.push_back(mapRowToDto(query));
 	}
 	return dtos;

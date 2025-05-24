@@ -9,8 +9,7 @@ std::string SharedState::getUsername()
 
 void SharedState::setUsername(const std::string &username)
 {
-	if (username_ != username)
-	{
+    if (username_ != username) {
 		username_ = username;
 	}
 }

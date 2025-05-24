@@ -7,29 +7,20 @@
 QSqlDatabase WeatherDatabaseInitializer::initialize()
 {
 	QSqlDatabase db;
-
-	if (QSqlDatabase::contains("qt_sql_default_connection"))
-	{
+    if (QSqlDatabase::contains("qt_sql_default_connection")) {
 		db = QSqlDatabase::database();
-	}
-	else
-	{
+    } else {
 		db = QSqlDatabase::addDatabase("QSQLITE");
 		db.setDatabaseName(DB_PATH);
-
-		if (!db.open())
-		{
+        if (!db.open()) {
 			qDebug() << "Ошибка подключения к БД:" << db.lastError();
 			return {};
 		}
 	}
-
-	if (!createTableIfNotExists(db))
-	{
+    if (!createTableIfNotExists(db)) {
 		qDebug() << "Не удалось создать таблицу.";
 		return {};
 	}
-
 	return db;
 }
 
@@ -45,9 +36,7 @@ bool WeatherDatabaseInitializer::createTableIfNotExists(QSqlDatabase &db)
    date TEXT
   )
  )");
-
 	if (!ok)
 		qDebug() << "Ошибка при создании таблицы:" << query.lastError();
-
 	return ok;
 }

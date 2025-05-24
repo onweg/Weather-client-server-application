@@ -47,16 +47,14 @@ void WeatherApiSource::finishWithError(
 Result<std::pair<QString, QString>>
 WeatherApiSource::parseCityCoordinatesJson(QNetworkReply *reply)
 {
-	if (reply->error() != QNetworkReply::NoError)
-	{
+    if (reply->error() != QNetworkReply::NoError) {
 		return Result<std::pair<QString, QString>>::failure(
 		    reply->errorString().toStdString());
 	}
 	QJsonParseError error;
 	QJsonDocument doc = QJsonDocument::fromJson(reply->readAll(), &error);
 	if (error.error != QJsonParseError::NoError || !doc.isArray() ||
-	    doc.array().isEmpty())
-	{
+        doc.array().isEmpty()) {
 		return Result<std::pair<QString, QString>>::failure(
 		    "Ошибка при получении координат города");
 	}
@@ -69,23 +67,20 @@ WeatherApiSource::parseCityCoordinatesJson(QNetworkReply *reply)
 
 Result<WeekWeatherData> WeatherApiSource::parseWeatherJson(QNetworkReply *reply)
 {
-	if (reply->error() != QNetworkReply::NoError)
-	{
+    if (reply->error() != QNetworkReply::NoError) {
 		return Result<WeekWeatherData>::failure(
 		    reply->errorString().toStdString());
 	}
 	QJsonParseError error;
 	QJsonDocument doc = QJsonDocument::fromJson(reply->readAll(), &error);
-	if (error.error != QJsonParseError::NoError || !doc.isObject())
-	{
+    if (error.error != QJsonParseError::NoError || !doc.isObject()) {
 		return Result<WeekWeatherData>::failure(
 		    "Ошибка парсинга JSON с погодой");
 	}
 	WeekWeatherDataDto dto =
 	    WeatherJsonConverter::parseWeekWeather(doc.object());
 	WeekWeatherData data = WeekWeatherDomainMapper::fromDto(dto);
-	if (!data.getMessageError().empty())
-	{
+    if (!data.getMessageError().empty()) {
 		return Result<WeekWeatherData>::failure(data.getMessageError());
 	}
 	return Result<WeekWeatherData>::success(data);
@@ -103,8 +98,7 @@ QFuture<Result<WeekWeatherData>> WeatherApiSource::finishWithImmediateError(
 
 void WeatherApiSource::initConfig()
 {
-    if (!apiConfig_)
-    {
+    if (!apiConfig_) {
         apiConfig_ = std::make_shared<ApiConfig>();
         *apiConfig_ = configProvider_->getApiConfig();
     }
@@ -115,8 +109,7 @@ void WeatherApiSource::handleCityCoordinatesReply(
     QFutureInterface<Result<WeekWeatherData>> &futureInterface)
 {
 	auto jsonResult = parseCityCoordinatesJson(reply);
-	if (!jsonResult.isSuccess())
-	{
+    if (!jsonResult.isSuccess()) {
 		return finishWithError(futureInterface, jsonResult.errorMessage(),
 		                       reply);
 	}
@@ -134,7 +127,6 @@ void WeatherApiSource::fetchWeatherByCoordinates(
 	auto url = apiConfig_->buildWeatherByCoordinatesUrl(lat.toDouble(),
 	                                                    lon.toDouble());
 	QNetworkReply *reply = networkManager_->get(QNetworkRequest(url));
-
 	connect(reply, &QNetworkReply::finished, this,
 	        [this, reply, futureInterface]() mutable
 	        { handleWeatherReply(reply, futureInterface); });
@@ -145,8 +137,7 @@ void WeatherApiSource::handleWeatherReply(
     QFutureInterface<Result<WeekWeatherData>> &futureInterface)
 {
 	auto weatherResult = parseWeatherJson(reply);
-	if (!weatherResult.isSuccess())
-	{
+    if (!weatherResult.isSuccess()) {
 		return finishWithError(futureInterface, weatherResult.errorMessage(),
 		                       reply);
 	}

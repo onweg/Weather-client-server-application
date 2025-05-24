@@ -65,7 +65,7 @@ class DependencyContainer
 	bool createConfigProvider();
 	bool createUserRepository();
 	bool createWeatherApiSource();
-	void setDbWeatherHistoryRepository();
+    bool setDbWeatherHistoryRepository();
 	bool createWeatherRepository();
 	bool createAuthUseCase();
 	bool createRegUseCase();

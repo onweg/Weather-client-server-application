@@ -1,7 +1,5 @@
 #include "DependencyContainer.h"
-
 #include <QDebug>
-
 #include "../data/repositories/api/UserRepository.h"
 #include "../data/repositories/api/WeatherApiSource.h"
 #include "../data/repositories/cache/WeatherCache.h"
@@ -13,331 +11,234 @@
 #include "../data/repositories/weather/WeatherRepository.h"
 
 DependencyContainer::DependencyContainer(QObject *qmlRoot)
- : sharedStateInterface_(nullptr), configLoaderInterface_(nullptr),
-   configProviderInterface_(nullptr), cacheSourceInterface_(nullptr),
-   dbInitializerInterface_(nullptr), userRepositoryInterface_(nullptr),
-   apiWeatherSourceInterface_(nullptr), weatherRepositoryInterface_(nullptr),
-   authUseCase_(nullptr), regUseCase_(nullptr), dailyWeatherUseCase_(nullptr),
-   weeklyWeatherUseCase_(nullptr), saveHistoryUseCase_(nullptr),
-   getHistoryUseCase_(nullptr), authViewModel_(nullptr),
-   weatherViewModel(nullptr), qmlRoot_(qmlRoot)
-{
+    : sharedStateInterface_(nullptr), configLoaderInterface_(nullptr), configProviderInterface_(nullptr), cacheSourceInterface_(nullptr),
+      dbInitializerInterface_(nullptr), userRepositoryInterface_(nullptr), apiWeatherSourceInterface_(nullptr), weatherRepositoryInterface_(nullptr),
+      authUseCase_(nullptr), regUseCase_(nullptr), dailyWeatherUseCase_(nullptr), weeklyWeatherUseCase_(nullptr), saveHistoryUseCase_(nullptr),
+      getHistoryUseCase_(nullptr), authViewModel_(nullptr), weatherViewModel(nullptr), qmlRoot_(qmlRoot) {}
+
+bool DependencyContainer::init() {
+    bool success = true;
+    success &= initInfrastructure();
+    success &= initRepositories();
+    success &= initUseCases();
+    success &= initViewModels();
+    return success;
 }
 
-bool DependencyContainer::init()
-{
-	if (!initInfrastructure())
-		return false;
-	if (!initRepositories())
-		return false;
-	if (!initUseCases())
-		return false;
-	if (!initViewModels())
-		return false;
-	return true;
+bool DependencyContainer::initInfrastructure() {
+    bool success = true;
+    success &= createSharedState();
+    success &= createConfigLoader();
+    success &= createDbInitializer();
+    return success;
 }
 
-AuthViewModel *DependencyContainer::getAuthViewModel()
-{
-	return authViewModel_;
+bool DependencyContainer::initRepositories() {
+    bool success = true;
+    success &= createConfigProvider();
+    success &= createWeatherCache();
+    success &= createUserRepository();
+    success &= createWeatherApiSource();
+    setDbWeatherHistoryRepository();
+    success &= createWeatherRepository();
+    return success;
 }
 
-WeatherViewModel *DependencyContainer::getWeatherViewModel()
-{
-	return weatherViewModel;
+bool DependencyContainer::initUseCases() {
+    bool success = true;
+    success &= createAuthUseCase();
+    success &= createRegUseCase();
+    success &= createDailyWeatherUseCase();
+    success &= createWeeklyWeatherUseCase();
+    success &= createSaveHistoryUseCase();
+    success &= createGetHistoryUseCase();
+    return success;
 }
 
-bool DependencyContainer::initInfrastructure()
-{
-	if (!createSharedState())
-		return false;
-	if (!createConfigLoader())
-		return false;
-	if (!createDbInitializer())
-		return false;
-	return true;
+bool DependencyContainer::initViewModels() {
+    bool success = true;
+    success &= createAuthViewModel();
+    success &= createWeatherViewModel();
+    return success;
 }
 
-bool DependencyContainer::initRepositories()
-{
-	if (!createConfigProvider())
-		return false;
-	if (!createWeatherCache())
-		return false;
-	if (!createUserRepository())
-		return false;
-	if (!createWeatherApiSource())
-		return false;
-	setDbWeatherHistoryRepository();
-	if (!createWeatherRepository())
-		return false;
-	return true;
+bool DependencyContainer::createSharedState() {
+    bool success = true;
+    try {
+        sharedStateInterface_ = std::make_shared<SharedState>();
+    } catch (const std::bad_alloc &e) {
+        qCritical() << "Ошибка выделения памяти в createSharedState:" << e.what();
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::initUseCases()
-{
-	if (!createAuthUseCase())
-		return false;
-	if (!createRegUseCase())
-		return false;
-	if (!createDailyWeatherUseCase())
-		return false;
-	if (!createWeeklyWeatherUseCase())
-		return false;
-	if (!createSaveHistoryUseCase())
-		return false;
-	if (!createGetHistoryUseCase())
-		return false;
-	return true;
+bool DependencyContainer::createConfigLoader() {
+    bool success = true;
+    try {
+        configLoaderInterface_ = std::make_shared<ConfigLoader>();
+    } catch (const std::bad_alloc &e) {
+        qCritical() << "Ошибка выделения памяти в createConfigLoader:" << e.what();
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::initViewModels()
-{
-	if (!createAuthViewModel())
-		return false;
-	if (!createWeatherViewModel())
-		return false;
-	return true;
+bool DependencyContainer::createWeatherCache() {
+    bool success = true;
+    try {
+        cacheSourceInterface_ = std::make_shared<WeatherCache>(configProviderInterface_);
+    } catch (const std::bad_alloc &e) {
+        qCritical() << "Ошибка выделения памяти в createWeatherCache:" << e.what();
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createSharedState()
-{
-	try
-	{
-		sharedStateInterface_ = std::make_shared<SharedState>();
-	}
-	catch (const std::bad_alloc &e)
-	{
-		qCritical() << "Ошибка выделения памяти в createSharedState:"
-		            << e.what();
-		return false;
-	}
-	return true;
+bool DependencyContainer::createDbInitializer() {
+    bool success = true;
+    try {
+        dbInitializerInterface_ = std::make_shared<WeatherDatabaseInitializer>();
+    } catch (const std::bad_alloc &e) {
+        qCritical() << "Ошибка выделения памяти в createDbInitializer:" << e.what();
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createConfigLoader()
-{
-	try
-	{
-		configLoaderInterface_ = std::make_shared<ConfigLoader>();
-	}
-	catch (const std::bad_alloc &e)
-	{
-		qCritical() << "Ошибка выделения памяти в createConfigLoader:"
-		            << e.what();
-		return false;
-	}
-	return true;
+bool DependencyContainer::createConfigProvider() {
+    bool success = true;
+    try {
+        configProviderInterface_ = std::make_shared<ConfigProvider>(configLoaderInterface_);
+    } catch (const std::bad_alloc &e) {
+        qCritical() << "Ошибка выделения памяти в createConfigProvider:" << e.what();
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createWeatherCache()
-{
-	try
-	{
-		cacheSourceInterface_ =
-		    std::make_shared<WeatherCache>(configProviderInterface_);
-	}
-	catch (const std::bad_alloc &e)
-	{
-		qCritical() << "Ошибка выделения памяти в createWeatherCache:"
-		            << e.what();
-		return false;
-	}
-	return true;
+bool DependencyContainer::createUserRepository() {
+    bool success = true;
+    userRepositoryInterface_ = new (std::nothrow) UserRepository(configProviderInterface_, sharedStateInterface_, qmlRoot_);
+    if (!userRepositoryInterface_) {
+        qCritical() << "Ошибка выделения памяти в createUserRepository";
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createDbInitializer()
-{
-	try
-	{
-		dbInitializerInterface_ =
-		    std::make_shared<WeatherDatabaseInitializer>();
-	}
-	catch (const std::bad_alloc &e)
-	{
-		qCritical() << "Ошибка выделения памяти в createDbInitializer:"
-		            << e.what();
-		return false;
-	}
-	return true;
+bool DependencyContainer::createWeatherApiSource() {
+    bool success = true;
+    apiWeatherSourceInterface_ = new (std::nothrow) WeatherApiSource(configProviderInterface_, qmlRoot_);
+    if (!apiWeatherSourceInterface_) {
+        qCritical() << "Ошибка выделения памяти в createWeatherApiSource";
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createConfigProvider()
-{
-	try
-	{
-		configProviderInterface_ =
-		    std::make_shared<ConfigProvider>(configLoaderInterface_);
-	}
-	catch (const std::bad_alloc &e)
-	{
-		qCritical() << "Ошибка выделения памяти в createConfigProvider:"
-		            << e.what();
-		return false;
-	}
-	return true;
+bool DependencyContainer::setDbWeatherHistoryRepository() {
+    bool success = true;
+    dbWeatherHistoryInterface_ = std::make_shared<SqliteWeatherHistoryRepository>(dbInitializerInterface_, sharedStateInterface_);
+    if (!apiWeatherSourceInterface_) {
+        qCritical() << "Ошибка выделения памяти в createWeatherApiSource";
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createUserRepository()
-{
-	userRepositoryInterface_ = new (std::nothrow) UserRepository(
-	    configProviderInterface_, sharedStateInterface_, qmlRoot_);
-	if (!userRepositoryInterface_)
-	{
-		qCritical() << "Ошибка выделения памяти в createUserRepository";
-		return false;
-	}
-	return true;
+bool DependencyContainer::createWeatherRepository() {
+    bool success = true;
+    weatherRepositoryInterface_ = new (std::nothrow) WeatherRepository(cacheSourceInterface_, apiWeatherSourceInterface_, qmlRoot_);
+    if (!weatherRepositoryInterface_) {
+        qCritical() << "Ошибка выделения памяти в createWeatherRepository";
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createWeatherApiSource()
-{
-	apiWeatherSourceInterface_ =
-	    new (std::nothrow) WeatherApiSource(configProviderInterface_, qmlRoot_);
-	if (!apiWeatherSourceInterface_)
-	{
-		qCritical() << "Ошибка выделения памяти в createWeatherApiSource";
-		return false;
-	}
-	return true;
+bool DependencyContainer::createAuthUseCase() {
+    bool success = true;
+    try {
+        authUseCase_ = std::make_shared<AuthenticateUserUseCase>(userRepositoryInterface_);
+    } catch (const std::bad_alloc &e) {
+        qCritical() << "Ошибка выделения памяти в createAuthUseCase:" << e.what();
+        success = false;
+    }
+    return success;
 }
 
-void DependencyContainer::setDbWeatherHistoryRepository()
-{
-	dbWeatherHistoryInterface_ =
-	    std::make_shared<SqliteWeatherHistoryRepository>(
-	        dbInitializerInterface_, sharedStateInterface_);
+bool DependencyContainer::createRegUseCase() {
+    bool success = true;
+    try {
+        regUseCase_ = std::make_shared<RegisterUserUseCase>(userRepositoryInterface_);
+    } catch (const std::bad_alloc &e) {
+        qCritical() << "Ошибка выделения памяти в createRegUseCase:" << e.what();
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createWeatherRepository()
-{
-	weatherRepositoryInterface_ = new (std::nothrow) WeatherRepository(
-	    cacheSourceInterface_, apiWeatherSourceInterface_, qmlRoot_);
-	if (!weatherRepositoryInterface_)
-	{
-		qCritical() << "Ошибка выделения памяти в createWeatherRepository";
-		return false;
-	}
-	return true;
+bool DependencyContainer::createDailyWeatherUseCase() {
+    bool success = true;
+    try {
+        dailyWeatherUseCase_ = std::make_shared<GetDailyWeatherUseCase>(weatherRepositoryInterface_);
+    } catch (const std::bad_alloc &e) {
+        qCritical() << "Ошибка выделения памяти в createDailyWeatherUseCase:" << e.what();
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createAuthUseCase()
-{
-	try
-	{
-		authUseCase_ =
-		    std::make_shared<AuthenticateUserUseCase>(userRepositoryInterface_);
-	}
-	catch (const std::bad_alloc &e)
-	{
-		qCritical() << "Ошибка выделения памяти в createAuthUseCase:"
-		            << e.what();
-		return false;
-	}
-	return true;
+bool DependencyContainer::createWeeklyWeatherUseCase() {
+    bool success = true;
+    try {
+        weeklyWeatherUseCase_ = std::make_shared<GetWeeklyWeatherUseCase>(weatherRepositoryInterface_);
+    } catch (const std::bad_alloc &e) {
+        qCritical() << "Ошибка выделения памяти в createWeeklyWeatherUseCase:" << e.what();
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createRegUseCase()
-{
-	try
-	{
-		regUseCase_ =
-		    std::make_shared<RegisterUserUseCase>(userRepositoryInterface_);
-	}
-	catch (const std::bad_alloc &e)
-	{
-		qCritical() << "Ошибка выделения памяти в createRegUseCase:"
-		            << e.what();
-		return false;
-	}
-	return true;
+bool DependencyContainer::createSaveHistoryUseCase() {
+    bool success = true;
+    try {
+        saveHistoryUseCase_ = std::make_shared<SaveWeatherHistoryUseCase>(dbWeatherHistoryInterface_);
+    } catch (const std::bad_alloc &e) {
+        qCritical() << "Ошибка выделения памяти в createSaveHistoryUseCase:" << e.what();
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createDailyWeatherUseCase()
-{
-	try
-	{
-		dailyWeatherUseCase_ = std::make_shared<GetDailyWeatherUseCase>(
-		    weatherRepositoryInterface_);
-	}
-	catch (const std::bad_alloc &e)
-	{
-		qCritical() << "Ошибка выделения памяти в createDailyWeatherUseCase:"
-		            << e.what();
-		return false;
-	}
-	return true;
+bool DependencyContainer::createGetHistoryUseCase() {
+    bool success = true;
+    try {
+        getHistoryUseCase_ = std::make_shared<GetWeatherHistoryUseCase>(dbWeatherHistoryInterface_);
+    } catch (const std::bad_alloc &e) {
+        qCritical() << "Ошибка выделения памяти в createGetHistoryUseCase:" << e.what();
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createWeeklyWeatherUseCase()
-{
-	try
-	{
-		weeklyWeatherUseCase_ = std::make_shared<GetWeeklyWeatherUseCase>(
-		    weatherRepositoryInterface_);
-	}
-	catch (const std::bad_alloc &e)
-	{
-		qCritical() << "Ошибка выделения памяти в createWeeklyWeatherUseCase:"
-		            << e.what();
-		return false;
-	}
-	return true;
+bool DependencyContainer::createAuthViewModel() {
+    bool success = true;
+    authViewModel_ = new (std::nothrow) AuthViewModel(authUseCase_, regUseCase_, qmlRoot_);
+    if (!authViewModel_) {
+        qCritical() << "Ошибка выделения памяти в createAuthViewModel";
+        success = false;
+    }
+    return success;
 }
 
-bool DependencyContainer::createSaveHistoryUseCase()
-{
-	try
-	{
-		saveHistoryUseCase_ = std::make_shared<SaveWeatherHistoryUseCase>(
-		    dbWeatherHistoryInterface_);
-	}
-	catch (const std::bad_alloc &e)
-	{
-		qCritical() << "Ошибка выделения памяти в createSaveHistoryUseCase:"
-		            << e.what();
-		return false;
-	}
-	return true;
-}
-
-bool DependencyContainer::createGetHistoryUseCase()
-{
-	try
-	{
-		getHistoryUseCase_ = std::make_shared<GetWeatherHistoryUseCase>(
-		    dbWeatherHistoryInterface_);
-	}
-	catch (const std::bad_alloc &e)
-	{
-		qCritical() << "Ошибка выделения памяти в createGetHistoryUseCase:"
-		            << e.what();
-		return false;
-	}
-	return true;
-}
-
-bool DependencyContainer::createAuthViewModel()
-{
-	authViewModel_ =
-	    new (std::nothrow) AuthViewModel(authUseCase_, regUseCase_, qmlRoot_);
-	if (!authViewModel_)
-	{
-		qCritical() << "Ошибка выделения памяти в createAuthViewModel";
-		return false;
-	}
-	return true;
-}
-
-bool DependencyContainer::createWeatherViewModel()
-{
-	weatherViewModel = new (std::nothrow)
-	    WeatherViewModel(dailyWeatherUseCase_, weeklyWeatherUseCase_,
-	                     saveHistoryUseCase_, qmlRoot_);
-	if (!weatherViewModel)
-	{
-		qCritical() << "Ошибка выделения памяти в createWeatherViewModel";
-		return false;
-	}
-	return true;
+bool DependencyContainer::createWeatherViewModel() {
+    bool success = true;
+    weatherViewModel = new (std::nothrow) WeatherViewModel(dailyWeatherUseCase_, weeklyWeatherUseCase_, saveHistoryUseCase_, qmlRoot_);
+    if (!weatherViewModel) {
+        qCritical() << "Ошибка выделения памяти в createWeatherViewModel";
+        success = false;
+    }
+    return success;
 }

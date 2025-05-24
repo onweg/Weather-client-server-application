@@ -11,21 +11,15 @@ Result<WeatherData> WeatherCache::getDayWeather(const std::string &city,
                                                 const std::string &date)
 {
 	Result<WeatherData> result;
-	if (!hasValidData(city))
-	{
+    if (!hasValidData(city)) {
 		result = Result<WeatherData>::failure(
 		    "Не нашлись данные о погоде в городе " + city);
-	}
-	else
-	{
+    } else {
 		const auto &days = cache_.at(city).data.getDailyWeather();
 		int index = findDayIndex(days, date);
-		if (index >= 0 && index < MAX_COUNT_DAYS)
-		{
+        if (index >= 0 && index < MAX_COUNT_DAYS) {
 			result = Result<WeatherData>::success(days[index]);
-		}
-		else
-		{
+        } else {
 			result = Result<WeatherData>::failure(
 			    "Не нашлись данные о погоде в городе " + city + " с датой " +
 			    date);
@@ -37,13 +31,10 @@ Result<WeatherData> WeatherCache::getDayWeather(const std::string &city,
 Result<WeekWeatherData> WeatherCache::getWeekWeather(const std::string &city)
 {
 	Result<WeekWeatherData> result;
-	if (!hasValidData(city))
-	{
+    if (!hasValidData(city)) {
 		result = Result<WeekWeatherData>::failure(
 		    "Не нашлись данные о погоде в городе " + city);
-	}
-	else
-	{
+    } else {
 		result = Result<WeekWeatherData>::success(cache_.at(city).data);
 	}
 	return result;
@@ -55,18 +46,14 @@ void WeatherCache::addWeekWeather(const std::string &city,
     initConfig();
 	clearExpired();
 	size_t dataSize = calculateDataSize(data);
-	if (currentCacheSize_ > std::numeric_limits<size_t>::max() - dataSize)
-	{
+    if (currentCacheSize_ > std::numeric_limits<size_t>::max() - dataSize) {
 		return;
 	}
-	while (currentCacheSize_ + dataSize > cacheConfig_->getMaxMemoryBytes())
-	{
-		if (cache_.empty())
-			break;
+    while (currentCacheSize_ + dataSize > cacheConfig_->getMaxMemoryBytes()
+           && !cache_.empty()) {
 		removeOldestEntry();
 	}
-	if (currentCacheSize_ + dataSize <= cacheConfig_->getMaxMemoryBytes())
-	{
+    if (currentCacheSize_ + dataSize <= cacheConfig_->getMaxMemoryBytes()) {
 		cache_[city] = {data, std::chrono::system_clock::now()};
 		currentCacheSize_ += dataSize;
 	}
@@ -76,8 +63,7 @@ bool WeatherCache::hasValidData(const std::string &city)
 {
 	bool result = false;
 	auto it = cache_.find(city);
-	if (it != cache_.end())
-	{
+    if (it != cache_.end()) {
 		result = !isExpired(it->second);
 	}
 	return result;
@@ -90,8 +76,7 @@ bool WeatherCache::isExpired(const CacheEntry &entry) const
 	auto age =
 	    std::chrono::duration_cast<std::chrono::seconds>(now - entry.timestamp)
 	        .count();
-	if (age > CACHE_EXPIRATION_SECONDS)
-	{
+    if (age > CACHE_EXPIRATION_SECONDS) {
 		result = true;
 	}
 	return result;
@@ -101,10 +86,8 @@ int WeatherCache::findDayIndex(const std::vector<WeatherData> &days,
                                const std::string &date) const
 {
 	int result = -1;
-	for (size_t i = 0; i < days.size(); ++i)
-	{
-		if (days[i].getDate() == date)
-		{
+    for (size_t i = 0; i < days.size(); ++i) {
+        if (days[i].getDate() == date) {
 			result = static_cast<int>(i);
 			break;
 		}
@@ -115,8 +98,7 @@ int WeatherCache::findDayIndex(const std::vector<WeatherData> &days,
 void WeatherCache::removeCity(const std::string &city)
 {
 	auto it = cache_.find(city);
-	if (it != cache_.end())
-	{
+    if (it != cache_.end()) {
 		currentCacheSize_ -= calculateDataSize(it->second.data);
 		cache_.erase(it);
 	}
@@ -124,15 +106,11 @@ void WeatherCache::removeCity(const std::string &city)
 
 void WeatherCache::clearExpired()
 {
-	for (auto it = cache_.begin(); it != cache_.end();)
-	{
-		if (isExpired(it->second))
-		{
+    for (auto it = cache_.begin(); it != cache_.end();) {
+        if (isExpired(it->second)) {
 			currentCacheSize_ -= calculateDataSize(it->second.data);
 			it = cache_.erase(it);
-		}
-		else
-		{
+        } else {
 			++it;
 		}
 	}
@@ -140,15 +118,12 @@ void WeatherCache::clearExpired()
 
 void WeatherCache::removeOldestEntry()
 {
-	if (cache_.empty())
-	{
+    if (cache_.empty()) {
 		return;
 	}
 	auto oldestIt = cache_.begin();
-	for (auto it = std::next(cache_.begin()); it != cache_.end(); ++it)
-	{
-		if (it->second.timestamp < oldestIt->second.timestamp)
-		{
+    for (auto it = std::next(cache_.begin()); it != cache_.end(); ++it) {
+        if (it->second.timestamp < oldestIt->second.timestamp) {
 			oldestIt = it;
 		}
 	}
@@ -157,8 +132,7 @@ void WeatherCache::removeOldestEntry()
 
 void WeatherCache::initConfig()
 {
-    if (!cacheConfig_)
-    {
+    if (!cacheConfig_) {
         cacheConfig_ = std::make_shared<CacheConfig>();
         *cacheConfig_ = configProvider_->getCacheConfig();
     }
@@ -167,8 +141,7 @@ void WeatherCache::initConfig()
 size_t WeatherCache::calculateDataSize(const WeekWeatherData &data) const
 {
 	size_t totalSize = 0;
-	for (const auto &day : data.getDailyWeather())
-	{
+    for (const auto &day : data.getDailyWeather()) {
 		totalSize += bytesWeatherData(day);
 	}
 	totalSize += sizeof(data);
