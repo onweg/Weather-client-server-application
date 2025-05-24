@@ -37,9 +37,9 @@ bool AppConfigJsonConverter::parseApiConfig(const QJsonObject &jsonObject,
 	const QJsonObject apiObj = getJsonObject(jsonObject, "api");
 	if (apiObj.isEmpty())
 		return false;
-	config.baseUrl_ = getStringValue(apiObj, "baseUrl");
+    config.baseUrl = getStringValue(apiObj, "baseUrl");
 	config.key = getStringValue(apiObj, "key");
-	return !config.baseUrl_.empty() && !config.key.empty();
+    return !config.baseUrl.empty() && !config.key.empty();
 }
 
 bool AppConfigJsonConverter::parseCacheConfig(const QJsonObject &jsonObject,
