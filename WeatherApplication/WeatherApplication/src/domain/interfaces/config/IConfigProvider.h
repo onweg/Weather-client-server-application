@@ -11,9 +11,9 @@ class IConfigProvider
 {
   public:
 	virtual ~IConfigProvider() = default;
-    virtual ApiConfig getApiConfig() = 0;
-    virtual ServerHostConfig getServerHostConfig() = 0;
-    virtual CacheConfig getCacheConfig() = 0;
+	virtual ApiConfig getApiConfig() = 0;
+	virtual ServerHostConfig getServerHostConfig() = 0;
+	virtual CacheConfig getCacheConfig() = 0;
 };
 
 #endif // ICONFIGPROVIDER_H

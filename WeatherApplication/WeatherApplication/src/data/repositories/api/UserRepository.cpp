@@ -40,9 +40,10 @@ UserRepository::registerUser(const AuthorizationRequest &request)
 
 void UserRepository::initConfig()
 {
-    if (!serverHostConfig_) {
+	if (!serverHostConfig_)
+	{
 		serverHostConfig_ = std::make_shared<ServerHostConfig>();
-        *serverHostConfig_ = configProvider_->getServerHostConfig();
+		*serverHostConfig_ = configProvider_->getServerHostConfig();
 	}
 }
 
@@ -62,13 +63,16 @@ UserRepository::startAuthorization(const AuthorizationRequest &request,
 QByteArray UserRepository::buildRequestData(const AuthorizationRequest &request,
                                             AuthCommand command)
 {
-    if (command == AuthCommand::Login) {
+	if (command == AuthCommand::Login)
+	{
 		AuthorizationRequestDto dto =
 		    AuthorizationRequestDomainMapper::toDto(request);
 		auto jsonDoc =
 		    AuthorizationInfoJsonConverter::loginUserToJsonDocument(dto);
 		return jsonDoc.toJson();
-    } else {
+	}
+	else
+	{
 		AuthorizationRequestDto dto =
 		    AuthorizationRequestDomainMapper::toDto(request);
 		auto jsonDoc =
@@ -116,11 +120,13 @@ AuthorizationReply UserRepository::parseReply(const QByteArray &response,
 {
 	QJsonParseError error;
 	QJsonDocument doc = QJsonDocument::fromJson(response, &error);
-    if (error.error != QJsonParseError::NoError) {
+	if (error.error != QJsonParseError::NoError)
+	{
 		return AuthorizationReply::failure("Ошибка парсинга JSON: " +
 		                                   error.errorString().toStdString());
 	}
-    if (!doc.isObject()) {
+	if (!doc.isObject())
+	{
 		return AuthorizationReply::failure("JSON не является объектом");
 	}
 	AuthorizationReplyDto dto =

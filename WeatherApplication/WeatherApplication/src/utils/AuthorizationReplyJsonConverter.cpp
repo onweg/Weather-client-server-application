@@ -5,11 +5,13 @@ AuthorizationReplyJsonConverter::AuthorizationReplyJsonConverter() {}
 AuthorizationReplyDto AuthorizationReplyJsonConverter::parseAuthorizationReply(
     const QJsonObject &jsonObj)
 {
-    if (!hasValidStatusField(jsonObj)) {
+	if (!hasValidStatusField(jsonObj))
+	{
 		return AuthorizationReplyDto::failure(
 		    "Missing or invalid 'status' field in JSON.");
 	}
-    if (!hasValidMessageField(jsonObj)) {
+	if (!hasValidMessageField(jsonObj))
+	{
 		return AuthorizationReplyDto::failure(
 		    "Missing or invalid 'message' field in JSON.");
 	}
@@ -35,10 +37,12 @@ AuthorizationReplyDto
 AuthorizationReplyJsonConverter::createReplyFromStatusAndMessage(
     const QString &status, const QString &message)
 {
-    if (status == "success") {
+	if (status == "success")
+	{
 		return AuthorizationReplyDto::success();
 	}
-    else if (status == "error") {
+	else if (status == "error")
+	{
 		return AuthorizationReplyDto::failure(message.toStdString());
 	}
 	return AuthorizationReplyDto::failure("Unknown status value: " +

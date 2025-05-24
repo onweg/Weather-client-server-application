@@ -39,11 +39,14 @@ void WeatherViewModel::clickPrevDayButton()
 
 void WeatherViewModel::clickWeekWeatherDataButton()
 {
-    try {
+	try
+	{
 		auto future =
 		    getWeeklyWeatherUseCase_->execute(desiredCity_.toStdString());
 		setupWeeklyWeatherWatcher(future);
-    } catch (const std::runtime_error &error) {
+	}
+	catch (const std::runtime_error &error)
+	{
 		WeekWeatherUiMapper::toUiModel({}, weekWeatherModel_);
 		weekWeatherModel_->setMessageError(
 		    QString::fromStdString(error.what()));
@@ -71,7 +74,8 @@ bool WeatherViewModel::isDateValid(const QDate &date)
 void WeatherViewModel::changeDateAndFetch(int daysOffset)
 {
 	QDate newDate = desiredDate_.addDays(daysOffset);
-    if (isDateValid(newDate)) {
+	if (isDateValid(newDate))
+	{
 		desiredDate_ = newDate;
 		fetchAndSetDailyWeather();
 	}
@@ -79,12 +83,15 @@ void WeatherViewModel::changeDateAndFetch(int daysOffset)
 
 void WeatherViewModel::fetchAndSetDailyWeather()
 {
-    try {
+	try
+	{
 		auto future = getDailyWeatherUseCase_->execute(
 		    desiredCity_.toStdString(),
 		    desiredDate_.toString("yyyy-MM-dd").toStdString());
 		setupDailyWeatherWatcher(future);
-    } catch (const std::runtime_error &error) {
+	}
+	catch (const std::runtime_error &error)
+	{
 		WeatherUiMapper::toUiModel({}, weatherModel_);
 		weatherModel_->setMessageError(QString::fromStdString(error.what()));
 		emit weatherDataUpdated();
@@ -107,10 +114,13 @@ void WeatherViewModel::setupDailyWeatherWatcher(
 void WeatherViewModel::handleDailyWeatherResult(
     const Result<WeatherData> &result)
 {
-    if (result.isSuccess()) {
+	if (result.isSuccess())
+	{
 		WeatherUiMapper::toUiModel(result.value(), weatherModel_);
 		weatherModel_->setMessageError("");
-    } else {
+	}
+	else
+	{
 		WeatherUiMapper::toUiModel({}, weatherModel_);
 		weatherModel_->setMessageError(
 		    QString::fromStdString(result.errorMessage()));
@@ -135,10 +145,13 @@ void WeatherViewModel::setupWeeklyWeatherWatcher(
 void WeatherViewModel::handleWeeklyWeatherResult(
     const Result<WeekWeatherData> &result)
 {
-    if (result.isSuccess()) {
+	if (result.isSuccess())
+	{
 		WeekWeatherUiMapper::toUiModel(result.value(), weekWeatherModel_);
 		weekWeatherModel_->setMessageError("");
-    } else {
+	}
+	else
+	{
 		WeekWeatherUiMapper::toUiModel({}, weekWeatherModel_);
 		weekWeatherModel_->setMessageError(
 		    QString::fromStdString(result.errorMessage()));

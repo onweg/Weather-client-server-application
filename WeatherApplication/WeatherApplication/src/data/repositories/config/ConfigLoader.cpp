@@ -14,16 +14,19 @@ ConfigLoader::ConfigLoader() {}
 Result<AppConfig> ConfigLoader::load()
 {
 	QByteArray data = readFile(FILE_PATH);
-    if (data.isEmpty()) {
+	if (data.isEmpty())
+	{
 		return Result<AppConfig>::failure("Не удалось прочитать файл");
 	}
 	auto jsonResult = parseJson(data);
-    if (!jsonResult.isSuccess()) {
+	if (!jsonResult.isSuccess())
+	{
 		return Result<AppConfig>::failure(jsonResult.errorMessage());
 	}
 	AppConfigDto dto;
 	int result = AppConfigJsonConverter::fromJson(jsonResult.value(), dto);
-    if (!result) {
+	if (!result)
+	{
 		return Result<AppConfig>::failure("Некорректный формат config.json");
 	}
 	AppConfig config = AppConfigDomainMapper::fromDto(dto);
@@ -33,7 +36,8 @@ Result<AppConfig> ConfigLoader::load()
 QByteArray ConfigLoader::readFile(const QString &path)
 {
 	QFile file(path);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
 		qDebug() << "Ошибка открытия файла:" << path;
 		return {};
 	}
@@ -46,11 +50,13 @@ Result<QJsonObject> ConfigLoader::parseJson(const QByteArray &jsonData)
 {
 	QJsonParseError error;
 	QJsonDocument doc = QJsonDocument::fromJson(jsonData, &error);
-    if (error.error != QJsonParseError::NoError) {
+	if (error.error != QJsonParseError::NoError)
+	{
 		qDebug() << "Ошибка парсинга JSON:" << error.errorString();
 		return Result<QJsonObject>::failure("Ошибка парсинга JSON");
 	}
-    if (!doc.isObject()) {
+	if (!doc.isObject())
+	{
 		return Result<QJsonObject>::failure("JSON не является объектом");
 	}
 	return Result<QJsonObject>::success(doc.object());

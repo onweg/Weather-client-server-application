@@ -41,7 +41,7 @@ class WeatherCache : public IWeatherCacheSource
 	void removeCity(const std::string &city);
 	void clearExpired();
 	void removeOldestEntry();
-    void initConfig();
+	void initConfig();
 	size_t calculateDataSize(const WeekWeatherData &data) const;
 	size_t bytesWeatherData(const WeatherData &day) const;
 };

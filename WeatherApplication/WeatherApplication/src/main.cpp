@@ -50,7 +50,8 @@ int main(int argc, char *argv[])
 	auto *rootView = view.data();
 
 	DependencyContainer container(rootView);
-    if (!container.init()) {
+	if (!container.init())
+	{
 		qDebug() << "Не удалось инициализировать приложение";
 		return -1;
 	}

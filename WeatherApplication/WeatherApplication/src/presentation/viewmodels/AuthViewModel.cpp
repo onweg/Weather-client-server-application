@@ -30,11 +30,14 @@ void AuthViewModel::executeAuthOperation(const QString &username,
                                          const QString &password,
                                          AuthFunction authFunc)
 {
-    try {
+	try
+	{
 		QFuture<AuthorizationReply> future = authFunc(AuthorizationRequest{
 		    username.toStdString(), password.toStdString()});
 		setupWatcherAndStart(future);
-    } catch (const std::runtime_error &error) {
+	}
+	catch (const std::runtime_error &error)
+	{
 		emit authFailed(QString::fromStdString(error.what()));
 	}
 }
@@ -51,9 +54,12 @@ void AuthViewModel::handleAuthResult(
     QFutureWatcher<AuthorizationReply> *watcher)
 {
 	const AuthorizationReply reply = watcher->result();
-    if (reply.isAuthorized()) {
+	if (reply.isAuthorized())
+	{
 		emit authSucceeded();
-    } else {
+	}
+	else
+	{
 		emit authFailed(QString::fromStdString(reply.getMessageError()));
 	}
 	watcher->deleteLater();
