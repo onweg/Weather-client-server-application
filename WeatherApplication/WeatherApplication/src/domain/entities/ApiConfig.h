@@ -1,28 +1,40 @@
 #ifndef APICONFIG_H
 #define APICONFIG_H
 
-#include <string>
+#include <QString>
+#include <QUrl>
+#include <QUrlQuery>
 
-class ApiConfig
-{
-  public:
-	ApiConfig();
-	ApiConfig(const std::string &urlFindCityByName,
-	          const std::string &urlFindWeatherByCoordinates,
-	          const std::string &key);
+class ApiConfig {
+public:
+    ApiConfig(const QString& baseUrl, const QString& apiKey)
+        : baseUrl_(baseUrl), apiKey_(apiKey) {}
 
-	const std::string &getUrlFindCityByName() const;
-	const std::string &getUrlFindWeatherByCoordinates() const;
-	const std::string &getKey() const;
+    QUrl buildFindCityByNameUrl(const QString& cityName) const {
+        QUrl url(baseUrl_ + "/geo/1.0/direct");
+        QUrlQuery query;
+        query.addQueryItem("q", cityName);
+        query.addQueryItem("limit", "5");
+        query.addQueryItem("appid", apiKey_);
+        url.setQuery(query);
+        return url;
+    }
 
-	void setUrlFindCityByName(const std::string &url);
-	void setUrlFindWeatherByCoordinates(const std::string &url);
-	void setKey(const std::string &key);
+    QUrl buildWeatherByCoordinatesUrl(double lat, double lon) const {
+        QUrl url(baseUrl_ + "/data/2.5/forecast");
+        QUrlQuery query;
+        query.addQueryItem("lat", QString::number(lat));
+        query.addQueryItem("lon", QString::number(lon));
+        query.addQueryItem("units", "metric");
+        query.addQueryItem("lang", "ru");
+        query.addQueryItem("appid", apiKey_);
+        url.setQuery(query);
+        return url;
+    }
 
-  private:
-    std::string m_urlFindCityByName;
-    std::string m_urlFindWeatherByCoordinates;
-    std::string m_key;
+private:
+    QString baseUrl_;
+    QString apiKey_;
 };
 
 #endif // APICONFIG_H
