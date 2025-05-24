@@ -55,7 +55,6 @@ SOURCES += \
     src/data/mappers/WeatherDomainMapper.cpp \
     src/data/mappers/WeatherHistoryItemDomainMapper.cpp \
     src/data/mappers/WeekWeatherDomainMapper.cpp \
-    src/data/repositories/database/QtDatabaseConnection.cpp \
     src/data/repositories/database/SqliteWeatherHistoryRepository.cpp \
     src/data/repositories/database/WeatherDatabaseInitializer.cpp \
     src/data/repositories/sharedstate/SharedState.cpp \
@@ -112,7 +111,6 @@ HEADERS += \
     src/data/mappers/WeatherDomainMapper.h \
     src/data/mappers/WeatherHistoryItemDomainMapper.h \
     src/data/mappers/WeekWeatherDomainMapper.h \
-    src/data/repositories/database/QtDatabaseConnection.h \
     src/data/repositories/database/SqliteWeatherHistoryRepository.h \
     src/data/repositories/database/WeatherDatabaseInitializer.h \
     src/data/repositories/sharedstate/SharedState.h \
@@ -131,7 +129,6 @@ HEADERS += \
     src/domain/interfaces/config/IConfigProvider.h \
     src/domain/interfaces/api/IUserRepository.h \
     src/domain/interfaces/api/IApiWeatherSource.h \
-    src/domain/interfaces/database/IWeatherDatabaseConnection.h \
     src/domain/interfaces/database/IWeatherDatabaseInitializer.h \
     src/domain/interfaces/database/IWeatherHistoryRepository.h \
     src/domain/interfaces/sharedstate/ISharedState.h \

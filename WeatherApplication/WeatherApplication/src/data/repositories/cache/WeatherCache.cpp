@@ -56,20 +56,18 @@ void WeatherCache::addWeekWeather(const std::string &city,
     size_t dataSize = calculateDataSize(data);
     if (currentCacheSize_ > std::numeric_limits<size_t>::max() - dataSize)
     {
-        qDebug() << "не добавились данные";
         return;
     }
     while (currentCacheSize_ + dataSize > cacheConfig_->getMaxMemoryBytes())
     {
         if (cache_.empty()) break;
-        removeOldestEntry(); // Удаляем самые старые записи, пока не освободится место
+        removeOldestEntry();
     }
     if (currentCacheSize_ + dataSize <= cacheConfig_->getMaxMemoryBytes())
     {
         cache_[city] = {data, std::chrono::system_clock::now()};
         currentCacheSize_ += dataSize;
     }
-    qDebug() << "Добавились данные " << currentCacheSize_ ;
 }
 
 bool WeatherCache::hasValidData(const std::string &city)

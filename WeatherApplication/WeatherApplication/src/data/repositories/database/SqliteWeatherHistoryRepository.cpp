@@ -1,120 +1,74 @@
 #include "SqliteWeatherHistoryRepository.h"
-
-#include <QDateTime>
-#include <QDebug>
-#include <QSqlError>
 #include <QSqlQuery>
+#include <QSqlError>
+#include <QDebug>
 #include <QVariant>
-
+#include <QDateTime>
 #include "../../mappers/WeatherHistoryItemDomainMapper.h"
-#include "QtDatabaseConnection.h"
+#include "../../dtomodels/WeatherHistoryItemDto.h"
 
-SqliteWeatherHistoryRepository::SqliteWeatherHistoryRepository(
-    std::shared_ptr<IWeatherDatabaseInitializer> dbInitializer,
-    std::shared_ptr<ISharedState> state)
- : sharedState_(std::move(state))
+SqliteWeatherHistoryRepository::SqliteWeatherHistoryRepository(std::shared_ptr<IWeatherDatabaseInitializer> dbInit, std::shared_ptr<ISharedState> state)
+    :dbInitializer_(std::move(dbInit)), sharedState_(std::move(state))
 {
-	auto connection = dbInitializer->initialize();
-	if (!connection || !connection->isOpen())
-	{
-		qWarning() << "Нет подключения к БД";
-	}
-	else
-	{
-		connection_ = connection;
-	}
+    db_ = dbInitializer_->initialize();
+    if (!db_.isOpen())
+    {
+     qWarning() << "База данных не открыта!";
+    } else {
+        qDebug() << "База данных открыта!";
+    }
 }
 
-void SqliteWeatherHistoryRepository::save(const std::string &city,
-                                          const std::string &date)
+void SqliteWeatherHistoryRepository::save(const std::string &city, const std::string &date)
 {
-	auto qtConn = dynamic_cast<QtDatabaseConnection *>(connection_.get());
-	if (!qtConn)
-	{
-		qWarning() << "Неверный тип соединения";
-		return;
-	}
+ QSqlQuery query(db_);
+ query.prepare("INSERT INTO weather_data (username, city, date) VALUES (:username, :city, :date)");
+ bindInsertValues(query, city, date);
 
-	QSqlDatabase db = qtConn->getQtDatabase();
-	QSqlQuery query(db);
-
-	prepareInsertStatement(query);
-
-	WeatherHistoryItemDto dto;
-	dto.username = sharedState_->getUsername();
-	dto.city = city;
-	dto.date = date;
-
-	bindInsertValues(query, dto);
-
-	if (!executeQuery(query, "Ошибка при вставке"))
-		return;
+ if (!executeQuery(query, "Ошибка при вставке"))
+  return;
 }
 
 std::vector<WeatherHistoryItem> SqliteWeatherHistoryRepository::getAll()
 {
-	std::vector<WeatherHistoryItem> results;
+ std::vector<WeatherHistoryItem> results;
+ QSqlQuery query("SELECT id, username, timestamp, city, date FROM weather_data", db_);
 
-	auto qtConn = dynamic_cast<QtDatabaseConnection *>(connection_.get());
-	if (!qtConn)
-	{
-		qWarning() << "Неверный тип соединения";
-		return results;
-	}
+ if (!executeQuery(query, "Ошибка при получении данных"))
+  return results;
 
-	QSqlDatabase db = qtConn->getQtDatabase();
-	QSqlQuery query(
-	    "SELECT id, username, timestamp, city, date FROM weather_data", db);
+ while (query.next())
+ {
+     WeatherHistoryItemDto dto;
+     dto.id = query.value("id").toInt();
+     dto.username = query.value("username").toString().toStdString();
+     dto.city = query.value("city").toString().toStdString();
+     dto.date = query.value("date").toString().toStdString();
 
-	if (!executeQuery(query, "Ошибка при получении данных"))
-		return results;
+     QDateTime dt = query.value("timestamp").toDateTime();
+     qint64 msecs = dt.toMSecsSinceEpoch(); // работает всегда
+     dto.timestamp = std::chrono::system_clock::from_time_t(msecs / 1000); // в секундах
 
-	while (query.next())
-	{
-		WeatherHistoryItemDto dto = extractWeatherHistoryItemDto(query);
-		results.push_back(WeatherHistoryItemDomainMapper::fromDto(dto));
-	}
+     results.push_back(WeatherHistoryItemDomainMapper::fromDto(dto));
+ }
 
-	return results;
+ return results;
 }
 
-bool SqliteWeatherHistoryRepository::executeQuery(QSqlQuery &query,
-                                                  const char *errorMessage)
+bool SqliteWeatherHistoryRepository::executeQuery(QSqlQuery &query, const char *errorMessage)
 {
-	if (!query.exec())
-	{
-		qDebug() << errorMessage << ":" << query.lastError();
-		return false;
-	}
-	return true;
+ if (!query.exec())
+ {
+  qDebug() << errorMessage << ":" << query.lastError();
+  return false;
+ }
+ return true;
 }
 
-void SqliteWeatherHistoryRepository::prepareInsertStatement(QSqlQuery &query)
+void SqliteWeatherHistoryRepository::bindInsertValues(QSqlQuery &query, const std::string &city, const std::string &date)
 {
-	bool ok = query.prepare("INSERT INTO weather_data (username, city, date) "
-	                        "VALUES (:username, :city, :date)");
-	Q_ASSERT(ok);
+ query.bindValue(":username", QString::fromStdString(sharedState_->getUsername()));
+ query.bindValue(":city", QString::fromStdString(city));
+ query.bindValue(":date", QString::fromStdString(date));
 }
 
-void SqliteWeatherHistoryRepository::bindInsertValues(
-    QSqlQuery &query, const WeatherHistoryItemDto &dto)
-{
-	query.bindValue(":username", QString::fromStdString(dto.username));
-	query.bindValue(":city", QString::fromStdString(dto.city));
-	query.bindValue(":date", QString::fromStdString(dto.date));
-}
-
-WeatherHistoryItemDto
-SqliteWeatherHistoryRepository::extractWeatherHistoryItemDto(
-    const QSqlQuery &query)
-{
-	WeatherHistoryItemDto dto;
-	dto.id = query.value("id").toInt();
-	dto.username = query.value("username").toString().toStdString();
-	dto.city = query.value("city").toString().toStdString();
-	dto.date = query.value("date").toString().toStdString();
-	dto.timestamp =
-	    std::chrono::system_clock::from_time_t(static_cast<std::time_t>(
-	        query.value("timestamp").toDateTime().toMSecsSinceEpoch() / 1000));
-	return dto;
-}

@@ -1,15 +1,13 @@
 #ifndef IWEATHERDATABASEINITIALIZER_H
 #define IWEATHERDATABASEINITIALIZER_H
 
-#include "IWeatherDatabaseConnection.h"
+#include <QSqlDatabase>
 
 class IWeatherDatabaseInitializer
 {
   public:
-	virtual ~IWeatherDatabaseInitializer() = default;
-	virtual DatabaseConnectionPtr initialize() = 0;
+ virtual ~IWeatherDatabaseInitializer() = default;
+ virtual QSqlDatabase initialize() = 0;
 };
-
-using DatabaseInitializerPtr = std::shared_ptr<IWeatherDatabaseInitializer>;
 
 #endif // IWEATHERDATABASEINITIALIZER_H

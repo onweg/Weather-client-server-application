@@ -1,75 +1,52 @@
 #include "WeatherDatabaseInitializer.h"
-
-#include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QDebug>
 
-#include "QtDatabaseConnection.h"
-
-class WeatherDatabaseInitializer::Impl
+QSqlDatabase WeatherDatabaseInitializer::initialize()
 {
-  public:
-	QSqlDatabase db;
-};
+ QSqlDatabase db;
 
-WeatherDatabaseInitializer::WeatherDatabaseInitializer()
- : pimpl_(std::make_unique<Impl>())
-{
+ if (QSqlDatabase::contains("qt_sql_default_connection"))
+ {
+  db = QSqlDatabase::database();
+ }
+ else
+ {
+  db = QSqlDatabase::addDatabase("QSQLITE");
+  db.setDatabaseName(DB_PATH);
+
+  if (!db.open())
+  {
+   qDebug() << "Ошибка подключения к БД:" << db.lastError();
+   return {};
+  }
+ }
+
+ if (!createTableIfNotExists(db))
+ {
+  qDebug() << "Не удалось создать таблицу.";
+  return {};
+ }
+
+ return db;
 }
 
-WeatherDatabaseInitializer::~WeatherDatabaseInitializer() = default;
-
-DatabaseConnectionPtr WeatherDatabaseInitializer::initialize()
+bool WeatherDatabaseInitializer::createTableIfNotExists(QSqlDatabase &db)
 {
-	if (!connectToDatabase())
-	{
-		qWarning() << "Не удалось подключиться к БД";
-		return nullptr;
-	}
+ QSqlQuery query(db);
+ bool ok = query.exec(R"(
+  CREATE TABLE IF NOT EXISTS weather_data (
+   id INTEGER PRIMARY KEY AUTOINCREMENT,
+   username TEXT,
+   timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+   city TEXT,
+   date TEXT
+  )
+ )");
 
-	if (!createTableIfNotExists())
-	{
-		qWarning() << "Не удалось создать таблицу";
-		return nullptr;
-	}
+ if (!ok)
+  qDebug() << "Ошибка при создании таблицы:" << query.lastError();
 
-	return std::make_shared<QtDatabaseConnection>(pimpl_->db);
-}
-
-bool WeatherDatabaseInitializer::connectToDatabase()
-{
-	if (QSqlDatabase::contains("qt_sql_default_connection"))
-	{
-		pimpl_->db = QSqlDatabase::database();
-		return true;
-	}
-
-	pimpl_->db = QSqlDatabase::addDatabase("QSQLITE");
-	pimpl_->db.setDatabaseName(DB_PATH);
-
-	if (!pimpl_->db.open())
-	{
-		qDebug() << "Ошибка подключения к БД:" << pimpl_->db.lastError();
-		return false;
-	}
-
-	return true;
-}
-
-bool WeatherDatabaseInitializer::createTableIfNotExists()
-{
-	QSqlQuery query(pimpl_->db);
-	bool ok = query.exec("CREATE TABLE IF NOT EXISTS weather_data ("
-	                     "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-	                     "username TEXT, "
-	                     "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, "
-	                     "city TEXT, "
-	                     "date TEXT)");
-
-	if (!ok)
-	{
-		qDebug() << "Ошибка при создании таблицы:" << query.lastError();
-	}
-
-	return ok;
+ return ok;
 }
