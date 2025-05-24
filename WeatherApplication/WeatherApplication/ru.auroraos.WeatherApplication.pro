@@ -59,14 +59,14 @@ SOURCES += \
     src/data/repositories/database/WeatherDatabaseInitializer.cpp \
     src/data/repositories/sharedstate/SharedState.cpp \
     src/data/repositories/weather/WeatherRepository.cpp \
-    src/domain/entities/CacheConfig.cpp \
+    src/infrastructure/config/CacheConfig.cpp \
     src/domain/usecases/GetWeatherHistoryUseCase.cpp \
     src/domain/usecases/SaveWeatherHistoryUseCase.cpp \
     src/domain/entities/AuthorizationReply.cpp \
     src/domain/entities/AuthorizationRequest.cpp \
-    src/domain/entities/ApiConfig.cpp \
-    src/domain/entities/ServerHostConfig.cpp \
-    src/domain/entities/AppConfig.cpp \
+    src/infrastructure/config/ApiConfig.cpp \
+    src/infrastructure/config/ServerHostConfig.cpp \
+    src/infrastructure/config/AppConfig.cpp \
     src/domain/entities/WeatherData.cpp \
     src/domain/entities/WeatherHistoryItem.cpp \
     src/domain/entities/WeekWeatherData.cpp \
@@ -117,10 +117,10 @@ HEADERS += \
     src/data/repositories/weather/WeatherRepository.h \
     src/domain/entities/AuthorizationReply.h \
     src/domain/entities/AuthorizationRequest.h \
-    src/domain/entities/ApiConfig.h \
-    src/domain/entities/CacheConfig.h \
-    src/domain/entities/ServerHostConfig.h \
-    src/domain/entities/AppConfig.h \
+    src/infrastructure/config/ApiConfig.h \
+    src/infrastructure/config/CacheConfig.h \
+    src/infrastructure/config/ServerHostConfig.h \
+    src/infrastructure/config/AppConfig.h \
     src/domain/entities/WeatherData.h \
     src/domain/entities/WeatherHistoryItem.h \
     src/domain/entities/WeekWeatherData.h \

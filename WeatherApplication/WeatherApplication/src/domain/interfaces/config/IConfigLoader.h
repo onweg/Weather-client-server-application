@@ -1,7 +1,7 @@
 #ifndef ICONFIGLOADER_H
 #define ICONFIGLOADER_H
 
-#include "../../entities/AppConfig.h"
+#include "../../../infrastructure/config/AppConfig.h"
 #include "../../utils/Result.h"
 
 class IConfigLoader

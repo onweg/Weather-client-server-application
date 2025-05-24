@@ -1,7 +1,7 @@
 #ifndef APPCONFIGDOMAINMAPPER_H
 #define APPCONFIGDOMAINMAPPER_H
 
-#include "../../domain/entities/AppConfig.h"
+#include "../../infrastructure/config/AppConfig.h"
 #include "../dtomodels/AppConfigDto.h"
 
 class AppConfigDomainMapper

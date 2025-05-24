@@ -3,9 +3,9 @@
 
 #include <string>
 
-#include "../../entities/ApiConfig.h"
-#include "../../entities/ServerHostConfig.h"
-#include "../../entities/CacheConfig.h"
+#include "../../../infrastructure/config/ApiConfig.h"
+#include "../../../infrastructure/config/ServerHostConfig.h"
+#include "../../../infrastructure/config/CacheConfig.h"
 #include "../../utils/Result.h"
 
 class IConfigProvider

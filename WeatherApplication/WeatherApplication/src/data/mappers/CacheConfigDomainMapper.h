@@ -1,7 +1,7 @@
 #ifndef CACHECONFIGDOMAINMAPPER_H
 #define CACHECONFIGDOMAINMAPPER_H
 
-#include "../../domain/entities/CacheConfig.h"
+#include "../../infrastructure/config/CacheConfig.h"
 #include "../dtomodels/CacheConfigDto.h"
 
 class CacheConfigDomainMapper

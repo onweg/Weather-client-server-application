@@ -1,7 +1,7 @@
 #ifndef SERVERHOSTCONFIGDOMAINMAPPER_H
 #define SERVERHOSTCONFIGDOMAINMAPPER_H
 
-#include "../../domain/entities/ServerHostConfig.h"
+#include "../../infrastructure/config/ServerHostConfig.h"
 #include "../dtomodels/ServerHostConfigDto.h"
 
 class ServerHostConfigDomainMapper
