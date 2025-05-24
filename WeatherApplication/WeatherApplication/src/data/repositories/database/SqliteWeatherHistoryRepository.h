@@ -6,6 +6,8 @@
 #include "../../../domain/interfaces/database/IWeatherDatabaseInitializer.h"
 #include "../../../domain/interfaces/sharedstate/ISharedState.h"
 
+#include "../../dtomodels/WeatherHistoryItemDto.h"
+
 class SqliteWeatherHistoryRepository : public IWeatherHistoryRepository
 {
   public:
@@ -22,6 +24,9 @@ class SqliteWeatherHistoryRepository : public IWeatherHistoryRepository
 
  bool executeQuery(QSqlQuery &query, const char *errorMessage);
  void bindInsertValues(QSqlQuery &query, const std::string &city, const std::string &date);
+ QSqlQuery fetchData();
+ std::vector<WeatherHistoryItemDto> mapToDtos(QSqlQuery &query);
+ WeatherHistoryItemDto mapRowToDto(QSqlQuery &query);
 };
 
 #endif // SQLITEWEATHERHISTORYREPOSITORY_H
