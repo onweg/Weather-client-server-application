@@ -23,8 +23,7 @@ class WeatherCache : public IWeatherCacheSource
 	std::shared_ptr<IConfigProvider> configProvider_;
 	std::shared_ptr<CacheConfig> cacheConfig_;
 	size_t currentCacheSize_ = 0;
-	// static constexpr int MAX_CACHE_SIZE = 10; // максимальное количество
-	// записей
+
 	struct CacheEntry
 	{
 		WeekWeatherData data;
