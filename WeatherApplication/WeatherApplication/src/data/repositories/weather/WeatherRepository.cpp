@@ -1,11 +1,10 @@
 #include "WeatherRepository.h"
 
+#include <QDebug>
 #include <QFutureInterface>
 #include <QFutureWatcher>
 
 #include "../../../domain/utils/MakeReadyFuture.h"
-
-#include <QDebug>
 
 WeatherRepository::WeatherRepository(std::shared_ptr<IWeatherCacheSource> cache,
                                      IApiWeatherSource *api, QObject *parent)

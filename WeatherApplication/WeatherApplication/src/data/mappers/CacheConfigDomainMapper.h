@@ -6,9 +6,9 @@
 
 class CacheConfigDomainMapper
 {
-public:
-    static CacheConfigDto toDto(const CacheConfig &config);
-    static CacheConfig fromDto(const CacheConfigDto &dto);
+  public:
+	static CacheConfigDto toDto(const CacheConfig &config);
+	static CacheConfig fromDto(const CacheConfigDto &dto);
 };
 
 #endif // CACHECONFIGDOMAINMAPPER_H

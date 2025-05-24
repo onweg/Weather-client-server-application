@@ -50,10 +50,11 @@ int main(int argc, char *argv[])
 	auto *rootView = view.data();
 
 	DependencyContainer container(rootView);
-    if (!container.init()) {
-        qDebug() << "Не удалось инициализировать приложение";
-        return -1;
-    }
+	if (!container.init())
+	{
+		qDebug() << "Не удалось инициализировать приложение";
+		return -1;
+	}
 
 	view->rootContext()->setContextProperty("authViewModel",
 	                                        container.getAuthViewModel());
@@ -66,4 +67,5 @@ int main(int argc, char *argv[])
 	return application->exec();
 }
 
-// проверить от куда берутся данные из кеш или из api, сохраняются ли вообще данные в кеш
+// проверить от куда берутся данные из кеш или из api, сохраняются ли вообще
+// данные в кеш

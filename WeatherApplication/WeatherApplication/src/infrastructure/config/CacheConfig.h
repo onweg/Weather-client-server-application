@@ -5,15 +5,15 @@
 
 class CacheConfig
 {
-public:
-    CacheConfig();
-    CacheConfig(const size_t maxMemoryBytes);
+  public:
+	CacheConfig();
+	CacheConfig(const size_t maxMemoryBytes);
 
-    size_t getMaxMemoryBytes() const;
-    void setMaxMemoryBytes(const size_t& newMemory);
+	size_t getMaxMemoryBytes() const;
+	void setMaxMemoryBytes(const size_t &newMemory);
 
-private:
-    size_t m_maxMemoryBytes;
+  private:
+	size_t m_maxMemoryBytes;
 };
 
 #endif // CACHECONFIG_H

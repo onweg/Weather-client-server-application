@@ -3,16 +3,16 @@
 
 #include <chrono>
 #include <ctime>
-#include <unordered_map>
 #include <memory>
+#include <unordered_map>
 
-#include "../../../domain/interfaces/config/IConfigProvider.h"
 #include "../../../domain/interfaces/cache/IWeatherCacheSource.h"
+#include "../../../domain/interfaces/config/IConfigProvider.h"
 
 class WeatherCache : public IWeatherCacheSource
 {
   public:
-    WeatherCache(std::shared_ptr<IConfigProvider> config);
+	WeatherCache(std::shared_ptr<IConfigProvider> config);
 	Result<WeatherData> getDayWeather(const std::string &city,
 	                                  const std::string &date) override;
 	Result<WeekWeatherData> getWeekWeather(const std::string &city) override;
@@ -20,10 +20,11 @@ class WeatherCache : public IWeatherCacheSource
 	                    const WeekWeatherData &data) override;
 
   private:
-    std::shared_ptr<IConfigProvider> configProvider_;
-    std::shared_ptr<CacheConfig> cacheConfig_;
-    size_t currentCacheSize_ = 0;
-    // static constexpr int MAX_CACHE_SIZE = 10; // максимальное количество записей
+	std::shared_ptr<IConfigProvider> configProvider_;
+	std::shared_ptr<CacheConfig> cacheConfig_;
+	size_t currentCacheSize_ = 0;
+	// static constexpr int MAX_CACHE_SIZE = 10; // максимальное количество
+	// записей
 	struct CacheEntry
 	{
 		WeekWeatherData data;
@@ -41,9 +42,9 @@ class WeatherCache : public IWeatherCacheSource
 	void removeCity(const std::string &city);
 	void clearExpired();
 	void removeOldestEntry();
-    Result<void> tryInitConfig();
-    size_t calculateDataSize(const WeekWeatherData &data) const;
-    size_t bytesWeatherData(const WeatherData& day) const;
+	Result<void> tryInitConfig();
+	size_t calculateDataSize(const WeekWeatherData &data) const;
+	size_t bytesWeatherData(const WeatherData &day) const;
 };
 
 #endif // WEATHERCACHE_H

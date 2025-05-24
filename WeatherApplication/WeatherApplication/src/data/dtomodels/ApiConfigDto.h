@@ -5,7 +5,7 @@
 
 struct ApiConfigDto
 {
-    std::string baseUrl_;
+	std::string baseUrl_;
 	std::string key;
 };
 

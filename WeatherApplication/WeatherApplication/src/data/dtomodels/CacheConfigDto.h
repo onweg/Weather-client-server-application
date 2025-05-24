@@ -3,8 +3,9 @@
 
 #include <cstddef>
 
-struct CacheConfigDto {
-    size_t maxMemoryBytes;
+struct CacheConfigDto
+{
+	size_t maxMemoryBytes;
 };
 
 #endif // CACHECONFIGDTO_H

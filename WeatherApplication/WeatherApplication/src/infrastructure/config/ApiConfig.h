@@ -5,16 +5,17 @@
 #include <QUrl>
 #include <QUrlQuery>
 
-class ApiConfig {
-public:
-    ApiConfig();
-    ApiConfig(const QString& baseUrl, const QString& apiKey);
-    QUrl buildFindCityByNameUrl(const QString& cityName) const;
-    QUrl buildWeatherByCoordinatesUrl(double lat, double lon) const;
+class ApiConfig
+{
+  public:
+	ApiConfig();
+	ApiConfig(const QString &baseUrl, const QString &apiKey);
+	QUrl buildFindCityByNameUrl(const QString &cityName) const;
+	QUrl buildWeatherByCoordinatesUrl(double lat, double lon) const;
 
-private:
-    QString baseUrl_;
-    QString apiKey_;
+  private:
+	QString baseUrl_;
+	QString apiKey_;
 };
 
 #endif // APICONFIG_H

@@ -1,41 +1,42 @@
 #include "WeatherDatabaseInitializer.h"
+
+#include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QDebug>
 
 QSqlDatabase WeatherDatabaseInitializer::initialize()
 {
- QSqlDatabase db;
+	QSqlDatabase db;
 
- if (QSqlDatabase::contains("qt_sql_default_connection"))
- {
-  db = QSqlDatabase::database();
- }
- else
- {
-  db = QSqlDatabase::addDatabase("QSQLITE");
-  db.setDatabaseName(DB_PATH);
+	if (QSqlDatabase::contains("qt_sql_default_connection"))
+	{
+		db = QSqlDatabase::database();
+	}
+	else
+	{
+		db = QSqlDatabase::addDatabase("QSQLITE");
+		db.setDatabaseName(DB_PATH);
 
-  if (!db.open())
-  {
-   qDebug() << "Ошибка подключения к БД:" << db.lastError();
-   return {};
-  }
- }
+		if (!db.open())
+		{
+			qDebug() << "Ошибка подключения к БД:" << db.lastError();
+			return {};
+		}
+	}
 
- if (!createTableIfNotExists(db))
- {
-  qDebug() << "Не удалось создать таблицу.";
-  return {};
- }
+	if (!createTableIfNotExists(db))
+	{
+		qDebug() << "Не удалось создать таблицу.";
+		return {};
+	}
 
- return db;
+	return db;
 }
 
 bool WeatherDatabaseInitializer::createTableIfNotExists(QSqlDatabase &db)
 {
- QSqlQuery query(db);
- bool ok = query.exec(R"(
+	QSqlQuery query(db);
+	bool ok = query.exec(R"(
   CREATE TABLE IF NOT EXISTS weather_data (
    id INTEGER PRIMARY KEY AUTOINCREMENT,
    username TEXT,
@@ -45,8 +46,8 @@ bool WeatherDatabaseInitializer::createTableIfNotExists(QSqlDatabase &db)
   )
  )");
 
- if (!ok)
-  qDebug() << "Ошибка при создании таблицы:" << query.lastError();
+	if (!ok)
+		qDebug() << "Ошибка при создании таблицы:" << query.lastError();
 
- return ok;
+	return ok;
 }

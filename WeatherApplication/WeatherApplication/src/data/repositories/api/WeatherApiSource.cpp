@@ -30,8 +30,8 @@ WeatherApiSource::findWeatherDataByCity(const std::string city)
 		return finishWithImmediateError(futureInterface,
 		                                configResult.errorMessage());
 	}
-    auto url = apiConfig_->buildFindCityByNameUrl(QString::fromStdString(city));
-    auto *reply = networkManager_->get(QNetworkRequest(url));
+	auto url = apiConfig_->buildFindCityByNameUrl(QString::fromStdString(city));
+	auto *reply = networkManager_->get(QNetworkRequest(url));
 	connect(reply, &QNetworkReply::finished, this,
 	        [this, reply, futureInterface]() mutable
 	        { handleCityCoordinatesReply(reply, futureInterface); });
@@ -141,8 +141,9 @@ void WeatherApiSource::fetchWeatherByCoordinates(
     const QString &lat, const QString &lon,
     QFutureInterface<Result<WeekWeatherData>> &futureInterface)
 {
-    auto url = apiConfig_->buildWeatherByCoordinatesUrl(lat.toDouble(), lon.toDouble());
-    QNetworkReply *reply = networkManager_->get(QNetworkRequest(url));
+	auto url = apiConfig_->buildWeatherByCoordinatesUrl(lat.toDouble(),
+	                                                    lon.toDouble());
+	QNetworkReply *reply = networkManager_->get(QNetworkRequest(url));
 
 	connect(reply, &QNetworkReply::finished, this,
 	        [this, reply, futureInterface]() mutable

@@ -6,8 +6,8 @@
 class IWeatherDatabaseInitializer
 {
   public:
- virtual ~IWeatherDatabaseInitializer() = default;
- virtual QSqlDatabase initialize() = 0;
+	virtual ~IWeatherDatabaseInitializer() = default;
+	virtual QSqlDatabase initialize() = 0;
 };
 
 #endif // IWEATHERDATABASEINITIALIZER_H

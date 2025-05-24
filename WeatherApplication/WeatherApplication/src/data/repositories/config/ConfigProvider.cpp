@@ -31,19 +31,19 @@ Result<ServerHostConfig> ConfigProvider::getServerHostConfig()
 	else
 	{
 		return Result<ServerHostConfig>::failure(appConfig_.errorMessage());
-    }
+	}
 }
 
 Result<CacheConfig> ConfigProvider::getCacheConfig()
 {
-    appConfig_ = configLoader_->load();
-    if (appConfig_.isSuccess())
-    {
-        return Result<CacheConfig>::success(
-            appConfig_.value().getCacheConfig());
-    }
-    else
-    {
-        return Result<CacheConfig>::failure(appConfig_.errorMessage());
-    }
+	appConfig_ = configLoader_->load();
+	if (appConfig_.isSuccess())
+	{
+		return Result<CacheConfig>::success(
+		    appConfig_.value().getCacheConfig());
+	}
+	else
+	{
+		return Result<CacheConfig>::failure(appConfig_.errorMessage());
+	}
 }
