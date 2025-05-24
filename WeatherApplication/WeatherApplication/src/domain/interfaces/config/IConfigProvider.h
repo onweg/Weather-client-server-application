@@ -6,15 +6,14 @@
 #include "../../../infrastructure/config/ApiConfig.h"
 #include "../../../infrastructure/config/CacheConfig.h"
 #include "../../../infrastructure/config/ServerHostConfig.h"
-#include "../../utils/Result.h"
 
 class IConfigProvider
 {
   public:
 	virtual ~IConfigProvider() = default;
-	virtual Result<ApiConfig> getApiConfig() = 0;
-	virtual Result<ServerHostConfig> getServerHostConfig() = 0;
-	virtual Result<CacheConfig> getCacheConfig() = 0;
+    virtual ApiConfig getApiConfig() = 0;
+    virtual ServerHostConfig getServerHostConfig() = 0;
+    virtual CacheConfig getCacheConfig() = 0;
 };
 
 #endif // ICONFIGPROVIDER_H

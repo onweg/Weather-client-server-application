@@ -42,13 +42,8 @@ void UserRepository::initConfig()
 {
 	if (!serverHostConfig_)
 	{
-		auto result = configProvider_->getServerHostConfig();
-		if (!result.isSuccess())
-		{
-			throw std::runtime_error(result.errorMessage());
-		}
 		serverHostConfig_ = std::make_shared<ServerHostConfig>();
-		*serverHostConfig_ = result.value();
+        *serverHostConfig_ = configProvider_->getServerHostConfig();
 	}
 }
 

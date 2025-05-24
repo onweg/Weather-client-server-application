@@ -21,7 +21,7 @@ class WeatherApiSource : public QObject, public IApiWeatherSource
 	findWeatherDataByCity(const std::string city) override;
 
   private:
-	Result<void> tryInitConfig();
+    void initConfig();
 	void handleCityCoordinatesReply(
 	    QNetworkReply *reply,
 	    QFutureInterface<Result<WeekWeatherData>> &futureInterface);

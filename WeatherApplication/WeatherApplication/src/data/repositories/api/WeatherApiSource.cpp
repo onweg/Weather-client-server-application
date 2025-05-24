@@ -24,12 +24,7 @@ WeatherApiSource::findWeatherDataByCity(const std::string city)
 {
 	QFutureInterface<Result<WeekWeatherData>> futureInterface;
 	futureInterface.reportStarted();
-	auto configResult = tryInitConfig();
-	if (!configResult.isSuccess())
-	{
-		return finishWithImmediateError(futureInterface,
-		                                configResult.errorMessage());
-	}
+    initConfig();
 	auto url = apiConfig_->buildFindCityByNameUrl(QString::fromStdString(city));
 	auto *reply = networkManager_->get(QNetworkRequest(url));
 	connect(reply, &QNetworkReply::finished, this,
@@ -106,18 +101,13 @@ QFuture<Result<WeekWeatherData>> WeatherApiSource::finishWithImmediateError(
 	return futureInterface.future();
 }
 
-Result<void> WeatherApiSource::tryInitConfig()
+void WeatherApiSource::initConfig()
 {
-	if (apiConfig_)
-		return Result<void>::success();
-	auto result = configProvider_->getApiConfig();
-	if (!result.isSuccess())
-	{
-		throw std::runtime_error("Failed to load API configuration: " +
-		                         result.errorMessage());
-	}
-	apiConfig_ = std::make_shared<ApiConfig>(result.value());
-	return Result<void>::success();
+    if (!apiConfig_)
+    {
+        apiConfig_ = std::make_shared<ApiConfig>();
+        *apiConfig_ = configProvider_->getApiConfig();
+    }
 }
 
 void WeatherApiSource::handleCityCoordinatesReply(

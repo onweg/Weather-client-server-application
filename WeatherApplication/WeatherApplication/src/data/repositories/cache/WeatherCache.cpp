@@ -52,7 +52,7 @@ Result<WeekWeatherData> WeatherCache::getWeekWeather(const std::string &city)
 void WeatherCache::addWeekWeather(const std::string &city,
                                   const WeekWeatherData &data)
 {
-	tryInitConfig();
+    initConfig();
 	clearExpired();
 	size_t dataSize = calculateDataSize(data);
 	if (currentCacheSize_ > std::numeric_limits<size_t>::max() - dataSize)
@@ -155,18 +155,13 @@ void WeatherCache::removeOldestEntry()
 	cache_.erase(oldestIt);
 }
 
-Result<void> WeatherCache::tryInitConfig()
+void WeatherCache::initConfig()
 {
-	if (cacheConfig_)
-		return Result<void>::success();
-	auto result = configProvider_->getCacheConfig();
-	if (!result.isSuccess())
-	{
-		throw std::runtime_error("Failed to load Cache configuration: " +
-		                         result.errorMessage());
-	}
-	cacheConfig_ = std::make_shared<CacheConfig>(result.value());
-	return Result<void>::success();
+    if (!cacheConfig_)
+    {
+        cacheConfig_ = std::make_shared<CacheConfig>();
+        *cacheConfig_ = configProvider_->getCacheConfig();
+    }
 }
 
 size_t WeatherCache::calculateDataSize(const WeekWeatherData &data) const

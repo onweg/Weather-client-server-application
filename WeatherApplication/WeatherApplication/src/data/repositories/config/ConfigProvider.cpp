@@ -7,43 +7,34 @@ ConfigProvider::ConfigProvider(std::shared_ptr<IConfigLoader> configLoader)
 {
 }
 
-Result<ApiConfig> ConfigProvider::getApiConfig()
+ApiConfig ConfigProvider::getApiConfig()
 {
-	appConfig_ = configLoader_->load();
-	if (appConfig_.isSuccess())
-	{
-		return Result<ApiConfig>::success(appConfig_.value().getApiConfig());
-	}
-	else
-	{
-		return Result<ApiConfig>::failure(appConfig_.errorMessage());
-	}
+    initConfig();
+    return appConfig_->getApiConfig();
 }
 
-Result<ServerHostConfig> ConfigProvider::getServerHostConfig()
+ServerHostConfig ConfigProvider::getServerHostConfig()
 {
-	appConfig_ = configLoader_->load();
-	if (appConfig_.isSuccess())
-	{
-		return Result<ServerHostConfig>::success(
-		    appConfig_.value().getServerHostConfig());
-	}
-	else
-	{
-		return Result<ServerHostConfig>::failure(appConfig_.errorMessage());
-	}
+    initConfig();
+    return appConfig_->getServerHostConfig();
 }
 
-Result<CacheConfig> ConfigProvider::getCacheConfig()
+CacheConfig ConfigProvider::getCacheConfig()
 {
-	appConfig_ = configLoader_->load();
-	if (appConfig_.isSuccess())
-	{
-		return Result<CacheConfig>::success(
-		    appConfig_.value().getCacheConfig());
-	}
-	else
-	{
-		return Result<CacheConfig>::failure(appConfig_.errorMessage());
-	}
+    initConfig();
+    return appConfig_->getCacheConfig();
+}
+
+void ConfigProvider::initConfig()
+{
+    if (!appConfig_) {
+        auto result = configLoader_->load();
+        if (!result.isSuccess()) {
+            throw std::runtime_error(result.errorMessage());
+        }
+        auto tmp = result.value();
+        appConfig_ = std::make_shared<AppConfig>(tmp.getServerHostConfig(),
+                                                 tmp.getApiConfig(),
+                                                 tmp.getCacheConfig());
+    }
 }
