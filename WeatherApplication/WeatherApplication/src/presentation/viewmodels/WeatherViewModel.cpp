@@ -74,10 +74,10 @@ bool WeatherViewModel::isDateValid(const QDate &date)
 void WeatherViewModel::changeDateAndFetch(int daysOffset)
 {
 	QDate newDate = desiredDate_.addDays(daysOffset);
-	if (!isDateValid(newDate))
-		return;
-	desiredDate_ = newDate;
-	fetchAndSetDailyWeather();
+    if (isDateValid(newDate)) {
+        desiredDate_ = newDate;
+        fetchAndSetDailyWeather();
+    }
 }
 
 void WeatherViewModel::fetchAndSetDailyWeather()
