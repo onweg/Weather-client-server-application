@@ -14,8 +14,8 @@ class ApiConfig
 	QUrl buildWeatherByCoordinatesUrl(double lat, double lon) const;
 
   private:
-	QString baseUrl_;
-	QString apiKey_;
+    QString m_baseUrl;
+    QString m_apiKey;
 };
 
 #endif // APICONFIG_H
